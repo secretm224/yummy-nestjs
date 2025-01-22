@@ -1,0 +1,17 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "type": "node",
+        "request": "launch",
+        "name": "Launch NestJS App",
+        "runtimeArgs": ["-r", "ts-node/register"],
+        "args": ["src/main.ts"], // 애플리케이션 시작 파일
+        "cwd": "${workspaceFolder}",
+        "sourceMaps": true,
+        "outFiles": ["${workspaceFolder}/dist/**/*.js"], // 컴파일된 파일 경로
+        "autoAttachChildProcesses": true,
+        "skipFiles": ["<node_internals>/**"]
+      }
+    ]
+  }

@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🍽️ Yummy Map</title>
+    <script src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=87ni0cgqze&submodules=geocoder"></script>
+    <style>
+        /* 전체 배경을 노란색으로 설정 */
+        body {
+            background-color: #FFF8DC; /* 부드러운 노란색 */
+            font-family: "Comic Sans MS", "Arial", sans-serif; /* 귀여운 폰트 */
+            text-align: center;
+            padding: 20px;
+        }
+
+        /* 타이틀 스타일 */
+        h1, h2 {
+            color: #FF8C00; /* 오렌지색 */
+        }
+
+        /* 지도 스타일 */
+        #map {
+            width: 90%;
+            height: 500px;
+            margin: 10px auto;
+            border-radius: 15px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        /* 입력 필드 스타일 */
+        input[type="text"] {
+            width: 80%;
+            max-width: 400px;
+            padding: 10px;
+            font-size: 16px;
+            border: 2px solid #FFA500; /* 오렌지 테두리 */
+            border-radius: 20px;
+            outline: none;
+            text-align: center;
+            background-color: #FFFAF0;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        /* 버튼 스타일 */
+        input[type="button"] {
+            margin-top: 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            color: white;
+            background-color: #FF8C00; /* 밝은 오렌지 */
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: 0.3s;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        /* 버튼 호버 효과 */
+        input[type="button"]:hover {
+            background-color: #FF4500; /* 더 진한 오렌지 */
+            transform: scale(1.05);
+        }
+
+        /* 등록 정보 박스 */
+        #markerInfo {
+            margin-top: 15px;
+            padding: 10px;
+            font-size: 14px;
+            background-color: #FFECB3;
+            border-radius: 10px;
+            display: inline-block;
+            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+   <h1>🍽️ Yummy Map</h1> 
+   <div style="display: flex; align-items: center; gap: 10px; justify-content: center; text-align: center; margin: 0 auto;">
+        <img src="/alba.png" alt="제로페이 가맹점" style="height: 50px;">
+        <h2 style="margin: 0;"> 제로페이 가맹점</h2>
+    </div>
+   <div id="map"></div>
+
+   <br>
+
+   <input type="text" id="storeName" placeholder="🍞 예: 파리바게트">
+   <br><br>
+   <input type="text" id="storeAddress" placeholder="📍 서울 강남구 테헤란로 326 I-TOWER">
+   <br><br>
+   <input type="button" value="🥳 음식점 등록" onclick="GetGeocode()">
+
+   <!-- <div id="markerInfo">📍 마커를 이동하면 좌표가 표시됩니다.</div> -->
+
+   <script type="text/javascript">
+
+    // var zeroPayStores = [
+    //     { name: "맘스터치", lat: 37.5041214, lng: 127.0473992, type: "store" },
+    //     { name: "옥된장", lat: 37.5043019, lng: 127.0468788, type: "store" },
+    //     { name: "비래옥", lat: 37.5057545438943, lng: 127.050042038224, type: "store" },
+    //     { name: "청년다방", lat: 37.5041662879426, lng: 127.052043567109, type: "store" },
+    //     { name: "선릉돈까스", lat: 37.5031737, lng: 127.0479585, type: "store" },
+    //     { name: "모쿠", lat: 37.5053576, lng: 127.0430391, type: "store" },
+    //     { name: "알바천국", lat: 37.5032355765545, lng: 127.046582379785, type: "company" }
+    // ];
+
+    var zeroPayStores = [];
+
+    window.onload = SetStores;
+
+    function SetMap() {
+
+       
+
+        var map = new naver.maps.Map('map', {
+            center: new naver.maps.LatLng(37.5045028775835, 127.048942471228),
+            zoom: 17
+        });
+
+       var storeIcon = "https://cdn-icons-png.flaticon.com/128/3170/3170733.png"; // 음식점 아이콘
+       var companyIcon = "/alba.png"; // 회사 아이콘
+
+       var referenceStore = zeroPayStores.find(store => store.name === "알바천국");
+
+       zeroPayStores.forEach(function(store) {
+            var iconUrl = (store.type === "company") ? companyIcon : storeIcon;
+
+            var marker = new naver.maps.Marker({
+                position: new naver.maps.LatLng(store.lat, store.lng),
+                map: map,
+                icon: {
+                    url: iconUrl,
+                    size: new naver.maps.Size(30, 30),
+                    scaledSize: new naver.maps.Size(30, 30),
+                    origin: new naver.maps.Point(0, 0),
+                    anchor: new naver.maps.Point(20, 40)
+                },
+                draggable: true
+            });
+
+            // var infowindow = new naver.maps.InfoWindow({
+            //     content: `<div style="padding:5px;">${store.name}</div>`
+            // });
+
+            var naverMapLink = `https://map.naver.com/v5/search/${store.name}?c=${store.lng},${store.lat},17,0,0,0,dh`;
+            
+            // 가게 타입별 이모지 설정 (귀여운 요소 추가)
+            var emoji = "🍽️"; // 기본 음식점
+            if (store.name.includes("커피") || store.name.includes("카페") || store.name.includes("스타벅스")) {
+                emoji = "☕";
+            } else if (store.name.includes("치킨") || store.name.includes("BBQ")) {
+                emoji = "🍗";
+            } else if (store.name.includes("햄버거") || store.name.includes("버거")|| store.name.includes("맘스터치")) {
+                emoji = "🍔";
+            } else if (store.type === "company") {
+                emoji = "🏢"; // 회사 아이콘
+            }
+
+        
+
+            // 귀여운 디자인이 적용된 InfoWindow
+            var infowindow = new naver.maps.InfoWindow({
+            content: `
+                <div style="
+                    padding: 10px; 
+                    border-radius: 10px; 
+                    background-color: #FFF8DC; 
+                    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2); 
+                    text-align: center;
+                    font-family: 'Comic Sans MS', sans-serif;
+                    max-width: 200px;
+                ">
+                    <div style="font-size: 18px; font-weight: bold; margin-bottom: 5px;">
+                        ${emoji} ${store.name}
+                    </div>
+                    <div id="walking-time-${store.name}" style="font-size: 14px; color: #555;"></div>
+                    <a href="https://map.naver.com/v5/search/${store.name}?c=${store.lng},${store.lat},17,0,0,0,dh" target="_blank" style="
+                        display: inline-block;
+                        padding: 5px 10px;
+                        font-size: 14px;
+                        color: white;
+                        background-color: #FF8C00;
+                        border-radius: 5px;
+                        text-decoration: none;
+                        font-weight: bold;
+                    ">🗺️ 네이버 지도에서 보기</a>
+                </div>`
+           });
+
+            naver.maps.Event.addListener(marker, "dragend", function(e) {
+                var lat = e.coord.y;
+                var lng = e.coord.x;
+                //document.getElementById("markerInfo").innerHTML = `📍 ${store.name} 이동됨:<br> 위도: ${lat}<br> 경도: ${lng}`;
+            });
+
+            naver.maps.Event.addListener(marker, "click", function() {
+                if (infowindow.getMap()) {
+                    infowindow.close();
+                } else {
+                    infowindow.open(map, marker);
+
+                     // 📏 기준 마커와의 도보 이동 시간 계산
+                    if (referenceStore) {
+                        var distance = getDistance(store.lat, store.lng, referenceStore.lat, referenceStore.lng);
+                        var walkingTime = getWalkingTime(distance);
+                        document.getElementById(`walking-time-${store.name}`).innerHTML = `🚶‍♂️ 도보 시간: <b>${walkingTime}분</b>`;
+                    }
+                }
+            });
+        });
+    }
+
+    function GetGeocode() {
+        var address = document.getElementById("storeAddress").value;
+        var name = document.getElementById("storeName").value;
+
+        if (!address || !name) {
+            alert("🍕 음식점명과 주소를 입력해주세요!");
+            return;
+        }
+
+        naver.maps.Service.geocode({ address: address }, function(status, response) {
+            if (status !== naver.maps.Service.Status.OK) {
+                alert("주소를 찾을 수 없습니다.");
+                return;
+            }
+
+            var firstItem = response.result.items[0];
+            var lat = firstItem.point.y;
+            var lng = firstItem.point.x;
+            //console.log(lat, lng);
+            zeroPayStores.push({ name: name, lat: lat, lng: lng, type: "store" });
+            SetMap();
+        });
+    }
+
+        // 📏 거리 계산 함수 (Haversine Formula)
+     function getDistance(lat1, lon1, lat2, lon2) {
+        const R = 6371; // 지구 반지름 (km)
+        const dLat = (lat2 - lat1) * (Math.PI / 180);
+        const dLon = (lon2 - lon1) * (Math.PI / 180);
+        const a =   Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                    Math.cos(lat1 * (Math.PI / 180)) * Math.cos(lat2 * (Math.PI / 180)) *
+                    Math.sin(dLon / 2) * Math.sin(dLon / 2);
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        return (R * c).toFixed(2); // km 단위 거리 반환 (소수점 2자리)
+    }
+
+    // 🚶‍♂️ 도보 이동 시간 계산 함수
+    function getWalkingTime(distanceKm) {
+        const walkingSpeedKmPerHour = 3.5; // 평균 도보 속도 (4.8 km/h)
+        const timeMinutes = (distanceKm / walkingSpeedKmPerHour) * 60;
+        return Math.ceil(timeMinutes); // 소수점 올림 (정수값 반환)
+    }
+
+    async function SetStores() 
+    {
+        try {
+            const response = await fetch('/store/all');
+            const stores = await response.json();
+
+            stores.forEach(store => {
+                zeroPayStores.push({
+                    name: store.name,
+                    lat: store.lat,
+                    lng: store.lng,
+                    type: store.type
+                });
+                
+                if(zeroPayStores.length <=0){
+                    alert("등록된 가게가 없습니다.");
+                    zeroPayStores = [{ name: "알바천국", lat: 37.5032355765545, lng: 127.046582379785, type: "company" }];
+                }
+
+                SetMap();
+
+            });
+
+        } catch (error) {
+            console.error('Error fetching store data:', error);
+        }
+    }
+
+   </script>
+</body>
+</html>
