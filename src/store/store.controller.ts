@@ -12,10 +12,25 @@ export class StoreController {
       return this.storeService.findAll();
     }
   
-    @Post()
-    async create(@Body() user: Partial<Store>): Promise<Store> {
-      return this.storeService.create(user);
+    @Post("/add")
+    async create(@Body() store: Partial<Store>): Promise<Store> {
+
+        store.reg_dt = new Date();
+        store.reg_id = "secretm";
+
+      return this.storeService.create(store);
     }
+
+    @Post("/update")
+    async update(@Body() store: Partial<Store>): Promise<Store | null> {
+
+        // store.lat = store.lat;
+        // store.lng = store.lng;
+        // store.name = store.name;
+
+        return this.storeService.update(store);
+    }
+
 }
 
 

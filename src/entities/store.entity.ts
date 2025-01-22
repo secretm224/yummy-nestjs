@@ -20,12 +20,6 @@ export class Store {
     @Column({ type: 'decimal', precision: 10, scale: 7, nullable: false })
     lng: number;
 
-    // @Column({ type: 'decimal', nullable: false })
-    // lat: number;
-
-    // @Column({ type: 'decimal', nullable: false })
-    // lng: number;
-
     @Column({ type: 'datetime', nullable: true })
     reg_dt: Date;
 

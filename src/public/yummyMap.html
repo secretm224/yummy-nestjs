@@ -105,13 +105,13 @@
     //     { name: "알바천국", lat: 37.5032355765545, lng: 127.046582379785, type: "company" }
     // ];
 
-    var zeroPayStores = [];
+    var zeroPayStores = [{ name: "알바천국", lat: 37.5032355765545, lng: 127.046582379785, type: "company" }];
 
     window.onload = SetStores;
 
     function SetMap() {
 
-       
+        
 
         var map = new naver.maps.Map('map', {
             center: new naver.maps.LatLng(37.5045028775835, 127.048942471228),
@@ -192,6 +192,9 @@
                 var lat = e.coord.y;
                 var lng = e.coord.x;
                 //document.getElementById("markerInfo").innerHTML = `📍 ${store.name} 이동됨:<br> 위도: ${lat}<br> 경도: ${lng}`;
+                var store_json = { name: store.name, lat: lat, lng: lng, type: "store" };
+
+                updatecoords(store_json);
             });
 
             naver.maps.Event.addListener(marker, "click", function() {
@@ -229,9 +232,15 @@
             var firstItem = response.result.items[0];
             var lat = firstItem.point.y;
             var lng = firstItem.point.x;
-            //console.log(lat, lng);
-            zeroPayStores.push({ name: name, lat: lat, lng: lng, type: "store" });
-            SetMap();
+            var address = firstItem.address;
+            var addjson = { name: name,address:address, lat: lat, lng: lng, type: "store" };
+
+            //console.log(addjson);
+
+            addStore(addjson);
+
+            //zeroPayStores.push({ name: name, lat: lat, lng: lng, type: "store" });
+            //SetMap();
         });
     }
 
@@ -256,6 +265,8 @@
 
     async function SetStores() 
     {
+        zeroPayStores = [{ name: "알바천국", lat: 37.5032355765545, lng: 127.046582379785, type: "company" }];
+        
         try {
             const response = await fetch('/store/all');
             const stores = await response.json();
@@ -267,18 +278,66 @@
                     lng: store.lng,
                     type: store.type
                 });
-                
-                if(zeroPayStores.length <=0){
-                    alert("등록된 가게가 없습니다.");
-                    zeroPayStores = [{ name: "알바천국", lat: 37.5032355765545, lng: 127.046582379785, type: "company" }];
-                }
-
-                SetMap();
-
             });
+
+            if(zeroPayStores.length <=0){
+                    alert("등록된 가게가 없습니다.");
+                    
+            }
+
+            SetMap();
 
         } catch (error) {
             console.error('Error fetching store data:', error);
+        }
+    }
+
+    async function addStore(store)
+    {
+        try {
+        
+            const response = await fetch("/store/add", {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                    },
+                                    body: JSON.stringify(store),
+                                });
+
+            const result = await response.json();
+
+            if(!!result){
+                alert("🍕 음식점이 등록되었습니다.");
+                SetStores();
+            }
+
+        } catch (error) {
+            console.error('Error adding store:', error);
+        }
+    }
+
+
+    async function updatecoords(store)
+    {
+        try {
+        
+            const response = await fetch("/store/update", {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                    },
+                                    body: JSON.stringify(store),
+                                });
+
+            const result = await response.json();
+
+            if(!!result){
+                alert("🍕 음식점이 수정되었습니다.");
+                SetStores();
+            }
+
+        } catch (error) {
+            console.error('Error updating store:', error);
         }
     }
 
