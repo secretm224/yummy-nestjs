@@ -388,12 +388,15 @@
            });
 
             naver.maps.Event.addListener(marker, "dragend", function(e) {
-                var lat = e.coord.y;
-                var lng = e.coord.x;
-                //document.getElementById("markerInfo").innerHTML = `📍 ${store.name} 이동됨:<br> 위도: ${lat}<br> 경도: ${lng}`;
-                var store_json = { name: store.name, lat: lat, lng: lng, type: "store" };
+                if(confirm("위치를 수정하시겠습니까?") == true){
+                    var lat = e.coord.y;
+                    var lng = e.coord.x;
+                    //document.getElementById("markerInfo").innerHTML = `📍 ${store.name} 이동됨:<br> 위도: ${lat}<br> 경도: ${lng}`;
+                    var store_json = { name: store.name, lat: lat, lng: lng, type: "store" };
 
-                updatecoords(store_json);
+                    updatecoords(store_json);
+                }
+
             });
 
             naver.maps.Event.addListener(marker, "click", function() {
