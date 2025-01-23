@@ -307,6 +307,7 @@
 
    <script type="text/javascript">
     var zeroPayStores = [{ name: "알바천국", lat: 37.5032355765545, lng: 127.046582379785, type: "company" }];
+    let zeroPayMarkers = [];
 
     window.onload = SetStores;
 
@@ -341,7 +342,7 @@
             // var infowindow = new naver.maps.InfoWindow({
             //     content: `<div style="padding:5px;">${store.name}</div>`
             // });
-
+            zeroPayMarkers.push({ storeName: store.name, marker: marker });
             var naverMapLink = `https://map.naver.com/v5/search/${store.name}?c=${store.lng},${store.lat},17,0,0,0,dh`;
             
             // 가게 타입별 이모지 설정 (귀여운 요소 추가)
@@ -396,7 +397,6 @@
 
                     updatecoords(store_json);
                 }
-
             });
 
             naver.maps.Event.addListener(marker, "click", function() {
@@ -483,8 +483,7 @@
             });
 
             if(zeroPayStores.length <=0){
-                    alert("등록된 가게가 없습니다.");
-                    
+                alert("등록된 가게가 없습니다.");
             }
             
             StoreList(zeroPayStores);
@@ -556,6 +555,16 @@
 
             const listItem = document.createElement('li');
             listItem.textContent = `${store.name}`;
+
+            
+            // 클릭 이벤트 추가
+            listItem.addEventListener('click', function() {
+                const markerData = zeroPayMarkers.find(item => item.storeName === store.name);
+                if (markerData) {
+                    naver.maps.Event.trigger(markerData.marker, 'click');
+                }
+            });
+
             storeList.appendChild(listItem);
         });
     }
