@@ -167,68 +167,6 @@
             border-bottom: none;
         }
 
-
-
-        /* 📌 회전판 컨테이너 - 오른쪽 상단 */
-        #wheel-container {
-            position: fixed;
-            top: 15px;
-            right: 15px;
-            width: 250px;
-            height: auto;
-            z-index: 1000;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        /* 🎯 화살표 표시 */
-        #pointer {
-            font-size: 24px;
-            color: black;
-            margin-bottom: -10px;
-        }
-
-        /* 🎡 회전판 스타일 */
-        #wheel {
-            width: 300px;
-            height: 300px;
-            border-radius: 50%;
-            position: relative;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: white;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-        }
-
-        /* 🛑 회전 버튼 */
-        #spin-button {
-            margin-top: 15px;
-            padding: 10px 20px;
-            font-size: 16px;
-            font-weight: bold;
-            color: white;
-            background-color: #FF8C00;
-            border: none;
-            border-radius: 20px;
-            cursor: pointer;
-            transition: 0.3s;
-            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
-        }
-
-        #spin-button:hover {
-            background-color: #FF4500;
-            transform: scale(1.05);
-        }
-
-        #arrowCanvas {
-            position: absolute;
-            top: 0; /* 회전판의 중앙 상단에 위치 */
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 10;
-        }
         /* 돌림판 열기 버튼 스타일 */
         .toggle-button {
             background-color: #FF8C00; /* 밝은 오렌지 */
@@ -239,28 +177,85 @@
             border-radius: 25px;
             border: none;
             cursor: pointer;
-            transition: 0.3s ease-in-out;
-            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease-in-out;
+            box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.3); /* 그림자 강화 */
             text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+            outline: none; /* 포커스 시 외곽선 제거 */
         }
 
         .toggle-button:hover {
             background-color: #FF4500; /* 더 진한 오렌지 */
-            transform: scale(1.05);
+            transform: scale(1.1); /* 버튼 크기 확대 */
+            box-shadow: 3px 6px 12px rgba(0, 0, 0, 0.4); /* 호버 시 그림자 강조 */
         }
 
         /* 회전판 컨테이너 숨김 기본 설정 */
         #wheel-container {
             display: none; /* 기본적으로 숨김 */
-            transition: all 0.3s ease-in-out;
+            position: fixed; /* 고정 위치 */
+            top: 50%; /* 화면 중앙 */
+            left: 50%; /* 화면 중앙 */
+            transform: translate(-50%, -50%); /* 완전한 중앙 정렬 */
+            width: 320px; /* 고정된 크기 */
+            height: auto;
+            background: white; /* 흰색 배경 */
+            border-radius: 20px;
+            box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.3); /* 그림자 강화 */
+            z-index: 1000; /* 상단에 노출 */
+            transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+            opacity: 0; /* 숨길 때 투명 */
         }
 
         #wheel-container.menu-visible {
             display: flex; /* 나타날 때 flex로 표시 */
             flex-direction: column;
             align-items: center;
+            opacity: 1; /* 나타날 때 불투명 */
+            transform: translate(-50%, -50%) scale(1); /* 중앙에서 표시 */
         }
-        
+
+        /* 돌림판 회전판 */
+        #wheel {
+            width: 300px; /* 크기 조정 */
+            height: 300px;
+            border-radius: 50%;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* 입체감 */
+            margin: 20px 0;
+            position: relative; /* 화살표와 결합 */
+        }
+
+        /* 화살표 캔버스 */
+        #arrowCanvas {
+            position: absolute;
+            top: -20px; /* 돌림판 상단으로 조정 */
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10; /* 돌림판 위에 표시 */
+        }
+
+        /* 시작 버튼 */
+        #spin-button {
+            background-color: #FFA500; /* 밝은 오렌지 */
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            padding: 10px 20px;
+            border-radius: 20px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+            box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.3);
+            outline: none;
+            margin-bottom: 20px; 
+        }
+
+        #spin-button:hover {
+            background-color: #FF4500; /* 더 진한 오렌지 */
+            transform: scale(1.1); /* 크기 확대 */
+            box-shadow: 3px 6px 12px rgba(0, 0, 0, 0.4); /* 호버 시 그림자 강조 */
+        }
+   
+
     </style>
 </head>
 <body>
@@ -278,7 +273,6 @@
         </div>
     </div>
 
-
     <div id="wheel-toggle" onclick="toggleWheelMenu()">
         <button class="toggle-button">🎡 돌림판 열기</button>
     </div>
@@ -286,7 +280,7 @@
     <div id="wheel-container" class="menu-hidden">
         <div>
             <canvas id="arrowCanvas" style="position: absolute; top: 10px; left: 50%; transform: translateX(-50%); z-index: 10;"></canvas>
-            <div id="wheel">
+            <div id="wheel" onclick="toggleWheelMenu()">
                 <canvas id="wheelCanvas" width="300" height="300"></canvas>
             </div>
             <button id="spin-button" onclick="spinWheel()">🎡 시작</button>
@@ -585,27 +579,34 @@
         const ctx = canvas.getContext("2d");
         const numSections = storeNames.length;
         const angleStep = (2 * Math.PI) / numSections;
-        const colors = ["#FFD700", "#FFA500", "#FF8C00", "#F4A460", "#DAA520", "#CD853F"];
+        const colors = ["#FFD700", "#FFA500", "#FF8C00", "#F4A460", "#DAA520", "#CD853F"]; // 메뉴 섹션 색상
 
-        canvas.width = 250; // 크기 축소
-        canvas.height = 250;
+        // 캔버스 크기 설정
+        canvas.width = 300;
+        canvas.height = 300;
+
+        // 캔버스 초기화 (배경색 없음)
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+        // 돌림판 그리기
         for (let i = 0; i < numSections; i++) {
+            // 메뉴 섹션 그리기
             ctx.beginPath();
-            ctx.moveTo(125, 125);
-            ctx.arc(125, 125, 110, i * angleStep, (i + 1) * angleStep); // 반지름 110으로 축소
+            ctx.moveTo(150, 150); // 중앙점
+            ctx.arc(150, 150, 140, i * angleStep, (i + 1) * angleStep); // 섹션 그리기
             ctx.fillStyle = colors[i % colors.length];
             ctx.fill();
+            ctx.closePath();
             ctx.stroke();
 
+            // 텍스트 설정
             ctx.save();
-            ctx.fillStyle = "white";
-            ctx.translate(125, 125);
-            ctx.rotate(i * angleStep + angleStep / 2);
-            ctx.font = "12px Comic Sans MS";
+            ctx.translate(150, 150); // 중앙으로 이동
+            ctx.rotate(i * angleStep + angleStep / 2); // 섹션 중심에 텍스트 위치
+            ctx.font = "14px Comic Sans MS";
+            ctx.fillStyle = "white"; // 텍스트 색상
             ctx.textAlign = "right";
-            ctx.fillText(storeNames[i], 85, 10);
+            ctx.fillText(storeNames[i], 120, 10); // 텍스트 위치
             ctx.restore();
         }
 
@@ -640,10 +641,6 @@
 
         document.getElementById("wheel").style.transition = "transform 4s ease-out";
         document.getElementById("wheel").style.transform = `rotate(${currentRotation}deg)`;
-
-        // setTimeout(() => {
-        //     highlightSelectedItem(randomAngle);
-        // }, 4000);
     }
 
     function toggleWheelMenu() {

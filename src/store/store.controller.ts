@@ -2,6 +2,8 @@ import { Controller, Get, Post, Body } from '@nestjs/common';
 import { StoreService } from './store.service';
 import { Store } from '../entities/store.entity';
 
+
+
 @Controller('store')
 export class StoreController {
 
@@ -24,13 +26,8 @@ export class StoreController {
     @Post("/update")
     async update(@Body() store: Partial<Store>): Promise<Store | null> {
 
-        // store.lat = store.lat;
-        // store.lng = store.lng;
-        // store.name = store.name;
-
         return this.storeService.update(store);
     }
-
 }
 
 

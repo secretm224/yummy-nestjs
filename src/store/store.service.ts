@@ -3,6 +3,9 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Store } from 'src/entities/store.entity';
 import { Repository } from 'typeorm';
 
+import * as fs from 'fs';
+import * as path from 'path';
+
 @Injectable()
 export class StoreService {
 
@@ -20,7 +23,15 @@ export class StoreService {
      }
 
      async create(store: Partial<Store>): Promise<Store> {
-       return this.storeRepository.save(store);
+
+       if(!store.name){
+          throw new Error('store name is required for create');
+       }
+
+       const savedStore = await this.storeRepository.save(store);
+       this.logTofile(`store created: ${JSON.stringify(savedStore)}`);
+
+       return savedStore;
      }
 
      async update(store: Partial<Store>): Promise<Store | null> {
@@ -47,5 +58,21 @@ export class StoreService {
         }
         
           return null;
+    }
+
+    private logTofile(message:string):void
+    {
+        //console.log('save log test secretm'); 터미널에 남겨진다. 
+
+        const logFilePath = path.join(__dirname,'../../logs/create_store.log');
+        const titmestamp = new Date().toISOString();
+        const logMessage = `[${titmestamp}] - ${message}\n`;
+
+        if(!fs.existsSync(path.dirname(logFilePath))){
+            fs.mkdirSync(path.dirname(logFilePath),{recursive:true});
+        }
+       
+        fs.appendFileSync(logFilePath,logMessage,'utf8');
+        
     }
 }
