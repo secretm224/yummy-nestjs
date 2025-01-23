@@ -73,6 +73,163 @@
             display: inline-block;
             box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
         }
+
+         /* 📜 종이 모양 버튼 - 왼쪽 상단 */
+        #store-list-container {
+            position: fixed;
+            top: 15px;
+            left: 15px;
+            width: 250px;
+            height: auto;
+            z-index: 1000;
+        }
+
+        /* 📜 종이 말린 효과 */
+        #store-list-toggle {
+            width: 50px;
+            height: 50px;
+            background-color: #fff;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 50px;
+            cursor: pointer;
+            font-size: 24px;
+            box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease-in-out;
+            position: relative;
+        }
+
+        #store-list-toggle:hover {
+            transform: rotate(-10deg);
+        }
+
+        /* 📜 종이 말린 리스트 스타일 */
+        #store-list {
+            display: none;
+            background: white;
+            width: 100%;
+            max-height: 300px;
+            overflow: hidden; /* 부모 요소에서 스크롤을 감춤 */
+            border-radius: 15px;
+            padding: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            border: 2px solid #ddd;
+            transform: rotateX(90deg);
+            transform-origin: top;
+            transition: transform 0.5s ease-in-out;
+            position: absolute;
+            top: 60px;
+            left: 0;
+        }
+
+        /* 펼쳐질 때 */
+        #store-list.active {
+            display: block;
+            transform: rotateX(0deg);
+        }
+
+        /* 리스트 내부 스크롤 */
+        #store-items {
+            list-style: none;
+            padding: 0;
+            max-height: 230px;
+            overflow-y: auto;
+            padding-right: 5px; /* 스크롤바 겹치지 않게 */
+        }
+
+        /* 스크롤바 디자인 */
+        #store-items::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        #store-items::-webkit-scrollbar-thumb {
+            background: #FFA500; /* 스크롤바 색상 */
+            border-radius: 4px;
+        }
+
+        #store-items::-webkit-scrollbar-track {
+            background: #FFFAF0; /* 스크롤바 트랙 배경 */
+        }
+
+        /* 리스트 아이템 디자인 */
+        #store-items li {
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+            background: #FFFAF0;
+            margin: 5px 0;
+            border-radius: 10px;
+            font-size: 14px;
+            text-align: center;
+            font-family: "Comic Sans MS", cursive, sans-serif;
+        }
+
+        #store-items li:last-child {
+            border-bottom: none;
+        }
+
+
+
+        /* 📌 회전판 컨테이너 - 오른쪽 상단 */
+        #wheel-container {
+            position: fixed;
+            top: 15px;
+            right: 15px;
+            width: 250px;
+            height: auto;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* 🎯 화살표 표시 */
+        #pointer {
+            font-size: 24px;
+            color: black;
+            margin-bottom: -10px;
+        }
+
+        /* 🎡 회전판 스타일 */
+        #wheel {
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: white;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        /* 🛑 회전 버튼 */
+        #spin-button {
+            margin-top: 15px;
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            color: white;
+            background-color: #FF8C00;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: 0.3s;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        #spin-button:hover {
+            background-color: #FF4500;
+            transform: scale(1.05);
+        }
+
+        #arrowCanvas {
+            position: absolute;
+            top: 0; /* 회전판의 중앙 상단에 위치 */
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+        }
+        
     </style>
 </head>
 <body>
@@ -81,6 +238,24 @@
         <img src="/alba.png" alt="제로페이 가맹점" style="height: 50px;">
         <h2 style="margin: 0;"> 제로페이 가맹점</h2>
     </div>
+
+    <div id="store-list-container">
+        <div id="store-list-toggle" onclick="toggleStoreList()">📜</div>
+        <div id="store-list">
+            <h3>📌 가맹점 리스트</h3>
+            <ul id="store-items"></ul>
+        </div>
+    </div>
+
+    <div id="wheel-container">
+        <!-- <h3>🎯 행운의 돌림판</h3> -->
+        <canvas id="arrowCanvas" style="position: absolute; top: 10px; left: 50%; transform: translateX(-50%); z-index: 10;"></canvas>
+        <div id="wheel">
+            <canvas id="wheelCanvas" width="300" height="300"></canvas>
+        </div>
+        <button id="spin-button" onclick="spinWheel()">🎡 시작</button>
+    </div>
+
    <div id="map"></div>
 
    <br>
@@ -94,24 +269,11 @@
    <!-- <div id="markerInfo">📍 마커를 이동하면 좌표가 표시됩니다.</div> -->
 
    <script type="text/javascript">
-
-    // var zeroPayStores = [
-    //     { name: "맘스터치", lat: 37.5041214, lng: 127.0473992, type: "store" },
-    //     { name: "옥된장", lat: 37.5043019, lng: 127.0468788, type: "store" },
-    //     { name: "비래옥", lat: 37.5057545438943, lng: 127.050042038224, type: "store" },
-    //     { name: "청년다방", lat: 37.5041662879426, lng: 127.052043567109, type: "store" },
-    //     { name: "선릉돈까스", lat: 37.5031737, lng: 127.0479585, type: "store" },
-    //     { name: "모쿠", lat: 37.5053576, lng: 127.0430391, type: "store" },
-    //     { name: "알바천국", lat: 37.5032355765545, lng: 127.046582379785, type: "company" }
-    // ];
-
     var zeroPayStores = [{ name: "알바천국", lat: 37.5032355765545, lng: 127.046582379785, type: "company" }];
 
     window.onload = SetStores;
 
     function SetMap() {
-
-        
 
         var map = new naver.maps.Map('map', {
             center: new naver.maps.LatLng(37.5045028775835, 127.048942471228),
@@ -244,8 +406,8 @@
         });
     }
 
-        // 📏 거리 계산 함수 (Haversine Formula)
-     function getDistance(lat1, lon1, lat2, lon2) {
+    //📏 거리 계산 함수 (Haversine Formula)
+    function getDistance(lat1, lon1, lat2, lon2) {
         const R = 6371; // 지구 반지름 (km)
         const dLat = (lat2 - lat1) * (Math.PI / 180);
         const dLon = (lon2 - lon1) * (Math.PI / 180);
@@ -266,7 +428,7 @@
     async function SetStores() 
     {
         zeroPayStores = [{ name: "알바천국", lat: 37.5032355765545, lng: 127.046582379785, type: "company" }];
-        
+
         try {
             const response = await fetch('/store/all');
             const stores = await response.json();
@@ -284,7 +446,9 @@
                     alert("등록된 가게가 없습니다.");
                     
             }
-
+            
+            StoreList(zeroPayStores);
+            drawWheel(zeroPayStores);
             SetMap();
 
         } catch (error) {
@@ -332,13 +496,105 @@
             const result = await response.json();
 
             if(!!result){
-                alert("🍕 음식점이 수정되었습니다.");
+                alert("🍕 위치가 수정되었습니다.");
                 SetStores();
             }
 
         } catch (error) {
             console.error('Error updating store:', error);
         }
+    }
+
+    async function StoreList(zeroPayStores) {
+       
+        const storeList = document.getElementById('store-items');
+        storeList.innerHTML = '';
+
+        zeroPayStores.forEach((store) => {
+
+            if(store.type === "company") return;
+
+            const listItem = document.createElement('li');
+            listItem.textContent = `${store.name}`;
+            storeList.appendChild(listItem);
+        });
+    }
+
+    // 토글 기능
+    function toggleStoreList() {
+        const storeList = document.getElementById('store-list');
+        storeList.classList.toggle('active');
+    }
+
+    let currentRotation = 0;
+
+    // 🎡 캔버스에 회전판 그리기
+    function drawWheel(zeroPayStores) {
+        let storeNames = zeroPayStores.filter(store => store.type !== 'company').map(store => store.name);
+
+        const canvas = document.getElementById("wheelCanvas");
+        const ctx = canvas.getContext("2d");
+        const numSections = storeNames.length;
+        const angleStep = (2 * Math.PI) / numSections;
+        const colors = ["#FFD700", "#FFA500", "#FF8C00", "#F4A460", "#DAA520", "#CD853F"];
+
+        canvas.width = 250; // 크기 축소
+        canvas.height = 250;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        for (let i = 0; i < numSections; i++) {
+            ctx.beginPath();
+            ctx.moveTo(125, 125);
+            ctx.arc(125, 125, 110, i * angleStep, (i + 1) * angleStep); // 반지름 110으로 축소
+            ctx.fillStyle = colors[i % colors.length];
+            ctx.fill();
+            ctx.stroke();
+
+            ctx.save();
+            ctx.fillStyle = "white";
+            ctx.translate(125, 125);
+            ctx.rotate(i * angleStep + angleStep / 2);
+            ctx.font = "12px Comic Sans MS";
+            ctx.textAlign = "right";
+            ctx.fillText(storeNames[i], 85, 10);
+            ctx.restore();
+        }
+
+         // 화살표 그리기
+        const arrowCanvas = document.getElementById("arrowCanvas");
+        const arrowCtx = arrowCanvas.getContext("2d");
+        arrowCanvas.width = 30;
+        arrowCanvas.height = 30;
+
+        arrowCtx.clearRect(0, 0, arrowCanvas.width, arrowCanvas.height);
+        arrowCtx.beginPath();
+        arrowCtx.moveTo(15, 25); // 화살표 꼭짓점 아래쪽
+        arrowCtx.lineTo(5, 5); // 왼쪽 위
+        arrowCtx.lineTo(25, 5); // 오른쪽 위
+        arrowCtx.closePath();
+        arrowCtx.fillStyle = "#000000"; // 화살표 색상
+        arrowCtx.fill();
+
+        // 스타일 조정
+        arrowCanvas.style.position = "absolute";
+        arrowCanvas.style.top = "-10px"; // 화살표를 돌림판 위로 이동
+        arrowCanvas.style.left = "50%";
+        arrowCanvas.style.transform = "translateX(-50%)";
+        arrowCanvas.style.zIndex = "10";
+    }
+
+    // 🔄 회전판 회전 함수
+    function spinWheel() {
+        const randomRotations = Math.floor(Math.random() * 5) + 3; // 최소 3바퀴
+        const randomAngle = Math.floor(Math.random() * 360); // 랜덤 각도 추가
+        currentRotation += randomRotations * 360 + randomAngle;
+
+        document.getElementById("wheel").style.transition = "transform 4s ease-out";
+        document.getElementById("wheel").style.transform = `rotate(${currentRotation}deg)`;
+
+        // setTimeout(() => {
+        //     highlightSelectedItem(randomAngle);
+        // }, 4000);
     }
 
    </script>
