@@ -27,8 +27,12 @@
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
 ## Project setup
-
 ```bash
+
+# nestjs install 
+$ npm install -g @nestjs/cli
+
+# npm setup
 $ npm install
 ```
 
@@ -57,6 +61,27 @@ $ npm run test:e2e
 # test coverage
 $ npm run test:cov
 ```
+
+``` bash
+src/
+├── entities/             # 데이터베이스 엔티티 정의
+│   └── store.entity.ts   # Store 관련 엔티티 정의
+├── public/               # 정적 파일 (이미지, HTML 등)
+│   ├── alba.png
+│   └── yummyMap.html
+├── store/                # Store 관련 모듈, 서비스, 컨트롤러
+│   ├── store.controller.ts  # Store 컨트롤러 (API 라우트 정의)
+│   ├── store.module.ts      # Store 모듈 설정
+│   ├── store.service.ts     # Store 비즈니스 로직
+├── app.module.ts         # 애플리케이션의 루트 모듈
+├── app.controller.ts     # 메인 컨트롤러
+├── app.service.ts        # 메인 서비스
+├── main.ts               # 애플리케이션 진입점
+test/                     # 테스트 코드
+├── app.e2e-spec.ts       # E2E 테스트 파일
+├── jest-e2e.json         # E2E 테스트 설정 파일
+```
+
 
 ## Deployment
 
