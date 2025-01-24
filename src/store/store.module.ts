@@ -11,7 +11,6 @@ import { LoggerService } from '../kafka/logger.service'; //
   imports: [
         TypeOrmModule.forFeature([Store]), // Store 엔티티 등록
         KafkaModule,
-        LoggerService,
   ],
   providers: [StoreService],          // StoreService 등록
   controllers: [StoreController],     // StoreController 등록

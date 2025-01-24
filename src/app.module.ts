@@ -6,7 +6,7 @@ import {join} from 'path';
 
 import { StoreModule } from './store/store.module'; //store module 추가
 import { KafkaModule } from './kafka/kafka.module'; //kafka module 추가
-import { LoggerService } from './kafka/logger.service'; //kafka logger service 추가
+// import { LoggerService } from './kafka/logger.service'; //kafka logger service 추가
 
 @Module({
   imports: [
@@ -27,7 +27,7 @@ import { LoggerService } from './kafka/logger.service'; //kafka logger service �
   ],
   //controllers: [AppController,LoggerService],
   controllers: [AppController],
-  providers: [AppService,LoggerService],
+  providers: [AppService],
   
 })
 export class AppModule {}
