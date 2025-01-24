@@ -2,11 +2,11 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { StoreModule } from './store/store.module';
+import {join} from 'path';
 
-//import { Store } from './entities/store.entity';
-// import { StoreService } from './store/store.service';
-// import { StoreController } from './store/store.controller';
+import { StoreModule } from './store/store.module'; //store module 추가
+import { KafkaModule } from './kafka/kafka.module'; //kafka module 추가
+import { LoggerService } from './kafka/logger.service'; //kafka logger service 추가
 
 @Module({
   imports: [
@@ -18,13 +18,16 @@ import { StoreModule } from './store/store.module';
       password: 'dkfqkcjsrnr1!',        // MySQL 비밀번호
       database: 'alba_test_karina',     // 생성한 데이터베이스 이름
       //entities: [Store], // 고정
-      entities: [__dirname + '/**/*.entity{.ts,.js}'],
+      //entities: [__dirname + '/**/*.entity{.ts,.js}'],
+      entities: [join(__dirname, '**', '*.entity.{ts,js}')],
       synchronize: true,                // 애플리케이션 실행 시 스키마 동기화 (개발 중에만 true)
     }),
     StoreModule,
+    KafkaModule,
   ],
+  //controllers: [AppController,LoggerService],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService,LoggerService],
   
 })
 export class AppModule {}

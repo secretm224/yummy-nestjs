@@ -1,13 +1,19 @@
 import { Controller, Get, Post, Body } from '@nestjs/common';
 import { StoreService } from './store.service';
 import { Store } from '../entities/store.entity';
+import { LoggerService } from '../kafka/logger.service';
+
 
 
 
 @Controller('store')
 export class StoreController {
 
-    constructor(private readonly storeService: StoreService) {}
+    constructor(
+        private readonly storeService: StoreService,
+        private readonly loggerService: LoggerService
+    ) {}
+
 
     @Get("/all")
     async findAll(): Promise<Store[]> {
@@ -20,6 +26,8 @@ export class StoreController {
         store.reg_dt = new Date();
         store.reg_id = "secretm";
 
+        this.SendLog(store); //비동기 kafka로그 기록
+
       return this.storeService.create(store);
     }
 
@@ -28,6 +36,19 @@ export class StoreController {
 
         return this.storeService.update(store);
     }
+
+    // LoggerService
+    async SendLog(message:any){
+        try{
+            console.log('log start kafla',message);
+            await this.loggerService.logTokafla('store', message);
+            console.log('log end kafla',message);
+  
+          }catch(error){
+              console.log('faile to log to kafka',error);
+          }
+    }
+
 }
 
 

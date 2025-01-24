@@ -3,10 +3,15 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Store } from 'src/entities/store.entity'; // Store 엔티티 경로를 확인하세요
 import { StoreService } from './store.service';
 import { StoreController } from './store.controller';
+import { KafkaModule } from '../kafka/kafka.module';
+import { LoggerService } from '../kafka/logger.service'; //
+
 
 @Module({
   imports: [
         TypeOrmModule.forFeature([Store]), // Store 엔티티 등록
+        KafkaModule,
+        LoggerService,
   ],
   providers: [StoreService],          // StoreService 등록
   controllers: [StoreController],     // StoreController 등록
