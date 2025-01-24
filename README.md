@@ -37,6 +37,7 @@ $ npm install @nestjs/platform-express
 
 # npm setup
 $ npm install
+$ npm install -g npm
 ```
 
 ## Compile and run the project
