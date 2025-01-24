@@ -32,6 +32,9 @@
 # nestjs install 
 $ npm install -g @nestjs/cli
 
+# nestjs orm inject
+$ npm install @nestjs/platform-express
+
 # npm setup
 $ npm install
 ```
