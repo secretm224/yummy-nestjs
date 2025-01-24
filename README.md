@@ -29,11 +29,19 @@
 ## Project setup
 ```bash
 
-# nestjs install 
-$ npm install -g @nestjs/cli
-
 # npm setup
 $ npm install
+$ npm install -g npm
+$  npm -v
+
+# nestjs install 
+$ npm install -g @nestjs/cli
+$ nest -v
+
+# add nestjs orm inject
+$ npm install @nestjs/platform-express
+# add nestjs kafka
+$ npm install @nestjs/microservices kafkajs
 ```
 
 ## Compile and run the project
