@@ -29,15 +29,16 @@
 ## Project setup
 ```bash
 
+# npm setup
+$ npm install
+$ npm install -g npm
+
 # nestjs install 
 $ npm install -g @nestjs/cli
 
 # nestjs orm inject
 $ npm install @nestjs/platform-express
 
-# npm setup
-$ npm install
-$ npm install -g npm
 ```
 
 ## Compile and run the project
