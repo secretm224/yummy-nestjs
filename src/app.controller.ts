@@ -13,6 +13,6 @@ export class AppController {
   // }
   getYummyMap(@Res() res: Response) {
     // yummymap.html 파일 반환
-    res.sendFile(join(__dirname, '..', 'public', 'yummymap.html'));
+    res.sendFile(join(__dirname, '..', 'src/public', 'yummymap.html'));
   }
 }
