@@ -16,8 +16,9 @@
     "forceConsistentCasingInFileNames": true,
     "noImplicitAny": false,
     "strictBindCallApply": false,
-    "noFallthroughCasesInSwitch": false
+    "noFallthroughCasesInSwitch": false,
   },
-  "include": ["src/**/*.ts"], // 컴파일할 파일 명시
+  "include": ["src/**/*.ts",
+              "config/**/*"], // 컴파일할 파일 명시
   "exclude": ["node_modules", "dist"] // 제외할 파일 명시
 }
