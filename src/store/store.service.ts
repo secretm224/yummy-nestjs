@@ -28,6 +28,10 @@ export class StoreService {
           throw new Error('store name is required for create');
        }
 
+       if(!store.lat || !store.lng){
+          throw new Error('lat , lng is required');
+       }
+
        const savedStore = await this.storeRepository.save(store);
        this.logTofile(`store created: ${JSON.stringify(savedStore)}`);
 
@@ -45,7 +49,7 @@ export class StoreService {
             existingStore.lat = store.lat ?? existingStore.lat; // 기본값으로 기존 lat 사용
             existingStore.lng = store.lng ?? existingStore.lng; // 기본값으로 기존 lng 사용
             existingStore.chg_dt = new Date();
-            existingStore.chg_id = 'secretm224';
+            existingStore.chg_id = 'secretm';
         
           await this.storeRepository.update({ name: store.name }, {
             lat: existingStore.lat,

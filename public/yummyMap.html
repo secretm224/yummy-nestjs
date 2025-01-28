@@ -254,27 +254,31 @@
             transform: scale(1.1); /* 크기 확대 */
             box-shadow: 3px 6px 12px rgba(0, 0, 0, 0.4); /* 호버 시 그림자 강조 */
         }
-   
 
+        .naver-map-marker {
+            pointer-events: auto !important; /*IOS 클릭 가능하도록 설정 */
+            z-index: 1000 !important;
+        }
+   
     </style>
 </head>
 <body>
-   <h1>🍽️ Yummy Map</h1> 
-   <div style="display: flex; align-items: center; gap: 10px; justify-content: center; text-align: center; margin: 0 auto;">
+   <h1>🍽️ 오늘 뭐 먹지?</h1> 
+   <!-- <div style="display: flex; align-items: center; gap: 10px; justify-content: center; text-align: center; margin: 0 auto;">
         <img src="/alba.png" alt="제로페이 가맹점" style="height: 50px;">
-        <h2 style="margin: 0;"> 제로페이 가맹점</h2>
-    </div>
+        <h2 style="margin: 0;"></h2>
+    </div> -->
 
     <div id="store-list-container">
         <div id="store-list-toggle" onclick="toggleStoreList()">📜</div>
         <div id="store-list">
-            <h3>📌 가맹점 리스트</h3>
+            <h3>📌 맛집 리스트</h3>
             <ul id="store-items"></ul>
         </div>
     </div>
 
     <div id="wheel-toggle" onclick="toggleWheelMenu()">
-        <button class="toggle-button">🎡 오늘 뭐 먹지?</button>
+        <button class="toggle-button">🎡점 메 추 !</button>
     </div>
     
     <div id="wheel-container" class="menu-hidden">
@@ -313,7 +317,7 @@
         });
 
        var storeIcon = "https://cdn-icons-png.flaticon.com/128/3170/3170733.png"; // 음식점 아이콘
-       var companyIcon = "/alba.png"; // 회사 아이콘
+       var companyIcon = "public/alba.png"; // 회사 아이콘
 
        var referenceStore = zeroPayStores.find(store => store.name === "알바천국");
 
@@ -429,14 +433,14 @@
             var lat = firstItem.point.y;
             var lng = firstItem.point.x;
             var address = firstItem.address;
-            var addjson = { name: name,address:address, lat: lat, lng: lng, type: "store" };
 
-            //console.log(addjson);
-
-            addStore(addjson);
-
-            //zeroPayStores.push({ name: name, lat: lat, lng: lng, type: "store" });
-            //SetMap();
+            if(!!lat && !!lng && !!address){
+                var addjson = { name: name,address:address, lat: lat, lng: lng, type: "store" };
+                addStore(addjson);
+            }else{
+                alert('상점을 등록 할수 없습니다.');
+                return;
+            }
         });
     }
 
