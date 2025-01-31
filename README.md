@@ -42,6 +42,12 @@ $ nest -v
 $ npm install @nestjs/platform-express
 # add nestjs kafka
 $ npm install @nestjs/microservices kafkajs
+# add config
+$npm install @nestjs/config
+# add static serve (public)
+$npm install @nestjs/serve-static
+# add env files
+$npm install dotenv
 ```
 
 ## Compile and run the project
