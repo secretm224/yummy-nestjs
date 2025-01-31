@@ -4,7 +4,7 @@ import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { StoreModule } from './store/store.module';
 
-import { typeOrmConfig } from '../config/database.config'; 
+import { typeOrmConfig } from './config/database.config'; 
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
@@ -12,7 +12,7 @@ import { join } from 'path';
 @Module({
   imports: [
     ConfigModule.forRoot({
-      envFilePath: '.env',
+      envFilePath: process.env.NODE_ENV === 'development' ? '.env' :'.env.production',
       //envFilePath: '.env.local',//local
       isGlobal: true,
     }),

@@ -1,4 +1,10 @@
 {
   "extends": "./tsconfig.json",
-  "exclude": ["node_modules", "test", "dist", "**/*spec.ts"]
+  "compilerOptions": {
+    "outDir": "./dist",   // ✅ 빌드된 파일을 dist 폴더에 저장
+    "rootDir": "./src",   // ✅ src 폴더를 빌드 대상으로 설정
+    "module": "CommonJS"
+  },
+  "include": ["src/**/*"],  // ✅ config 폴더는 src 내부에 포함되어 있으므로 자동 포함
+  "exclude": ["node_modules", "test", "dist", "**/*.spec.ts"]
 }
