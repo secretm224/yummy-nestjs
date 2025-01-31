@@ -48,6 +48,7 @@ $npm install @nestjs/config
 $npm install @nestjs/serve-static
 # add env files
 $npm install dotenv
+$ npm install cross-env --save-dev
 ```
 
 ## Compile and run the project
