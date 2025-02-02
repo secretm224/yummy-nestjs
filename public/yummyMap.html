@@ -166,21 +166,59 @@
         #store-items li:last-child {
             border-bottom: none;
         }
+        /* 🔍 검색창 스타일 */
+        .search-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
 
-          /* 🍀 랜덤 추천 버튼 */
-          .random-button {
-            background-color: #FF8C00;
-            color: white;
-            font-size: 18px;
-            font-weight: bold;
-            padding: 15px 30px;
-            border-radius: 25px;
-            border: none;
-            cursor: pointer;
-            transition: all 0.3s ease-in-out;
-            box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.3);
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+        #searchInput {
+            width: 80%;
+            max-width: 400px;
+            padding: 10px;
+            font-size: 16px;
+            border: 2px solid #FFA500;
+            border-radius: 20px;
             outline: none;
+            text-align: center;
+            background-color: #FFFAF0;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .search-button {
+            padding: 10px 15px;
+            font-size: 16px;
+            font-weight: bold;
+            color: white;
+            background-color: #FF8C00;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: 0.3s;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .search-button:hover {
+            background-color: #FF4500;
+            transform: scale(1.05);
+        }
+        /* 🍀 랜덤 추천 버튼 */
+        .random-button {
+        background-color: #FF8C00;
+        color: white;
+        font-size: 18px;
+        font-weight: bold;
+        padding: 15px 30px;
+        border-radius: 25px;
+        border: none;
+        cursor: pointer;
+        transition: all 0.3s ease-in-out;
+        box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.3);
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+        outline: none;
         }
 
         .random-button:hover {
@@ -220,6 +258,11 @@
     </style>
 </head>
 <body>
+    <div class="search-container">
+        <input type="text" id="searchInput" placeholder="🔍 검색할 가게명을 입력하세요!" >
+        <button class="search-button" onclick="filterStoreList()">검색</button>
+    </div>
+
    <h1>🍽️ 오늘 뭐 먹지?</h1> 
    <!-- <div style="display: flex; align-items: center; gap: 10px; justify-content: center; text-align: center; margin: 0 auto;">
         <img src="/alba.png" alt="제로페이 가맹점" style="height: 50px;">
@@ -235,6 +278,7 @@
     </div>
 
     <button class="random-button" onclick="recommendRandomStore()">🍀 랜덤 추천</button>
+    <button class="random-button reset-button" onclick="resetMap()">🔄 맵 초기화</button>
 
     <div id="recommendation"></div>
 
@@ -521,30 +565,40 @@
     }
 
    function recommendRandomStore() {
-            let storeNames = zeroPayStores.filter(store => store.type !== 'company');
-            if (storeNames.length === 0) {
-                alert("등록된 맛집이 없습니다!");
-                return;
-            }
-
-            let randomIndex = Math.floor(Math.random() * storeNames.length);
-            let winningStore = storeNames[randomIndex];
-
-            let recommendationDiv = document.getElementById("recommendation");
-            recommendationDiv.innerHTML = `🎉 ${winningStore.name}!`;
-            recommendationDiv.style.display = "block";
-
-            setTimeout(() => {
-                recommendationDiv.style.display = "none";
-            }, 3000);
-
-            let winningMarker = zeroPayMarkers.find(item => item.storeName === winningStore.name);
-            if (winningMarker) {
-                naver.maps.Event.trigger(winningMarker.marker, 'click');
-                map.setZoom(18);
-                map.setCenter(winningMarker.marker.getPosition());
-            }
+        let storeNames = zeroPayStores.filter(store => store.type !== 'company');
+        if (storeNames.length === 0) {
+            alert("등록된 맛집이 없습니다!");
+            return;
         }
+
+        let randomIndex = Math.floor(Math.random() * storeNames.length);
+        let winningStore = storeNames[randomIndex];
+
+        let recommendationDiv = document.getElementById("recommendation");
+        recommendationDiv.innerHTML = `🎉 ${winningStore.name}!`;
+        recommendationDiv.style.display = "block";
+
+        setTimeout(() => {
+            recommendationDiv.style.display = "none";
+        }, 3000);
+
+        let winningMarker = zeroPayMarkers.find(item => item.storeName === winningStore.name);
+        if (winningMarker) {
+            naver.maps.Event.trigger(winningMarker.marker, 'click');
+            map.setZoom(18);
+            map.setCenter(winningMarker.marker.getPosition());
+        }
+    }
+
+    function resetMap() {
+        map.setCenter(new naver.maps.LatLng(37.5045, 127.0489));
+        map.setZoom(17);
+    }
+
+    function filterStoreList() {
+        alet('준비중 입니다');
+        return;       
+    }
 
     </script>
   
