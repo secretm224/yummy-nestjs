@@ -167,9 +167,9 @@
             border-bottom: none;
         }
 
-        /* 돌림판 열기 버튼 스타일 */
-        .toggle-button {
-            background-color: #FF8C00; /* 밝은 오렌지 */
+          /* 🍀 랜덤 추천 버튼 */
+          .random-button {
+            background-color: #FF8C00;
             color: white;
             font-size: 18px;
             font-weight: bold;
@@ -178,81 +178,38 @@
             border: none;
             cursor: pointer;
             transition: all 0.3s ease-in-out;
-            box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.3); /* 그림자 강화 */
+            box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.3);
             text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
-            outline: none; /* 포커스 시 외곽선 제거 */
+            outline: none;
         }
 
-        .toggle-button:hover {
-            background-color: #FF4500; /* 더 진한 오렌지 */
-            transform: scale(1.1); /* 버튼 크기 확대 */
-            box-shadow: 3px 6px 12px rgba(0, 0, 0, 0.4); /* 호버 시 그림자 강조 */
+        .random-button:hover {
+            background-color: #FF4500;
+            transform: scale(1.1);
         }
 
-        /* 회전판 컨테이너 숨김 기본 설정 */
-        #wheel-container {
-            display: none; /* 기본적으로 숨김 */
-            position: fixed; /* 고정 위치 */
-            top: 50%; /* 화면 중앙 */
-            left: 50%; /* 화면 중앙 */
-            transform: translate(-50%, -50%); /* 완전한 중앙 정렬 */
-            width: 320px; /* 고정된 크기 */
-            height: auto;
-            background: white; /* 흰색 배경 */
-            border-radius: 20px;
-            box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.3); /* 그림자 강화 */
-            z-index: 1000; /* 상단에 노출 */
-            transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
-            opacity: 0; /* 숨길 때 투명 */
-        }
-
-        #wheel-container.menu-visible {
-            display: flex; /* 나타날 때 flex로 표시 */
-            flex-direction: column;
-            align-items: center;
-            opacity: 1; /* 나타날 때 불투명 */
-            transform: translate(-50%, -50%) scale(1); /* 중앙에서 표시 */
-        }
-
-        /* 돌림판 회전판 */
-        #wheel {
-            width: 300px; /* 크기 조정 */
-            height: 300px;
-            border-radius: 50%;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* 입체감 */
-            margin: 20px 0;
-            position: relative; /* 화살표와 결합 */
-        }
-
-        /* 화살표 캔버스 */
-        #arrowCanvas {
-            position: absolute;
-            top: -20px; /* 돌림판 상단으로 조정 */
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 10; /* 돌림판 위에 표시 */
-        }
-
-        /* 시작 버튼 */
-        #spin-button {
-            background-color: #FFA500; /* 밝은 오렌지 */
-            color: white;
-            font-size: 16px;
+        /* 🎉 추천 애니메이션 */
+        #recommendation {
+            display: none;
+            font-size: 24px;
             font-weight: bold;
+            color: #FF8C00;
+            background: white;
             padding: 10px 20px;
             border-radius: 20px;
-            border: none;
-            cursor: pointer;
-            transition: all 0.3s ease-in-out;
-            box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.3);
-            outline: none;
-            margin-bottom: 20px; 
+            box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
+            position: absolute;
+            top: 20%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1000;
+            animation: bounce 1s infinite;
         }
 
-        #spin-button:hover {
-            background-color: #FF4500; /* 더 진한 오렌지 */
-            transform: scale(1.1); /* 크기 확대 */
-            box-shadow: 3px 6px 12px rgba(0, 0, 0, 0.4); /* 호버 시 그림자 강조 */
+        /* 말풍선 효과 */
+        @keyframes bounce {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); }
+            50% { transform: translate(-50%, -50%) scale(1.1); }
         }
 
         .naver-map-marker {
@@ -277,19 +234,9 @@
         </div>
     </div>
 
-    <div id="wheel-toggle" onclick="toggleWheelMenu()">
-        <button class="toggle-button">🎡점 메 추 !</button>
-    </div>
-    
-    <div id="wheel-container" class="menu-hidden">
-        <div>
-            <canvas id="arrowCanvas" style="position: absolute; top: 10px; left: 50%; transform: translateX(-50%); z-index: 10;"></canvas>
-            <div id="wheel" onclick="toggleWheelMenu()">
-                <canvas id="wheelCanvas" width="300" height="300"></canvas>
-            </div>
-            <button id="spin-button" onclick="spinWheel()">🎡 시작</button>
-        </div>
-    </div>
+    <button class="random-button" onclick="recommendRandomStore()">🍀 랜덤 추천</button>
+
+    <div id="recommendation"></div>
 
    <div id="map"></div>
 
@@ -306,12 +253,13 @@
    <script type="text/javascript">
     var zeroPayStores = [{ name: "알바천국", lat: 37.5032355765545, lng: 127.046582379785, type: "company" }];
     let zeroPayMarkers = [];
+    let map;
 
     window.onload = SetStores;
 
     function SetMap() {
 
-        var map = new naver.maps.Map('map', {
+        map = new naver.maps.Map('map', {
             center: new naver.maps.LatLng(37.5045028775835, 127.048942471228),
             zoom: 17
         });
@@ -485,7 +433,6 @@
             }
             
             StoreList(zeroPayStores);
-            drawWheel(zeroPayStores);
             SetMap();
 
         } catch (error) {
@@ -573,88 +520,31 @@
         storeList.classList.toggle('active');
     }
 
-    let currentRotation = 0;
+   function recommendRandomStore() {
+            let storeNames = zeroPayStores.filter(store => store.type !== 'company');
+            if (storeNames.length === 0) {
+                alert("등록된 맛집이 없습니다!");
+                return;
+            }
 
-    // 🎡 캔버스에 회전판 그리기
-    function drawWheel(zeroPayStores) {
-        let storeNames = zeroPayStores.filter(store => store.type !== 'company').map(store => store.name);
+            let randomIndex = Math.floor(Math.random() * storeNames.length);
+            let winningStore = storeNames[randomIndex];
 
-        const canvas = document.getElementById("wheelCanvas");
-        const ctx = canvas.getContext("2d");
-        const numSections = storeNames.length;
-        const angleStep = (2 * Math.PI) / numSections;
-        const colors = ["#FFD700", "#FFA500", "#FF8C00", "#F4A460", "#DAA520", "#CD853F"]; // 메뉴 섹션 색상
+            let recommendationDiv = document.getElementById("recommendation");
+            recommendationDiv.innerHTML = `🎉 ${winningStore.name}!`;
+            recommendationDiv.style.display = "block";
 
-        // 캔버스 크기 설정
-        canvas.width = 300;
-        canvas.height = 300;
+            setTimeout(() => {
+                recommendationDiv.style.display = "none";
+            }, 3000);
 
-        // 캔버스 초기화 (배경색 없음)
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-        // 돌림판 그리기
-        for (let i = 0; i < numSections; i++) {
-            // 메뉴 섹션 그리기
-            ctx.beginPath();
-            ctx.moveTo(150, 150); // 중앙점
-            ctx.arc(150, 150, 140, i * angleStep, (i + 1) * angleStep); // 섹션 그리기
-            ctx.fillStyle = colors[i % colors.length];
-            ctx.fill();
-            ctx.closePath();
-            ctx.stroke();
-
-            // 텍스트 설정
-            ctx.save();
-            ctx.translate(150, 150); // 중앙으로 이동
-            ctx.rotate(i * angleStep + angleStep / 2); // 섹션 중심에 텍스트 위치
-            ctx.font = "14px Comic Sans MS";
-            ctx.fillStyle = "white"; // 텍스트 색상
-            ctx.textAlign = "right";
-            ctx.fillText(storeNames[i], 120, 10); // 텍스트 위치
-            ctx.restore();
+            let winningMarker = zeroPayMarkers.find(item => item.storeName === winningStore.name);
+            if (winningMarker) {
+                naver.maps.Event.trigger(winningMarker.marker, 'click');
+                map.setZoom(18);
+                map.setCenter(winningMarker.marker.getPosition());
+            }
         }
-
-         // 화살표 그리기
-        const arrowCanvas = document.getElementById("arrowCanvas");
-        const arrowCtx = arrowCanvas.getContext("2d");
-        arrowCanvas.width = 30;
-        arrowCanvas.height = 30;
-
-        arrowCtx.clearRect(0, 0, arrowCanvas.width, arrowCanvas.height);
-        arrowCtx.beginPath();
-        arrowCtx.moveTo(15, 25); // 화살표 꼭짓점 아래쪽
-        arrowCtx.lineTo(5, 5); // 왼쪽 위
-        arrowCtx.lineTo(25, 5); // 오른쪽 위
-        arrowCtx.closePath();
-        arrowCtx.fillStyle = "#000000"; // 화살표 색상
-        arrowCtx.fill();
-
-        // 스타일 조정
-        arrowCanvas.style.position = "absolute";
-        arrowCanvas.style.top = "-10px"; // 화살표를 돌림판 위로 이동
-        arrowCanvas.style.left = "50%";
-        arrowCanvas.style.transform = "translateX(-50%)";
-        arrowCanvas.style.zIndex = "10";
-    }
-
-    // 🔄 회전판 회전 함수
-    function spinWheel() {
-        const randomRotations = Math.floor(Math.random() * 5) + 3; // 최소 3바퀴
-        const randomAngle = Math.floor(Math.random() * 360); // 랜덤 각도 추가
-        currentRotation += randomRotations * 360 + randomAngle;
-
-        document.getElementById("wheel").style.transition = "transform 4s ease-out";
-        document.getElementById("wheel").style.transform = `rotate(${currentRotation}deg)`;
-    }
-
-    function toggleWheelMenu() {
-        const wheelContainer = document.getElementById("wheel-container");
-        if (wheelContainer.classList.contains("menu-visible")) {
-            wheelContainer.classList.remove("menu-visible");
-        } else {
-            wheelContainer.classList.add("menu-visible");
-        }
-    }
 
     </script>
   
