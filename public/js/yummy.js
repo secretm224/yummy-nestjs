@@ -253,7 +253,9 @@ var zeroPayStores = [{ name: "알바천국", lat: 37.5032355765545, lng: 127.046
             if(store.type === "company") return;
 
             const listItem = document.createElement('li');
-            listItem.textContent = `${store.name}`;
+            const payType = store.isBeefulPay ? "💳" : "";
+            const storename =  !!payType ? `${'['+payType+']  '+store.name}`: store.name;
+            listItem.textContent = storename;
 
             
             // 클릭 이벤트 추가
