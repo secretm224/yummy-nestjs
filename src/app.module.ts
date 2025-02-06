@@ -29,7 +29,7 @@ import { LoggerService } from './kafka/logger.service'; //kafka logger service ì
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
-      useFactory: async (configService: ConfigService) => {
+      useFactory: (configService: ConfigService) => {
         return typeOrmConfig(configService);
       },
     }),

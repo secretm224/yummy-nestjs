@@ -12,4 +12,7 @@ async function bootstrap() {
   await app.listen(process.env.PORT ?? 5176);
 }
 
-bootstrap();
+bootstrap().catch((error) => {
+  console.error('Application failed to start:', error);
+  process.exit(1);
+});

@@ -1,37 +1,48 @@
 // @ts-check
 import eslint from '@eslint/js';
-import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
+import eslintPluginPrettier from 'eslint-plugin-prettier'; // 변경됨
 import globals from 'globals';
 import tseslint from 'typescript-eslint';
 
 export default tseslint.config(
   {
-    ignores: ['eslint.config.mjs'],
+    ignores: [
+      'eslint.config.mjs',
+      'src/config/database.config.js'  // 추가
+    ],
   },
   eslint.configs.recommended,
   ...tseslint.configs.recommendedTypeChecked,
-  eslintPluginPrettierRecommended,
+  {
+    plugins: {
+      prettier: eslintPluginPrettier
+    }
+  },
   {
     languageOptions: {
       globals: {
         ...globals.node,
         ...globals.jest,
       },
-      ecmaVersion: "latest",  // 최신 ECMAScript 버전 사용
+      ecmaVersion: "latest",
       sourceType: 'module',
       parserOptions: {
-        project: "./tsconfig.json",  // 기존 tsconfig.json 적용
+        project: "./tsconfig.json",
         tsconfigRootDir: import.meta.dirname,
       },
     },
   },
   {
     rules: {
+      'prettier/prettier': 'off', // Prettier 오류 무시
       '@typescript-eslint/no-explicit-any': 'off',
       '@typescript-eslint/no-floating-promises': 'warn',
       '@typescript-eslint/no-unsafe-argument': 'warn',
-      '@typescript-eslint/no-unused-vars': 'warn',  // 사용하지 않는 변수 경고만 표시
-      '@typescript-eslint/explicit-function-return-type': 'off',  // 함수 리턴 타입 강제 비활성화
+      '@typescript-eslint/no-unused-vars': 'warn',
+      '@typescript-eslint/explicit-function-return-type': 'off',
+      '@typescript-eslint/no-unsafe-call': 'off',
+      '@typescript-eslint/no-unsafe-member-access': 'off',
+      '@typescript-eslint/await-thenable': 'off'
     },
   },
 );

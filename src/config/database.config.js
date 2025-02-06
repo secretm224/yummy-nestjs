@@ -1,4 +1,4 @@
-"use strict";
+"use strict";   
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.typeOrmConfig = void 0;
 const path_1 = require("path");
