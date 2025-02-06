@@ -21,7 +21,7 @@ export class StoreController {
     }
   
     @Post("/add")
-    async create(@Body() store: Partial<Store>): Promise<Store> {
+    async create(@Body() store: Partial<Store>): Promise<Store|null> {
 
         store.reg_dt = new Date();
         store.reg_id = "secretm";

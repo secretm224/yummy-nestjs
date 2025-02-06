@@ -13,6 +13,6 @@ export class AppController {
   // }
   getYummyMap(@Res() res: Response) {
     // yummymap.html 파일 반환
-    res.sendFile(join(__dirname, '..', 'public', 'yummymap.html'));
+    res.sendFile(join(process.cwd(), 'public', 'yummyMap.html')); // ✅ dist가 아닌 프로젝트 루트를 기준으로 찾음
   }
 }

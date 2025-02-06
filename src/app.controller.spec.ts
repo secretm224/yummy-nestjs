@@ -14,9 +14,9 @@ describe('AppController', () => {
     appController = app.get<AppController>(AppController);
   });
   //테스트 코드 작성
-  // describe('root', () => {
-  //   it('should return "Hello World!"', () => {
-  //     expect(appController.getHello()).toBe('Hello World!');
-  //   });
-  // });
+  // // describe('root', () => {
+  // //   it('should return "Hello World!"', () => {
+  // //     expect(appController.getHello()).toBe('Hello World!');
+  // //   });
+  // // });
 });

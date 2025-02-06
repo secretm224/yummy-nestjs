@@ -42,6 +42,13 @@ $ nest -v
 $ npm install @nestjs/platform-express
 # add nestjs kafka
 $ npm install @nestjs/microservices kafkajs
+# add config
+$npm install @nestjs/config
+# add static serve (public)
+$npm install @nestjs/serve-static
+# add env files
+$npm install dotenv
+$ npm install cross-env --save-dev
 ```
 
 ## Compile and run the project
@@ -71,23 +78,40 @@ $ npm run test:cov
 ```
 
 ``` bash
-src/
-├── entities/             # 데이터베이스 엔티티 정의
-│   └── store.entity.ts   # Store 관련 엔티티 정의
-├── public/               # 정적 파일 (이미지, HTML 등)
-│   ├── alba.png
-│   └── yummyMap.html
-├── store/                # Store 관련 모듈, 서비스, 컨트롤러
-│   ├── store.controller.ts  # Store 컨트롤러 (API 라우트 정의)
-│   ├── store.module.ts      # Store 모듈 설정
-│   ├── store.service.ts     # Store 비즈니스 로직
-├── app.module.ts         # 애플리케이션의 루트 모듈
-├── app.controller.ts     # 메인 컨트롤러
-├── app.service.ts        # 메인 서비스
-├── main.ts               # 애플리케이션 진입점
-test/                     # 테스트 코드
-├── app.e2e-spec.ts       # E2E 테스트 파일
-├── jest-e2e.json         # E2E 테스트 설정 파일
+📂 yummy-nestjs  # 프로젝트 루트 디렉토리
+├── 📂 dist  # 빌드된 JavaScript 파일 (NestJS build 결과)
+├── 📂 logs  # 애플리케이션 로그 파일 저장
+│   ├── 📄 create_store.log  # 실행 로그 파일
+│   ├── 📄 node_modules  # (비워진 상태) npm 모듈 캐시용
+├── 📂 public  # 정적 파일 (이미지, HTML 등)
+│   ├── 📄 alba.png  # 정적 이미지 파일
+│   ├── 📄 yummyMap.html  # 정적 HTML 파일
+├── 📂 src  # 소스 코드 폴더
+│   ├── 📂 config  # 환경 설정 및 데이터베이스 설정
+│   │   ├── 📄 database.config.ts  # TypeScript 기반 DB 설정 파일
+│   │   ├── 📄 database.config.js  # 컴파일된 JS DB 설정 파일
+│   │   ├── 📄 database.config.d.ts  # 타입 정의 파일
+│   │   ├── 📄 database.config.js.map  # 소스 맵 파일
+│   ├── 📂 entities  # 데이터베이스 엔터티 (ORM 모델)
+│   │   ├── 📄 store.entity.ts  # Store 테이블 엔터티 정의
+│   ├── 📂 store  # 주요 비즈니스 로직 관련 코드
+│   │   ├── 📄 app.controller.ts  # HTTP 요청을 처리하는 컨트롤러
+│   │   ├── 📄 app.controller.spec.ts  # 컨트롤러 테스트 파일
+│   │   ├── 📄 app.module.ts  # NestJS 모듈 설정
+│   │   ├── 📄 app.service.ts  # 서비스 계층 (비즈니스 로직)
+│   ├── 📄 main.ts  # 애플리케이션의 진입점 (NestJS 부트스트랩 파일)
+├── 📂 test  # 테스트 코드 폴더
+├── 📄 .env  # 기본 환경변수 설정 파일 (개발 환경)
+├── 📄 .env.production  # 운영 환경변수 설정 파일
+├── 📄 .gitignore  # Git에서 제외할 파일 목록 설정
+├── 📄 .prettierrc  # 코드 포맷팅 설정 (Prettier)
+├── 📄 eslint.config.mjs  # ESLint 코드 스타일 설정
+├── 📄 nest-cli.json  # NestJS CLI 설정 파일
+├── 📄 package-lock.json  # npm 패키지 버전 잠금 파일
+├── 📄 package.json  # 프로젝트 패키지 정보 및 스크립트 설정
+├── 📄 README.md  # 프로젝트 설명 및 사용 방법 문서
+├── 📄 tsconfig.build.json  # TypeScript 빌드 설정 파일
+└── 📄 tsconfig.json  # TypeScript 설정 파일
 ```
 
 
