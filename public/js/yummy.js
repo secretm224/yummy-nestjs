@@ -13,11 +13,13 @@ var zeroPayStores = [{ name: "알바천국", lat: 37.5032355765545, lng: 127.046
 
        var storeIcon = "https://cdn-icons-png.flaticon.com/128/3170/3170733.png"; // 음식점 아이콘
        var companyIcon = "public/alba.png"; // 회사 아이콘
+       var beefulPayIcon = "public/pay.png"; // ✅ 비플페이 가맹점 아이콘
+
 
        var referenceStore = zeroPayStores.find(store => store.name === "알바천국");
 
        zeroPayStores.forEach(function(store) {
-            var iconUrl = (store.type === "company") ? companyIcon : storeIcon;
+             var iconUrl = store.isBeefulPay ? beefulPayIcon : (store.type === "company" ? companyIcon : storeIcon);
 
             var marker = new naver.maps.Marker({
                 position: new naver.maps.LatLng(store.lat, store.lng),
@@ -50,33 +52,36 @@ var zeroPayStores = [{ name: "알바천국", lat: 37.5032355765545, lng: 127.046
                 emoji = "🏢"; // 회사 아이콘
             }
 
+            var beefulPayTag = store.isBeefulPay ? `<div style="color: green; font-weight: bold;">💳 비플페이 가맹점</div>` : "";
+
             var infowindow = new naver.maps.InfoWindow({
-            content: `
-                <div style="
-                    padding: 10px; 
-                    border-radius: 10px; 
-                    background-color: #FFF8DC; 
-                    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2); 
-                    text-align: center;
-                    font-family: 'Comic Sans MS', sans-serif;
-                    max-width: 200px;
-                ">
-                    <div style="font-size: 18px; font-weight: bold; margin-bottom: 5px;">
-                        ${emoji} ${store.name}
-                    </div>
-                    <div id="walking-time-${store.name}" style="font-size: 14px; color: #555;"></div>
-                    <a href="https://map.naver.com/v5/search/${store.name}?c=${store.lng},${store.lat},17,0,0,0,dh" target="_blank" style="
-                        display: inline-block;
-                        padding: 5px 10px;
-                        font-size: 14px;
-                        color: white;
-                        background-color: #FF8C00;
-                        border-radius: 5px;
-                        text-decoration: none;
-                        font-weight: bold;
-                    ">🗺️ 네이버 지도에서 보기</a>
-                </div>`
-           });
+                content: `
+                    <div style="
+                        padding: 10px; 
+                        border-radius: 10px; 
+                        background-color: #FFF8DC; 
+                        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2); 
+                        text-align: center;
+                        font-family: 'Comic Sans MS', sans-serif;
+                        max-width: 200px;
+                    ">
+                        <div style="font-size: 18px; font-weight: bold; margin-bottom: 5px;">
+                            ${emoji} ${store.name}
+                        </div>
+                        ${beefulPayTag} <!-- ✅ 비플페이 가맹점 여부 표시 -->
+                        <div id="walking-time-${store.name}" style="font-size: 14px; color: #555;"></div>
+                        <a href="https://map.naver.com/v5/search/${store.name}?c=${store.lng},${store.lat},17,0,0,0,dh" target="_blank" style="
+                            display: inline-block;
+                            padding: 5px 10px;
+                            font-size: 14px;
+                            color: white;
+                            background-color: #FF8C00;
+                            border-radius: 5px;
+                            text-decoration: none;
+                            font-weight: bold;
+                        ">🗺️ 네이버 지도에서 보기</a>
+                    </div>`
+            });
 
             naver.maps.Event.addListener(marker, "dragend", function(e) {
                 if(confirm("위치를 수정하시겠습니까?") == true){
@@ -109,6 +114,7 @@ var zeroPayStores = [{ name: "알바천국", lat: 37.5032355765545, lng: 127.046
     function GetGeocode() {
         var address = document.getElementById("storeAddress").value;
         var name = document.getElementById("storeName").value;
+        var isBeefulPay = document.getElementById("isBeefulPay").checked;
 
         if (!address || !name) {
             alert("🍕 음식점명과 주소를 입력해주세요!");
@@ -127,7 +133,7 @@ var zeroPayStores = [{ name: "알바천국", lat: 37.5032355765545, lng: 127.046
             var address = firstItem.address;
 
             if(!!lat && !!lng && !!address){
-                var addjson = { name: name,address:address, lat: lat, lng: lng, type: "store" };
+                var addjson = { name: name,address:address, lat: lat, lng: lng, type: "store" , is_beefulpay: isBeefulPay};
                 addStore(addjson);
             }else{
                 alert('상점을 등록 할수 없습니다.');
@@ -164,11 +170,15 @@ var zeroPayStores = [{ name: "알바천국", lat: 37.5032355765545, lng: 127.046
             const stores = await response.json();
 
             stores.forEach(store => {
+
+                const is_beefulpay = store.name === "우리집 만두" ? false : true;
+
                 zeroPayStores.push({
                     name: store.name,
                     lat: store.lat,
                     lng: store.lng,
-                    type: store.type
+                    type: store.type,
+                    isBeefulPay: is_beefulpay
                 });
             });
 

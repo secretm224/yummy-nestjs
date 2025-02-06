@@ -272,3 +272,45 @@ outline: none;
     pointer-events: auto !important; /*IOS 클릭 가능하도록 설정 */
     z-index: 1000 !important;
 }
+
+@import url('https://cdn.jsdelivr.net/npm/pretendard@1.3.8/dist/web/static/pretendard.css');
+
+    .beefulpay-container {
+        display: flex;
+        align-items: center;
+        justify-content: center; /* 중앙 정렬 */
+        background-color: transparent; /* 배경 제거 */
+        padding: 12px 15px;
+        width: 90%;
+        max-width: 400px;
+        margin: 10px auto;
+        font-family: 'Pretendard', sans-serif; /* 입력창과 동일한 폰트 */
+        font-size: 16px;
+        color: #555;
+    }
+
+    .beefulpay-content {
+        display: flex;
+        align-items: center;
+        gap: 10px; /* 아이콘, 체크박스, 텍스트 간격 조정 */
+    }
+
+    .beefulpay-container img {
+        width: 20px;
+        height: 20px;
+    }
+
+    #isBeefulPay {
+        width: 20px;
+        height: 20px;
+        accent-color: #f5b841;
+    }
+
+    /* 텍스트를 정렬하여 자연스럽게 배치 */
+    .beefulpay-text {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: 'Pretendard', sans-serif;
+        font-size: 16px;
+    }
