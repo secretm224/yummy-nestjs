@@ -7,8 +7,10 @@ export class LoggerService implements OnModuleInit, OnModuleDestroy {
     private admin;
 
     constructor(@Inject('KAFKA_SERVICE') private client: ClientKafka) {
+        const kafka_brokers = process.env.KAFKA_BROKER ? process.env.KAFKA_BROKER.split(',') : [];
+        console.log('kafka_brokers:', kafka_brokers);
         const kafka = new Kafka({
-            brokers: ['221.149.34.65:2029', '221.149.34.65:2030', '221.149.34.65:2031'],
+            brokers:kafka_brokers ?? [],
         });
         this.admin = kafka.admin();
     }

@@ -17,8 +17,13 @@ export class StoreController {
 
     @Get("/all")
     async findAll(): Promise<Store[]> {
-
-       this.SendLog(this.storeService.findAll());
+    //    this.SendLog(
+    //           {
+    //             reg_dt: new Date(),
+    //             reg_id: "secretm",
+    //             message: "findAlltest"
+    //           } 
+    //    );
 
       return this.storeService.findAll();
     }

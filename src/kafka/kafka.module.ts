@@ -1,16 +1,19 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { LoggerService } from './logger.service'; 
 
+
 @Module({
     imports: [
+        ConfigModule.forRoot({ isGlobal: true }),
         ClientsModule.register([
             {
                 name: 'KAFKA_SERVICE',
                 transport: Transport.KAFKA,
                 options: {
                     client: {
-                        brokers: ['221.149.34.65:2029','221.149.34.65:2030','221.149.34.65:2031'],
+                        brokers: process.env.KAFKA_BROKER ? process.env.KAFKA_BROKER.split(',') : [],
                     },
                     consumer: {
                         groupId: 'yummy-store-consumer',  
