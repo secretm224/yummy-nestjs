@@ -19,7 +19,7 @@ import { LoggerService } from './logger.service';
                         groupId: 'yummy-store-consumer',  
                     },
                     producer: {
-                        allowAutoTopicCreation: true, 
+                        allowAutoTopicCreation: false, 
                     },
                 },
             },

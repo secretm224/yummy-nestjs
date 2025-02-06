@@ -17,13 +17,13 @@ export class StoreController {
 
     @Get("/all")
     async findAll(): Promise<Store[]> {
-    //    this.SendLog(
-    //           {
-    //             reg_dt: new Date(),
-    //             reg_id: "secretm",
-    //             message: "findAlltest"
-    //           } 
-    //    );
+       this.SendLog(
+              {
+                reg_dt: new Date(),
+                reg_id: "secretm",
+                message: "findAlltest4"
+              } 
+       );
 
       return this.storeService.findAll();
     }
@@ -49,7 +49,7 @@ export class StoreController {
     async SendLog(message:any){
         try{
             console.log('log start kafla',message);
-            await this.loggerService.logTokafla('store', message);
+            await this.loggerService.logTokafla('yummy-store', message);
             console.log('log end kafla',message);
   
           }catch(error){
