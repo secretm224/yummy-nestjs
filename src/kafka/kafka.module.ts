@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ClientsModule, Transport } from '@nestjs/microservices';
-import { LoggerService } from './logger.service'; // ✅ 추가
+import { LoggerService } from './logger.service'; 
 
 @Module({
     imports: [
@@ -13,16 +13,16 @@ import { LoggerService } from './logger.service'; // ✅ 추가
                         brokers: ['221.149.34.65:2029','221.149.34.65:2030','221.149.34.65:2031'],
                     },
                     consumer: {
-                        groupId: 'yummy-store-consumer',  // ✅ 그룹 ID 추가
+                        groupId: 'yummy-store-consumer',  
                     },
                     producer: {
-                        allowAutoTopicCreation: true,  // ✅ 자동 생성 허용
+                        allowAutoTopicCreation: true, 
                     },
                 },
             },
         ]),
     ],
-    providers: [LoggerService],  // LoggerService를 추가
-    exports: [ClientsModule, LoggerService],  //  LoggerService도 exports
+    providers: [LoggerService], 
+    exports: [ClientsModule, LoggerService], 
 })
 export class KafkaModule {}

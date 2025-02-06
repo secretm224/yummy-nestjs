@@ -3,16 +3,15 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
-
 import { typeOrmConfig } from './config/database.config'; 
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 
-
 import { StoreModule } from './store/store.module'; //store module 추가
 import { KafkaModule } from './kafka/kafka.module'; //kafka module 추가
 import { LoggerService } from './kafka/logger.service'; //kafka logger service 추가
+
 
 @Module({
   imports: [
@@ -23,14 +22,13 @@ import { LoggerService } from './kafka/logger.service'; //kafka logger service �
     }),
 
     ServeStaticModule.forRoot({
-      rootPath: join(process.cwd(), 'public'), // 📌 현재 프로젝트 루트의 public 폴더 사용
-      serveRoot: '/public', // 📌 클라이언트에서 접근할 URL 경로
+      rootPath: join(process.cwd(), 'public'), 
+      serveRoot: '/public', 
     }),
 
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
-      //inject: [ConfigService],
-      entities: [join(__dirname, '**', '*.entity.{ts,js}')],
+      inject: [ConfigService],
       useFactory: async (configService: ConfigService) => {
         return typeOrmConfig(configService); 
       },
@@ -38,7 +36,6 @@ import { LoggerService } from './kafka/logger.service'; //kafka logger service �
     StoreModule,
     KafkaModule,
   ],
-  //controllers: [AppController,LoggerService],
   controllers: [AppController],
   providers: [AppService,LoggerService],
 })

@@ -17,6 +17,9 @@ export class StoreController {
 
     @Get("/all")
     async findAll(): Promise<Store[]> {
+
+       this.SendLog(this.storeService.findAll());
+
       return this.storeService.findAll();
     }
   
