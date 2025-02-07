@@ -87,7 +87,7 @@ var zeroPayStores = [{ name: "알바천국", lat: 37.5032355765545, lng: 127.046
             //moon
            //var naverMapLink = `https://map.naver.com/v5/search/${store.name}?c=${store.lng},${store.lat},17,0,0,0,dh`;
             //const directionsUrl = `https://map.naver.com/v5/search/${store.name}?c=${store.lng},${store.lat},17,0,0,0,dh`;
-            const directionsUrl ='https://map.naver.com/v5/directions/37.5045,127.0489/place/${store.lat},${store.lng}/walk?c=15,0,0,0,dh'
+            const directionsUrl ='https://map.naver.com/v5/directions/0,0/place/${store.lat},${store.lng}/walk?c=15,0,0,0,dh'
             var beefulPayTag = store.isBeefulPay ? `<div style="color: green; font-weight: bold;">💳 비플페이 가맹점</div>` : "";
             var infowindow = new naver.maps.InfoWindow({
                 content: `
