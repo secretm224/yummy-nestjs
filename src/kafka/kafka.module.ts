@@ -20,7 +20,7 @@ import { LoggerService } from './logger.service';
                         brokers: process.env.KAFKA_BROKER ? process.env.KAFKA_BROKER.split(',') : [],
                     },
                     consumer: {
-                        groupId: 'yummy-store-consumer',  
+                        groupId: 'yummy-store-consumer-dev-1',  
                     },
                     producer: {
                         allowAutoTopicCreation: false, 

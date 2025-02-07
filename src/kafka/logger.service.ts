@@ -5,9 +5,12 @@ import { Kafka } from 'kafkajs';
 @Injectable()
 export class LoggerService implements OnModuleInit, OnModuleDestroy {
     private admin;
-
+    private kafkaTopic: string; // .env 파일에서 불러올 토픽을 저장
+    
     constructor(@Inject('KAFKA_SERVICE') private client: ClientKafka) {
         const kafka_brokers = process.env.KAFKA_BROKER ? process.env.KAFKA_BROKER.split(',') : [];
+        this.kafkaTopic = process.env.KAFKA_TOPIC || 'default-topic';
+
         console.log('kafka_brokers:', kafka_brokers);
         const kafka = new Kafka({
             brokers:kafka_brokers ?? [],
@@ -16,25 +19,13 @@ export class LoggerService implements OnModuleInit, OnModuleDestroy {
     }
 
     async onModuleInit() {
-        
         await this.client.connect();
         await this.admin.connect();
-
-        try {
-            await this.admin.createTopics({
-                topics: [
-                    {
-                        topic: 'yummy-store',
-                        numPartitions: 3,
-                        replicationFactor: 2,
-                    },
-                ],
-            });
-
-            console.log('Kafka topic "store" 생성 성공');
+        
+        try {   
 
         } catch (error) {
-            console.error('store Kafka topic 생성 실패 메세지:', error);
+            console.error('Kafka topic 생성 실패 메세지:', error);
         }
         await this.admin.disconnect();
     }
@@ -48,7 +39,7 @@ export class LoggerService implements OnModuleInit, OnModuleDestroy {
     async logTokafla(topic: string, message: any) {
         try {
           console.log('log start kafka', message);
-          await this.client.emit(topic, message);
+          await this.client.emit(this.kafkaTopic, message);
           console.log('log end kafka', message);
         } catch (error) {
             console.log('failed to log to kafka', error);
