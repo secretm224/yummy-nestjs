@@ -42,6 +42,19 @@ var zeroPayStores = [{ name: "알바천국", lat: 37.5032355765545, lng: 127.046
                         markerElement.style.pointerEvents = "auto";
                         markerElement.style.touchAction = "manipulation"; // 터치 충돌 방지
                         markerElement.style.cursor = "pointer"; // 터치 가능하도록 UI 개선
+
+                        // ✅ 마커 주변 터치도 가능하도록 `hitArea` 확장
+                        let hitArea = document.createElement("div");
+                        hitArea.style.position = "absolute";
+                        hitArea.style.width = "50px"; // 기존 크기보다 약간 더 큼
+                        hitArea.style.height = "50px";
+                        hitArea.style.top = "-25px"; // 마커 중앙을 기준으로 조정
+                        hitArea.style.left = "-25px";
+                        hitArea.style.backgroundColor = "transparent";
+                        hitArea.style.pointerEvents = "auto";
+
+                        markerElement.appendChild(hitArea);
+
                     }
                 }, 500);
 
