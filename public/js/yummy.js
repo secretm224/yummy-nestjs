@@ -1,6 +1,10 @@
+
+
 var zeroPayStores = [{ name: "알바천국", lat: 37.5032355765545, lng: 127.046582379785, type: "company" }];
     let zeroPayMarkers = [];
     let map;
+    let userLat = null;
+    let userLng = null;
 
     window.onload = SetStores;
 
@@ -35,7 +39,10 @@ var zeroPayStores = [{ name: "알바천국", lat: 37.5032355765545, lng: 127.046
             });
 
             if(isIOS()){
-                alert('아이폰');
+
+                
+
+
                 setTimeout(() => {
                     let markerElement = marker.getElement();
                     if (markerElement) {
@@ -59,7 +66,6 @@ var zeroPayStores = [{ name: "알바천국", lat: 37.5032355765545, lng: 127.046
                 }, 500);
 
                 function handleMarkerClick() {
-                    alert('아이폰 클릭');
                     selectMarker(marker, store.name);
                 }
 
@@ -69,7 +75,6 @@ var zeroPayStores = [{ name: "알바천국", lat: 37.5032355765545, lng: 127.046
             }
 
             zeroPayMarkers.push({ storeName: store.name, marker: marker });
-            var naverMapLink = `https://map.naver.com/v5/search/${store.name}?c=${store.lng},${store.lat},17,0,0,0,dh`;
             
             // 가게 타입별 이모지 설정 (귀여운 요소 추가)
             var emoji = "🍽️"; // 기본 음식점
@@ -82,9 +87,16 @@ var zeroPayStores = [{ name: "알바천국", lat: 37.5032355765545, lng: 127.046
             } else if (store.type === "company") {
                 emoji = "🏢"; // 회사 아이콘
             }
+            //moon
+           //var naverMapLink = `https://map.naver.com/v5/search/${store.name}?c=${store.lng},${store.lat},17,0,0,0,dh`;
+            const directionsUrl = `https://map.naver.com/v5/search/${store.name}?c=${store.lng},${store.lat},17,0,0,0,dh`;
+            if(isIOS()){
+                getUserLocation((lat, lng) => {
+                    directionsUrl = `https://map.naver.com/v5/directions/${lat},${lng}/place/${store.lat},${store.lng}/transit?c=15,0,0,0,dh`;
+                });
+             }
 
             var beefulPayTag = store.isBeefulPay ? `<div style="color: green; font-weight: bold;">💳 비플페이 가맹점</div>` : "";
-
             var infowindow = new naver.maps.InfoWindow({
                 content: `
                     <div style="
@@ -101,7 +113,7 @@ var zeroPayStores = [{ name: "알바천국", lat: 37.5032355765545, lng: 127.046
                         </div>
                         ${beefulPayTag} <!-- ✅ 비플페이 가맹점 여부 표시 -->
                         <div id="walking-time-${store.name}" style="font-size: 14px; color: #555;"></div>
-                        <a href="https://map.naver.com/v5/search/${store.name}?c=${store.lng},${store.lat},17,0,0,0,dh" target="_blank" style="
+                        <a href="${directionsUrl}" target="_blank" style="
                             display: inline-block;
                             padding: 5px 10px;
                             font-size: 14px;
@@ -140,6 +152,26 @@ var zeroPayStores = [{ name: "알바천국", lat: 37.5032355765545, lng: 127.046
                 }
             });
         });
+    }
+
+    function getUserLocation(callback) {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                function (position) {
+                    userLat = position.coords.latitude;
+                    userLng = position.coords.longitude;
+                    console.log("사용자 현재 위치:", userLat, userLng);
+                    if (callback) callback(userLat, userLng);
+                },
+                function (error) {
+                    alert("위치 정보를 가져올 수 없습니다. 위치 권한을 허용해주세요.");
+                    console.error("위치 오류:", error);
+                },
+                { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+            );
+        } else {
+            alert("이 브라우저에서는 위치 정보가 지원되지 않습니다.");
+        }
     }
 
     function isIOS() {
