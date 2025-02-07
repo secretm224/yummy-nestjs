@@ -35,6 +35,7 @@ var zeroPayStores = [{ name: "알바천국", lat: 37.5032355765545, lng: 127.046
             });
 
             if(isIOS()){
+                alert('아이폰');
                 setTimeout(() => {
                     let markerElement = marker.getElement();
                     if (markerElement) {
@@ -45,6 +46,7 @@ var zeroPayStores = [{ name: "알바천국", lat: 37.5032355765545, lng: 127.046
                 }, 500);
 
                 function handleMarkerClick() {
+                    alert('아이폰 클릭');
                     selectMarker(marker, store.name);
                 }
 
@@ -52,7 +54,7 @@ var zeroPayStores = [{ name: "알바천국", lat: 37.5032355765545, lng: 127.046
                 naver.maps.Event.addListener(marker, "touchstart", handleMarkerClick);
                 naver.maps.Event.addListener(marker, "touchend", handleMarkerClick);
             }
-            
+
             zeroPayMarkers.push({ storeName: store.name, marker: marker });
             var naverMapLink = `https://map.naver.com/v5/search/${store.name}?c=${store.lng},${store.lat},17,0,0,0,dh`;
             
