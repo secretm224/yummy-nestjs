@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Store } from 'src/entities/store.entity'; // Store 엔티티 경로를 확인하세요
+import { ZeroPossibleMarket } from 'src/entities/zero_possible_market.entity'; // Store 엔티티 경로를 확인하세요
 import { StoreService } from './store.service';
 import { StoreController } from './store.controller';
 import { KafkaModule } from '../kafka/kafka.module';
@@ -8,7 +9,7 @@ import { KafkaModule } from '../kafka/kafka.module';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Store]), // Store 엔티티 등록
+    TypeOrmModule.forFeature([Store, ZeroPossibleMarket]), // orm 엔티티 등록
     KafkaModule,
   ],
   providers: [StoreService], // StoreService 등록

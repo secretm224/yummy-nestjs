@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
+import { InjectRepository  } from '@nestjs/typeorm';
 import { Store } from 'src/entities/store.entity';
-import { Repository } from 'typeorm';
+import { ZeroPossibleMarket } from 'src/entities/zero_possible_market.entity';
+import { Repository, DataSource } from 'typeorm';
 
 import * as fs from 'fs';
 import * as path from 'path';
@@ -9,8 +10,11 @@ import * as path from 'path';
 @Injectable()
 export class StoreService {
   constructor(
+    private readonly dataSource: DataSource,
     @InjectRepository(Store)
     private storeRepository: Repository<Store>,
+    @InjectRepository(ZeroPossibleMarket)
+    private zeroPossibleMarket: Repository<ZeroPossibleMarket>,
   ) {}
 
   async findAll(): Promise<Store[]> {
@@ -21,7 +25,7 @@ export class StoreService {
     return this.storeRepository.findOneBy({ name }) || null;
   }
 
-  async create(store: Partial<Store>): Promise<Store> {
+  async create(store: Partial<Store>, isBpay: boolean): Promise<Store> {
     if (!store.name) {
       throw new Error('store name is required for create');
     }
@@ -29,11 +33,38 @@ export class StoreService {
     if (!store.lat || !store.lng) {
       throw new Error('lat , lng is required');
     }
+    
+    /* 
+      트랜잭션을 사용해서 한번에 데이터를 넣어주도록 함
+      - store, zero_possible_market 테이블 
+    */
+    return await this.dataSource.transaction(async (manager) => {
+		const storeData = manager.create(Store, store);
+		const savedStore = await manager.save(storeData);
+		//await this.storeRepository.save(store);
 
-    const savedStore = await this.storeRepository.save(store);
-    this.logTofile(`store created: ${JSON.stringify(savedStore)}`);
+		if (isBpay) {
+			const zero_possible_data = manager.create(
+				ZeroPossibleMarket,
+				{
+					store_pk: store.seq,
+					name: storeData.name,
+					use_yn: 'Y',
+					reg_dt: store.reg_dt,
+					reg_id: store.reg_id
+				} 
+			)
 
-    return savedStore;
+			await manager.save(zero_possible_data);
+		}
+
+
+		return savedStore;
+    })
+    
+    //this.logTofile(`store created: ${JSON.stringify(store)}`);
+    //return null;
+    // return savedStore;
   }
 
   async update(store: Partial<Store>): Promise<Store | null> {

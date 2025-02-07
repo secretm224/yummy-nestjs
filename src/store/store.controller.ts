@@ -1,6 +1,7 @@
 import { Controller, Get, Post, Body } from '@nestjs/common';
 import { StoreService } from './store.service';
 import { Store } from '../entities/store.entity';
+import { ZeroPossibleMarket } from '../entities/zero_possible_market.entity';
 import { LoggerService } from '../kafka/logger.service';
 
 @Controller('store')
@@ -22,13 +23,22 @@ export class StoreController {
   }
 
   @Post('/add')
-  async create(@Body() store: Partial<Store>): Promise<Store | null> {
-    store.reg_dt = new Date();
-    store.reg_id = 'secretm';
+  async create(@Body() body:any): Promise<Store | null> {
 
-    this.SendLog(store); //비동기 kafka로그 기록
+    const storeDate: Partial<Store> = {
+      ...body,
+      reg_dt: new Date(),
+      reg_id: 'secretm'
+    }
 
-    return this.storeService.create(store);
+    const isBpay = body.is_beefulpay;
+    
+    //store.
+    //this.SendLog(store); //비동기 kafka로그 기록
+    //this.SendLog(zero_possible); //비동기 kafka로그 기록
+
+    return this.storeService.create(storeDate, isBpay);
+    //return null;
   }
 
   @Post('/update')
