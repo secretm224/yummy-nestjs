@@ -115,7 +115,7 @@ var zeroPayStores = [{ name: "알바천국", lat: 37.5032355765545, lng: 127.046
         var address = document.getElementById("storeAddress").value;
         var name = document.getElementById("storeName").value;
         var isBeefulPay = document.getElementById("isBeefulPay").checked;
-
+        
         if (!address || !name) {
             alert("🍕 음식점명과 주소를 입력해주세요!");
             return;
