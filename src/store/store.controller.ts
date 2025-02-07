@@ -38,7 +38,6 @@ export class StoreController {
     //this.SendLog(zero_possible); //비동기 kafka로그 기록
 
     return this.storeService.create(storeDate, isBpay);
-    //return null;
   }
 
   @Post('/update')
@@ -49,9 +48,9 @@ export class StoreController {
   // LoggerService
   async SendLog(message: any) {
     try {
-      console.log('log start kafla', message);
-      await this.loggerService.logTokafla('yummy-store', message);
-      console.log('log end kafla', message);
+      console.log('log start kafka', message);
+      await this.loggerService.logTokafka('yummy-store', message);
+      console.log('log end kafka', message);
     } catch (error) {
       console.log('faile to log to kafka', error);
     }

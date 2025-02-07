@@ -35,7 +35,7 @@ export class LoggerService implements OnModuleInit, OnModuleDestroy {
     }
 
     
-    async logTokafla(topic: string, message: any) {
+    async logTokafka(topic: string, message: any) {
         try {
           console.log('log start kafka', message);
           await this.client.emit(this.kafkaTopic, message);
