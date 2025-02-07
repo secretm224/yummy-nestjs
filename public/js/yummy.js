@@ -34,17 +34,25 @@ var zeroPayStores = [{ name: "알바천국", lat: 37.5032355765545, lng: 127.046
                 draggable: true
             });
 
-            // 클릭 이벤트 (iOS 대응)
-            naver.maps.Event.addListener(marker, 'click', function () {
-                selectMarker(marker, storeName);
-            });
+            if(isIOS()){
+                setTimeout(() => {
+                    let markerElement = marker.getElement();
+                    if (markerElement) {
+                        markerElement.style.pointerEvents = "auto";
+                        markerElement.style.touchAction = "manipulation"; // 터치 충돌 방지
+                        markerElement.style.cursor = "pointer"; // 터치 가능하도록 UI 개선
+                    }
+                }, 500);
 
-            // iOS 터치 이벤트 추가
-            naver.maps.Event.addListener(marker, 'touchend', function () {
-                selectMarker(marker, storeName);
-            });
+                function handleMarkerClick() {
+                    selectMarker(marker, store.name);
+                }
 
-
+                naver.maps.Event.addListener(marker, "click", handleMarkerClick);
+                naver.maps.Event.addListener(marker, "touchstart", handleMarkerClick);
+                naver.maps.Event.addListener(marker, "touchend", handleMarkerClick);
+            }
+            
             zeroPayMarkers.push({ storeName: store.name, marker: marker });
             var naverMapLink = `https://map.naver.com/v5/search/${store.name}?c=${store.lng},${store.lat},17,0,0,0,dh`;
             
@@ -117,6 +125,10 @@ var zeroPayStores = [{ name: "알바천국", lat: 37.5032355765545, lng: 127.046
                 }
             });
         });
+    }
+
+    function isIOS() {
+        return /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
     }
 
     // 마커 선택 함수 (zIndex 변경으로 선택 강조)
