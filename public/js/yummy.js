@@ -34,9 +34,17 @@ var zeroPayStores = [{ name: "알바천국", lat: 37.5032355765545, lng: 127.046
                 draggable: true
             });
 
-            // var infowindow = new naver.maps.InfoWindow({
-            //     content: `<div style="padding:5px;">${store.name}</div>`
-            // });
+            // 클릭 이벤트 (iOS 대응)
+            naver.maps.Event.addListener(marker, 'click', function () {
+                selectMarker(marker, storeName);
+            });
+
+            // iOS 터치 이벤트 추가
+            naver.maps.Event.addListener(marker, 'touchend', function () {
+                selectMarker(marker, storeName);
+            });
+
+
             zeroPayMarkers.push({ storeName: store.name, marker: marker });
             var naverMapLink = `https://map.naver.com/v5/search/${store.name}?c=${store.lng},${store.lat},17,0,0,0,dh`;
             
@@ -109,6 +117,11 @@ var zeroPayStores = [{ name: "알바천국", lat: 37.5032355765545, lng: 127.046
                 }
             });
         });
+    }
+
+    // 마커 선택 함수 (zIndex 변경으로 선택 강조)
+    function selectMarker(marker, storeName) {
+        marker.setZIndex(200); // 선택된 마커를 맨 위로
     }
 
     function GetGeocode() {
