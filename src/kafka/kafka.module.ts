@@ -6,7 +6,11 @@ import { LoggerService } from './logger.service';
 
 @Module({
     imports: [
-        ConfigModule.forRoot({ isGlobal: true }),
+        ConfigModule.forRoot({ 
+            isGlobal: true,
+            envFilePath:process.env.NODE_ENV === 'development' ? '.env' : '.env.production',
+
+        }),
         ClientsModule.register([
             {
                 name: 'KAFKA_SERVICE',
