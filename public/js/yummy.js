@@ -1,6 +1,10 @@
+
+
 var zeroPayStores = [{ name: "알바천국", lat: 37.5032355765545, lng: 127.046582379785, type: "company" }];
     let zeroPayMarkers = [];
     let map;
+    let userLat = null;
+    let userLng = null;
 
     window.onload = SetStores;
 
@@ -34,11 +38,40 @@ var zeroPayStores = [{ name: "알바천국", lat: 37.5032355765545, lng: 127.046
                 draggable: true
             });
 
-            // var infowindow = new naver.maps.InfoWindow({
-            //     content: `<div style="padding:5px;">${store.name}</div>`
-            // });
+            if(isIOS()){
+
+                setTimeout(() => {
+                    let markerElement = marker.getElement();
+                    if (markerElement) {
+                        markerElement.style.pointerEvents = "auto";
+                        markerElement.style.touchAction = "manipulation"; // 터치 충돌 방지
+                        markerElement.style.cursor = "pointer"; // 터치 가능하도록 UI 개선
+
+                        // ✅ 마커 주변 터치도 가능하도록 `hitArea` 확장
+                        let hitArea = document.createElement("div");
+                        hitArea.style.position = "absolute";
+                        hitArea.style.width = "50px"; // 기존 크기보다 약간 더 큼
+                        hitArea.style.height = "50px";
+                        hitArea.style.top = "-25px"; // 마커 중앙을 기준으로 조정
+                        hitArea.style.left = "-25px";
+                        hitArea.style.backgroundColor = "transparent";
+                        hitArea.style.pointerEvents = "auto";
+
+                        markerElement.appendChild(hitArea);
+
+                    }
+                }, 500);
+
+                function handleMarkerClick() {
+                    selectMarker(marker, store.name);
+                }
+
+                naver.maps.Event.addListener(marker, "click", handleMarkerClick);
+                naver.maps.Event.addListener(marker, "touchstart", handleMarkerClick);
+                naver.maps.Event.addListener(marker, "touchend", handleMarkerClick);
+            }
+
             zeroPayMarkers.push({ storeName: store.name, marker: marker });
-            var naverMapLink = `https://map.naver.com/v5/search/${store.name}?c=${store.lng},${store.lat},17,0,0,0,dh`;
             
             // 가게 타입별 이모지 설정 (귀여운 요소 추가)
             var emoji = "🍽️"; // 기본 음식점
@@ -51,9 +84,12 @@ var zeroPayStores = [{ name: "알바천국", lat: 37.5032355765545, lng: 127.046
             } else if (store.type === "company") {
                 emoji = "🏢"; // 회사 아이콘
             }
+            //moon
+           //var naverMapLink = `https://map.naver.com/v5/search/${store.name}?c=${store.lng},${store.lat},17,0,0,0,dh`;
+            const directionsUrl = `https://map.naver.com/v5/search/${store.name}?c=${store.lng},${store.lat},17,0,0,0,dh`;
+            //const directionsUrl = `https://map.naver.com/v5/directions/37.5045028775835,127.048942471228/place/${store.lat},${store.lng}/transit?c=15,0,0,0,dh`;
 
             var beefulPayTag = store.isBeefulPay ? `<div style="color: green; font-weight: bold;">💳 비플페이 가맹점</div>` : "";
-
             var infowindow = new naver.maps.InfoWindow({
                 content: `
                     <div style="
@@ -70,7 +106,7 @@ var zeroPayStores = [{ name: "알바천국", lat: 37.5032355765545, lng: 127.046
                         </div>
                         ${beefulPayTag} <!-- ✅ 비플페이 가맹점 여부 표시 -->
                         <div id="walking-time-${store.name}" style="font-size: 14px; color: #555;"></div>
-                        <a href="https://map.naver.com/v5/search/${store.name}?c=${store.lng},${store.lat},17,0,0,0,dh" target="_blank" style="
+                        <a href="${directionsUrl}" target="_blank" style="
                             display: inline-block;
                             padding: 5px 10px;
                             font-size: 14px;
@@ -109,6 +145,15 @@ var zeroPayStores = [{ name: "알바천국", lat: 37.5032355765545, lng: 127.046
                 }
             });
         });
+    }
+
+    function isIOS() {
+        return /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+    }
+
+    // 마커 선택 함수 (zIndex 변경으로 선택 강조)
+    function selectMarker(marker, storeName) {
+        marker.setZIndex(200); // 선택된 마커를 맨 위로
     }
 
     function GetGeocode() {

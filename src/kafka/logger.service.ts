@@ -9,12 +9,11 @@ export class LoggerService implements OnModuleInit, OnModuleDestroy {
     
     constructor(@Inject('KAFKA_SERVICE') private client: ClientKafka) {
         const kafka_brokers = process.env.KAFKA_BROKER ? process.env.KAFKA_BROKER.split(',') : [];
-        this.kafkaTopic = process.env.KAFKA_TOPIC || 'default-topic';
-
         console.log('kafka_brokers:', kafka_brokers);
         const kafka = new Kafka({
             brokers:kafka_brokers ?? [],
         });
+        
         this.admin = kafka.admin();
     }
 
@@ -23,7 +22,7 @@ export class LoggerService implements OnModuleInit, OnModuleDestroy {
         await this.admin.connect();
         
         try {   
-
+            this.kafkaTopic = process.env.KAFKA_TOPIC || 'default-topic';
         } catch (error) {
             console.error('Kafka topic 생성 실패 메세지:', error);
         }
