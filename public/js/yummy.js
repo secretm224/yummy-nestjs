@@ -87,10 +87,6 @@ var zeroPayStores = [{ name: "알바천국", lat: 37.5032355765545, lng: 127.046
             //moon
            //var naverMapLink = `https://map.naver.com/v5/search/${store.name}?c=${store.lng},${store.lat},17,0,0,0,dh`;
            const directionsUrl = `https://map.naver.com/v5/search/${store.name}?c=${store.lng},${store.lat},17,0,0,0,dh`;
-            // const directionsUrl ='https://map.naver.com/v5/directions/0,0/place/${store.lat},${store.lng}/walk?c=15,0,0,0,dh';
-            // if(isIOS()){
-            //     directionsUrl = `https://map.naver.com/v5/search/${store.name}?c=${store.lng},${store.lat},17,0,0,0,dh`;
-            // }
 
             var beefulPayTag = store.isBeefulPay ? `<div style="color: green; font-weight: bold;">💳 비플페이 가맹점</div>` : "";
             var infowindow = new naver.maps.InfoWindow({
@@ -181,7 +177,16 @@ var zeroPayStores = [{ name: "알바천국", lat: 37.5032355765545, lng: 127.046
             var address = firstItem.address;
 
             if(!!lat && !!lng && !!address){
-                var addjson = { name: name,address:address, lat: lat, lng: lng, type: "store" , is_beefulpay: isBeefulPay};
+
+                var addjson = {
+                    "store": { name: name
+                             , address:address
+                             , lat: lat
+                             , lng: lng
+                             , type: "store" },
+                    "pay":{isBeefulpay:isBeefulPay}   // ✅ 비플페이 가맹점 여부
+                }
+
                 addStore(addjson);
             }else{
                 alert('상점을 등록 할수 없습니다.');
@@ -259,6 +264,8 @@ var zeroPayStores = [{ name: "알바천국", lat: 37.5032355765545, lng: 127.046
             if(!!result){
                 alert("🍕 음식점이 등록되었습니다.");
                 SetStores();
+            }else{
+                alert("음식점 등록이 실패하였습니다.");
             }
 
         } catch (error) {

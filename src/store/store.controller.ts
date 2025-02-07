@@ -23,21 +23,19 @@ export class StoreController {
   }
 
   @Post('/add')
-  async create(@Body() body:any): Promise<Store | null> {
+  async create(@Body() stores:any): Promise<Store | null> {
 
-    const storeDate: Partial<Store> = {
-      ...body,
-      reg_dt: new Date(),
-      reg_id: 'secretm'
-    }
+    const store_data = stores.store;
+    store_data.reg_dt = new Date();
+    store_data.reg_id = 'karina';
 
-    const isBpay = body.is_beefulpay;
-    
+    const zero_possible = stores.pay.zero_possible;
+
     //store.
     //this.SendLog(store); //비동기 kafka로그 기록
     //this.SendLog(zero_possible); //비동기 kafka로그 기록
 
-    return this.storeService.create(storeDate, isBpay);
+    return this.storeService.create(store_data, zero_possible);
     //return null;
   }
 
