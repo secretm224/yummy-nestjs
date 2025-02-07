@@ -5,44 +5,26 @@ import { Kafka } from 'kafkajs';
 @Injectable()
 export class LoggerService implements OnModuleInit, OnModuleDestroy {
     private admin;
-
+    private kafkaTopic: string; // .env 파일에서 불러올 토픽을 저장
+    
     constructor(@Inject('KAFKA_SERVICE') private client: ClientKafka) {
         const kafka_brokers = process.env.KAFKA_BROKER ? process.env.KAFKA_BROKER.split(',') : [];
         console.log('kafka_brokers:', kafka_brokers);
         const kafka = new Kafka({
             brokers:kafka_brokers ?? [],
         });
+        
         this.admin = kafka.admin();
     }
 
     async onModuleInit() {
-        
         await this.client.connect();
         await this.admin.connect();
-
-        try {
-            this.admin.hasTopic('store').then((topic) => { 
-                topic ? console.log('yummuy-store Kafka topic 이미 존재') : console.log('yummuy-store Kafka topic 미존재');
-
-            }).catch(async (error) => {
-                console.log('topic 생성 에러 메세지:', error);
-                console.log('store Kafka topic 생성 시작');
-                await this.admin.createTopics({
-                    topics: [
-                        {
-                            topic: 'yummuy-store',
-                            numPartitions: 3,
-                            replicationFactor: 2,
-                        },
-                    ],
-                });
-                console.log('Kafka topic "store" 생성 성공');
-            });
-
-            console.log('Kafka topic "store" 생성 성공');
-
+        
+        try {   
+            this.kafkaTopic = process.env.KAFKA_TOPIC || 'default-topic';
         } catch (error) {
-            console.error('store Kafka topic 생성 실패 메세지:', error);
+            console.error('Kafka topic 생성 실패 메세지:', error);
         }
         await this.admin.disconnect();
     }
@@ -56,7 +38,7 @@ export class LoggerService implements OnModuleInit, OnModuleDestroy {
     async logTokafla(topic: string, message: any) {
         try {
           console.log('log start kafka', message);
-          await this.client.emit(topic, message);
+          await this.client.emit(this.kafkaTopic, message);
           console.log('log end kafka', message);
         } catch (error) {
             console.log('failed to log to kafka', error);
