@@ -21,14 +21,22 @@ export class LoggerService implements OnModuleInit, OnModuleDestroy {
         await this.admin.connect();
 
         try {
-            await this.admin.createTopics({
-                topics: [
-                    {
-                        topic: 'yummy-store',
-                        numPartitions: 3,
-                        replicationFactor: 2,
-                    },
-                ],
+            this.admin.hasTopic('store').then((topic) => { 
+                topic ? console.log('yummuy-store Kafka topic 이미 존재') : console.log('yummuy-store Kafka topic 미존재');
+
+            }).catch(async (error) => {
+                console.log('topic 생성 에러 메세지:', error);
+                console.log('store Kafka topic 생성 시작');
+                await this.admin.createTopics({
+                    topics: [
+                        {
+                            topic: 'yummuy-store',
+                            numPartitions: 3,
+                            replicationFactor: 2,
+                        },
+                    ],
+                });
+                console.log('Kafka topic "store" 생성 성공');
             });
 
             console.log('Kafka topic "store" 생성 성공');
