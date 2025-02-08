@@ -4,9 +4,9 @@
   "settings": {
     "width": 2000,
     "height": 2000,
-    "scrollTop": 0,
-    "scrollLeft": 0,
-    "zoomLevel": 1,
+    "scrollTop": -76.6279,
+    "scrollLeft": -53,
+    "zoomLevel": 0.88,
     "show": 431,
     "database": 4,
     "databaseName": "alba_test_karina",
@@ -90,16 +90,16 @@
         "name": "zero_possible_market",
         "comment": "제로페이 가맹점 테이블",
         "columnIds": [
-          "WBXc0nXTm-lHPw67Pi62I",
+          "-OTFtFEmNaU2COvrUOaIw",
           "RuOJCa-rGhoAeE1OP2I8w",
           "saBRWXt_uG_VF-Ww6SReL",
           "SgTmvDvpTctmfXYEXsvmy",
           "H-wTMNqQFpqUNttiI8EGg",
           "MW-gTjrG4xmEQ8TwlwuJB",
-          "30GK4jApBavx2jqmvzuZc",
-          "-OTFtFEmNaU2COvrUOaIw"
+          "30GK4jApBavx2jqmvzuZc"
         ],
         "seqColumnIds": [
+          "-OTFtFEmNaU2COvrUOaIw",
           "WBXc0nXTm-lHPw67Pi62I",
           "RuOJCa-rGhoAeE1OP2I8w",
           "saBRWXt_uG_VF-Ww6SReL",
@@ -107,8 +107,7 @@
           "H-wTMNqQFpqUNttiI8EGg",
           "MW-gTjrG4xmEQ8TwlwuJB",
           "30GK4jApBavx2jqmvzuZc",
-          "QdIQ-QZVQ2L7JZIa-BKFX",
-          "-OTFtFEmNaU2COvrUOaIw"
+          "QdIQ-QZVQ2L7JZIa-BKFX"
         ],
         "ui": {
           "x": 625,
@@ -119,7 +118,7 @@
           "color": ""
         },
         "meta": {
-          "updateAt": 1738980441779,
+          "updateAt": 1738980510606,
           "createAt": 1738980033713
         }
       }
@@ -532,16 +531,16 @@
         "comment": "",
         "dataType": "INT",
         "default": "25",
-        "options": 8,
+        "options": 10,
         "ui": {
-          "keys": 2,
+          "keys": 3,
           "widthName": 60,
           "widthComment": 60,
           "widthDataType": 60,
           "widthDefault": 60
         },
         "meta": {
-          "updateAt": 1738980416190,
+          "updateAt": 1738980512397,
           "createAt": 1738980416189
         }
       }
@@ -605,7 +604,7 @@
       },
       "FE1BPecCXLeqjZQf5Z0YX": {
         "id": "FE1BPecCXLeqjZQf5Z0YX",
-        "identification": false,
+        "identification": true,
         "relationshipType": 8,
         "startRelationshipType": 2,
         "start": {
@@ -623,7 +622,7 @@
             "-OTFtFEmNaU2COvrUOaIw"
           ],
           "x": 625,
-          "y": 340,
+          "y": 328,
           "direction": 1
         },
         "meta": {
@@ -757,7 +756,7 @@
     "WBXc0nXTm-lHPw67Pi62I": [
       "tableColumnEntities",
       1738980053187,
-      -1,
+      1738980510605,
       {
         "name": 1738980063556,
         "dataType": 1738980110381,
@@ -880,7 +879,8 @@
         "name": 1738980416186,
         "dataType": 1738980416186,
         "default": 1738980416186,
-        "comment": 1738980416186
+        "comment": 1738980416186,
+        "options(primaryKey)": 1738980512396
       }
     ],
     "FE1BPecCXLeqjZQf5Z0YX": [
