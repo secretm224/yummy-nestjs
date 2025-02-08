@@ -9,7 +9,7 @@ import { LoggerService } from './logger.service';
         ConfigModule.forRoot({ 
             isGlobal: true,
             envFilePath:process.env.NODE_ENV === 'development' ? '.env' : '.env.production',
-
+            
         }),
         ClientsModule.register([
             {

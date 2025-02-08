@@ -1,8 +1,8 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Entity, PrimaryColumn, Column } from 'typeorm';
 
 @Entity('zero_possible_market')
 export class ZeroPossibleMarket {
-    @PrimaryGeneratedColumn()
+    @PrimaryColumn()
     store_pk: number;
 
     @Column({ type: 'varchar', length: 255, nullable: false })

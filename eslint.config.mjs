@@ -8,7 +8,12 @@ export default tseslint.config(
   {
     ignores: [
       'eslint.config.mjs',
-      'src/config/database.config.js'  // 추가
+      'src/config/database.config.js', // 기존 예외 파일
+      'dist/**',  // dist 폴더 전체 무시
+      'public/**', // public 폴더 전체 무시
+      'node_modules/**', // node_modules 무시
+      'test/**',  // 테스트 폴더도 제외 (필요하면)
+      'src/**/*.d.ts' // 모든 .d.ts 파일 ESLint 검사에서 제외
     ],
   },
   eslint.configs.recommended,
@@ -27,8 +32,8 @@ export default tseslint.config(
       ecmaVersion: "latest",
       sourceType: 'module',
       parserOptions: {
-        project: "./tsconfig.json",
-        tsconfigRootDir: import.meta.dirname,
+        project: ["./tsconfig.json"],  // 배열 형태로 설정
+        tsconfigRootDir: process.cwd(), // 프로젝트 루트 기준으로 설정
       },
     },
   },

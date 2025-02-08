@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('store')
 export class Store {
@@ -31,4 +31,6 @@ export class Store {
 
     @Column({ type: 'varchar', length: 25, nullable: true })
     chg_id: string;
+
+    is_beefulpay: boolean;
 }

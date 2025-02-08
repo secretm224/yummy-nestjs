@@ -10,6 +10,7 @@ var zeroPayStores = [{ name: "알바천국", lat: 37.5032355765545, lng: 127.046
 
     function SetMap() {
 
+      
         map = new naver.maps.Map('map', {
             center: new naver.maps.LatLng(37.5045028775835, 127.048942471228),
             zoom: 17
@@ -158,7 +159,7 @@ var zeroPayStores = [{ name: "알바천국", lat: 37.5032355765545, lng: 127.046
     function selectMarker(marker, storeName) {
         marker.setZIndex(200); // 선택된 마커를 맨 위로
     }
-
+    
     function GetGeocode() {
         var address = document.getElementById("storeAddress").value;
         var name = document.getElementById("storeName").value;
