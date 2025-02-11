@@ -14,24 +14,37 @@ export class LoggerService implements OnModuleInit, OnModuleDestroy {
             brokers:kafka_brokers ?? [],
         });
         
-        this.admin = kafka.admin();
+        //this.admin = kafka.admin();
     }
 
     async onModuleInit() {
-        await this.client.connect();
-        await this.admin.connect();
+        //await this.client.connect();
+        //await this.admin.connect();
         
         try {   
-            this.kafkaTopic = process.env.KAFKA_TOPIC || 'default-topic';
+            const results = await Promise.allSettled([
+                this.client.connect(),
+            ]);
+        
+            results.forEach((result, index) => {
+            if (result.status === 'fulfilled') {
+                console.log(`✅ Kafka Client 연결 성공`);
+                this.kafkaTopic = process.env.KAFKA_TOPIC || 'default-topic';
+            } else {
+                console.error(`❌ Kafka Client 연결 실패`, result.reason);
+            }
+            });
+
+            //this.kafkaTopic = process.env.KAFKA_TOPIC || 'default-topic';
         } catch (error) {
             console.error('Kafka topic 생성 실패 메세지:', error);
         }
-        await this.admin.disconnect();
+        //await this.admin.disconnect();
     }
 
     async onModuleDestroy() {
         await this.client.close();
-        await this.admin.disconnect();
+       // await this.admin.disconnect();
     }
 
     
