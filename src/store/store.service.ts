@@ -32,10 +32,9 @@ export class StoreService {
 					'store.lat',
 					'store.lng',
 					'store.type',
-					'zero_possible_market.store_pk' // NULL인지 확인할 필드
+					'zero_possible_market.store_pk'
 				]
 			)
-			//.getRawAndEntities(); // 원본 결과 + 엔티티 매핑된 결과 가져오기 -> 참조 이슈 발생
 			.getMany();
 
 		const storeData = entities.map((store) => ({
@@ -43,19 +42,7 @@ export class StoreService {
 			is_beefulpay: store.zero_possible_market ? true : false,
 		}));
 
-
-		// const storeDate = entities.map((store, index) => ({
-		// 	...store,
-		// 	is_beefulpay: !!raw[index]['zero_possible_market_store_pk'],
-		// 	zero_possible_market: raw[index]['zero_possible_market_store_pk'] !== null
-		// 		? store.zero_possible_market 
-		// 		: null, //NULL이면 기존 값을 유지
-		// })) as Store[];
-
-		// console.log("Raw Data:", raw);
-    	// console.log("Entities Data:", entities);
-		
-		//return this.storeRepository.find();
+		//console.log(storeData);
 		return storeData;
 	}
 

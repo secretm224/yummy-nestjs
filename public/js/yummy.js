@@ -219,17 +219,18 @@ var zeroPayStores = [{ name: "알바천국", lat: 37.5032355765545, lng: 127.046
             const stores = await response.json();
 
             stores.forEach(store => {
-
-                const is_beefulpay = store.name === "우리집 만두" ? false : true;
-
+                //const is_beefulpay = store.name === "우리집 만두" ? false : true; -> TEST CODE
+                // 비플페이 가맹점과 아닌 가맹점을 나누기 위함.
                 zeroPayStores.push({
                     name: store.name,
                     lat: store.lat,
                     lng: store.lng,
                     type: store.type,
-                    isBeefulPay: is_beefulpay
+                    isBeefulPay: store.is_beefulpay
                 });
             });
+            
+            //console.log(zeroPayStores);
 
             if(zeroPayStores.length <=0){
                 alert("등록된 가게가 없습니다.");

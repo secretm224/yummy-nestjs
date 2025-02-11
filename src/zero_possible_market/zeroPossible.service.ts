@@ -4,9 +4,6 @@ import { Store } from 'src/entities/store.entity';
 import { ZeroPossibleMarket } from 'src/entities/zero_possible_market.entity';
 import { Repository } from 'typeorm';
 
-import * as fs from 'fs';
-import * as path from 'path';
-
 @Injectable()
 export class ZeroPossibleService {
     constructor(
