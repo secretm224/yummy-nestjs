@@ -34,14 +34,14 @@ export class StoreController {
 
 			if (saveStore != null) {
 				saveStore.is_beefulpay = store.is_beefulpay ?? false;
-        const zeroPossible = await this.zeroPossibleService.create(saveStore); // zeroPossible 생성
-        //this.SendLog(zeroPossible);
+        		const zeroPossible = await this.zeroPossibleService.create(saveStore); // zeroPossible 생성
+        		//this.SendLog(zeroPossible);
 			}
 			
 			return saveStore;
 		} catch(err) {
 			// 로깅해야함.
-      await this.SendLog(err);
+      		await this.SendLog(err);
 			return null;
 		}
 	}
