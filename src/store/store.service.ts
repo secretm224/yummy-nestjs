@@ -19,11 +19,11 @@ export class StoreService {
 
 	async findAll(): Promise<Store[]> {
 
-		const {raw, entities} = await this.storeRepository.createQueryBuilder('store')
+		const entities = await this.storeRepository.createQueryBuilder('store')
 			.leftJoinAndSelect(
 				'store.zero_possible_market', 
 				'zero_possible_market',
-				'zero_possible_market.use_yn = :useYn',
+				'store.seq = zero_possible_market.store_pk AND zero_possible_market.use_yn = :useYn',
         		{ useYn: 'Y' }
 			)
 			.select(
@@ -35,21 +35,28 @@ export class StoreService {
 					'zero_possible_market.store_pk' // NULL인지 확인할 필드
 				]
 			)
-			.getRawAndEntities(); // 원본 결과 + 엔티티 매핑된 결과 가져오기
+			//.getRawAndEntities(); // 원본 결과 + 엔티티 매핑된 결과 가져오기 -> 참조 이슈 발생
+			.getMany();
 
-		
-		const storeDate = entities.map((store, index) => ({
+		const storeData = entities.map((store) => ({
 			...store,
-			is_beefulpay: raw[index]['zero_possible_market_store_pk'] ? true : false,
-			zero_possible_market: raw[index]['zero_possible_market_store_pk'] 
-				? store.zero_possible_market 
-				: null, //NULL이면 기존 값을 유지
+			is_beefulpay: store.zero_possible_market ? true : false,
 		}));
 
-		console.log(storeDate);
+
+		// const storeDate = entities.map((store, index) => ({
+		// 	...store,
+		// 	is_beefulpay: !!raw[index]['zero_possible_market_store_pk'],
+		// 	zero_possible_market: raw[index]['zero_possible_market_store_pk'] !== null
+		// 		? store.zero_possible_market 
+		// 		: null, //NULL이면 기존 값을 유지
+		// })) as Store[];
+
+		// console.log("Raw Data:", raw);
+    	// console.log("Entities Data:", entities);
 		
 		//return this.storeRepository.find();
-		return storeDate;
+		return storeData;
 	}
 
 	async findByName(name: string): Promise<Store | null> {
