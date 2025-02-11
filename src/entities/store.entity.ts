@@ -1,4 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn } from 'typeorm';
+import { ZeroPossibleMarket } from '../entities/zero_possible_market.entity';
 
 @Entity('store')
 export class Store {
@@ -33,4 +34,8 @@ export class Store {
     chg_id: string;
 
     is_beefulpay: boolean;
+
+    @OneToOne(() => ZeroPossibleMarket, { createForeignKeyConstraints: false })
+    @JoinColumn({name: 'seq', referencedColumnName: 'store_pk'})
+    zero_possible_market: ZeroPossibleMarket | null;
 }

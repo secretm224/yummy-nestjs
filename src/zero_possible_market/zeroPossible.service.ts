@@ -14,6 +14,7 @@ export class ZeroPossibleService {
 		private zeroPossibleRepository: Repository<ZeroPossibleMarket>,
     ) {}
 
+    // ZeroPossibleMarket 객체를 DB 에 저장해주기 위함.
     async create(store: Partial<Store>): Promise<ZeroPossibleMarket | null> {
         
         const isBpay = store.is_beefulpay;

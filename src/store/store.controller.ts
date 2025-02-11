@@ -28,17 +28,20 @@ export class StoreController {
 	async create(@Body() store: Partial<Store>): Promise<Store | null> {
 		store.reg_dt = new Date();
 		store.reg_id = 'seunghwan';
-		
+
 		try {
 			const saveStore = await this.storeService.create(store); // store 생성
 
 			if (saveStore != null) {
-				const _zeroPossible = await this.zeroPossibleService.create(saveStore); // zeroPossible 생성
+				saveStore.is_beefulpay = store.is_beefulpay ?? false;
+        const zeroPossible = await this.zeroPossibleService.create(saveStore); // zeroPossible 생성
+        //this.SendLog(zeroPossible);
 			}
 			
 			return saveStore;
 		} catch(err) {
 			// 로깅해야함.
+      await this.SendLog(err);
 			return null;
 		}
 	}
@@ -70,7 +73,7 @@ export class StoreController {
 		try {
 			console.log('log start kafka', message);
 			await this.loggerService.logTokafka('yummy-store', message);
-			console.log('log end kafka', message);
+			//console.log('log end kafka', message);
 		} catch (error) {
 			console.log('faile to log to kafka', error);
 		}

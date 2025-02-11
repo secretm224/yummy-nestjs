@@ -18,7 +18,38 @@ export class StoreService {
 	) {}
 
 	async findAll(): Promise<Store[]> {
-		return this.storeRepository.find();
+
+		const {raw, entities} = await this.storeRepository.createQueryBuilder('store')
+			.leftJoinAndSelect(
+				'store.zero_possible_market', 
+				'zero_possible_market',
+				'zero_possible_market.use_yn = :useYn',
+        		{ useYn: 'Y' }
+			)
+			.select(
+				[
+					'store.name',
+					'store.lat',
+					'store.lng',
+					'store.type',
+					'zero_possible_market.store_pk' // NULL인지 확인할 필드
+				]
+			)
+			.getRawAndEntities(); // 원본 결과 + 엔티티 매핑된 결과 가져오기
+
+		
+		const storeDate = entities.map((store, index) => ({
+			...store,
+			is_beefulpay: raw[index]['zero_possible_market_store_pk'] ? true : false,
+			zero_possible_market: raw[index]['zero_possible_market_store_pk'] 
+				? store.zero_possible_market 
+				: null, //NULL이면 기존 값을 유지
+		}));
+
+		console.log(storeDate);
+		
+		//return this.storeRepository.find();
+		return storeDate;
 	}
 
 	async findByName(name: string): Promise<Store | null> {
@@ -26,6 +57,7 @@ export class StoreService {
 	}
 	
 	async create(store: Partial<Store>): Promise<Store | null> {
+
 		if (!store.name) {
 			throw new Error('store name is required for create');
 		}
@@ -35,6 +67,7 @@ export class StoreService {
 		}
 
 		const newStore =  this.storeRepository.create(store);
+		console.log("hoho:" + store.is_beefulpay);
 		//const saveStore = await this.storeRepository.save(newStore);
 
 		return this.storeRepository.save(newStore);
