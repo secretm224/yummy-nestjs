@@ -14,24 +14,24 @@ export class LoggerService implements OnModuleInit, OnModuleDestroy {
             brokers:kafka_brokers ?? [],
         });
         
-        this.admin = kafka.admin();
+        //this.admin = kafka.admin();
     }
 
     async onModuleInit() {
         await this.client.connect();
-        await this.admin.connect();
+        //await this.admin.connect();
         
         try {   
             this.kafkaTopic = process.env.KAFKA_TOPIC || 'default-topic';
         } catch (error) {
             console.error('Kafka topic 생성 실패 메세지:', error);
         }
-        await this.admin.disconnect();
+        //await this.admin.disconnect();
     }
 
     async onModuleDestroy() {
         await this.client.close();
-        await this.admin.disconnect();
+       // await this.admin.disconnect();
     }
 
     
