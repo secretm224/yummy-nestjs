@@ -35,7 +35,10 @@ export class StoreController {
 			if (saveStore != null) {
 				saveStore.is_beefulpay = store.is_beefulpay ?? false;
         		const zeroPossible = await this.zeroPossibleService.create(saveStore); // zeroPossible 생성
-        		//this.SendLog(zeroPossible);
+
+				if(zeroPossible != null) {	//store와 zeroPossible 생성 성공시 로그 전송
+					await this.SendLog(store); //비동기 kafka로그 기록
+				}
 			}
 			
 			return saveStore;
