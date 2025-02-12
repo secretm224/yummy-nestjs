@@ -21,10 +21,10 @@ import { LoggerService } from './logger.service';
                     },
                     consumer: {
                         groupId: 'yummy-store-consumer',
-                        sessionTimeout: 45000,  // 45초 (기본값: 10초)
-                        heartbeatInterval: 15000, // 15초 (기본값: 3초)
-                        rebalanceTimeout: 60000,  // 60초 (기본값: 60초)
-                        maxWaitTimeInMs: 5000,  // 메시지를 기다리는 최대 시간 (기본값: 5000)  
+                        sessionTimeout: 60000,  // ✅ 60초로 증가 (기존: 45초)
+                        heartbeatInterval: 15000, // ✅ 15초 유지
+                        rebalanceTimeout: 90000,  // ✅ 90초로 증가 (기존: 60초)
+                        maxWaitTimeInMs: 5000, // 메시지를 기다리는 최대 시간 (기본값: 5000)  
                     },
                     producer: {
                         allowAutoTopicCreation: false, 
