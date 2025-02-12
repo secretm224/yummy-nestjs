@@ -10,7 +10,7 @@ export const typeOrmConfig = (configService: ConfigService): TypeOrmModuleOption
     username: configService.get<string>('DB_USER'),
     password: configService.get<string>('DB_PASSWORD'),
     database: configService.get<string>('DB_NAME'),
-    synchronize: true,
+    synchronize: false,
     entities: [join(__dirname, '..', '**', '*.entity.{js,ts}')], // 📌 빌드 후에도 정상 동작하도록 설정
   };
 };
