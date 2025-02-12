@@ -23,7 +23,7 @@ export class StoreService {
 			.leftJoinAndSelect(
 				'store.zero_possible_market', 
 				'zero_possible_market',
-				'store.seq = zero_possible_market.store_pk AND zero_possible_market.use_yn = :useYn',
+				'store.seq = zero_possible_market.seq AND zero_possible_market.use_yn = :useYn',
         		{ useYn: 'Y' }
 			)
 			.select(
@@ -32,7 +32,7 @@ export class StoreService {
 					'store.lat',
 					'store.lng',
 					'store.type',
-					'zero_possible_market.store_pk'
+					'zero_possible_market.seq'
 				]
 			)
 			.getMany();

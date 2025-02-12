@@ -36,6 +36,6 @@ export class Store {
     is_beefulpay: boolean;
 
     @OneToOne(() => ZeroPossibleMarket, { createForeignKeyConstraints: false })
-    @JoinColumn({name: 'seq', referencedColumnName: 'store_pk'})
+    @JoinColumn({name: 'seq', referencedColumnName: 'seq'})
     zero_possible_market: ZeroPossibleMarket | null;
 }

@@ -3,7 +3,7 @@ import { Entity, PrimaryColumn, Column } from 'typeorm';
 @Entity('zero_possible_market')
 export class ZeroPossibleMarket {
     @PrimaryColumn()
-    store_pk: number;
+    seq: number;
 
     @Column({ type: 'varchar', length: 255, nullable: false })
     name: string;
