@@ -22,7 +22,7 @@ export class ZeroPossibleService {
             
             const zeroPossible = this.zeroPossibleRepository.create(
                 {
-                    store_pk: store.seq,
+                    seq: store.seq,
                     name: store.name,
                     use_yn: 'Y',
                     reg_dt: store.reg_dt,
