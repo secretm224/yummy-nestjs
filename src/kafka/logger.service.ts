@@ -55,23 +55,22 @@ export class LoggerService implements OnModuleInit, OnModuleDestroy {
         try {
           console.log('log start kafka', message);
           
-          if(!this.client){
-            console.error('kafka client is null');
-            return;
-          }
+        if(!this.client){
 
-           await this.client.emit(this.kafkaTopic, message);
+            console.error('kafka setting error');
+
+            setTimeout(() => {
+                this.client.emit(topic, message);
+            },3000);            
+        }else{
+            await this.client.emit(topic, message);
+        }
+          
 
           console.log('log end kafka', message);
         } catch (error) {
             console.log('failed to log to kafka', error);
 
-            setTimeout(() => {
-                this.logTokafka(topic, message);
-                console.log('call retry to log to kafka');
-            },1000);
-
-            
         }
     }
   

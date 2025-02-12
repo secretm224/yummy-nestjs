@@ -54,13 +54,52 @@
             transform: scale(1.05);
         }
     </style>
+    <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.4/kakao.min.js"
+     integrity="sha384-DKYJZ8NLiK8MN4/C5P2dtSmLQ4KwPaoqAfyA/DfmEc1VDxu4yyC7wy6K1Hs90nka" crossorigin="anonymous"></script>
+    <script>
+        Kakao.init('4a2a51c4104deceb54f805eb34bc4f3d'); // 사용하려는 앱의 JavaScript 키 입력
+    </script>
+    <script>
+        function loginWithKakao() {
+          Kakao.Auth.authorize({
+             redirectUri: 'https://developers.kakao.com/tool/demo/oauth',
+            //redirectUri: 'http://secretm-yummy.com:3000/login/login.html',
+          });
+        }
+      
+
+        displayToken();
+
+        function displayToken() {
+          var token = getCookie('authorize-access-token');
+         console.log(token);
+          if(token) {
+            Kakao.Auth.setAccessToken(token);
+            Kakao.Auth.getStatusInfo()
+              .then(function(res) {
+                if (res.status === 'connected') {
+                  console.log('login success, token: ' + Kakao.Auth.getAccessToken());
+                }
+              })
+              .catch(function(err) {
+                Kakao.Auth.setAccessToken(null);
+              });
+          }
+        }
+      
+        function getCookie(name) {
+          var parts = document.cookie.split(name + '=');
+          if (parts.length === 2) { return parts[1].split(';')[0]; }
+        }
+      </script>
+
 </head>
 <body>
     <div class="login-container">
         <h1>로그인하기</h1>
-        <p>로그인하여 좀 더 다양한 기능을 사용하세요.</p>
-        <a href="/auth/kakao" class="kakao-login">
-            <img src="./public/kakao_login_large_narrow.png" alt="KakaoTalk Logo">
+        <p>로그인하여 다양한 기능을 사용하세요.</p>
+        <a class="kakao-login" onclick="loginWithKakao();">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/e/e3/KakaoTalk_logo.svg" alt="KakaoTalk Logo">
             카카오톡으로 로그인
         </a>
     </div>
