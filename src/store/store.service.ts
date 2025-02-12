@@ -62,7 +62,6 @@ export class StoreService {
 
 		const newStore =  this.storeRepository.create(store);
 		console.log("hoho:" + store.is_beefulpay);
-		//const saveStore = await this.storeRepository.save(newStore);
 
 		return this.storeRepository.save(newStore);
 	}
