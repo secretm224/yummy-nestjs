@@ -18,12 +18,12 @@ export class StoreService {
 	) {}
 
 	async findAll(): Promise<Store[]> {
-
+		//store.seq = zero_possible_market.seq AND 
 		const entities = await this.storeRepository.createQueryBuilder('store')
 			.leftJoinAndSelect(
 				'store.zero_possible_market', 
 				'zero_possible_market',
-				'store.seq = zero_possible_market.seq AND zero_possible_market.use_yn = :useYn',
+				'zero_possible_market.use_yn = :useYn',
         		{ useYn: 'Y' }
 			)
 			.select(
@@ -36,12 +36,12 @@ export class StoreService {
 				]
 			)
 			.getMany();
-
+		
 		const storeData = entities.map((store) => ({
 			...store,
 			is_beefulpay: store.zero_possible_market ? true : false,
 		}));
-
+		
 		//console.log(storeData);
 		return storeData;
 	}

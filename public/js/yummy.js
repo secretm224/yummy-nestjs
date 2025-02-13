@@ -109,6 +109,12 @@ var zeroPayStores = [{ name: "알바천국", lat: 37.5032355765545, lng: 127.046
                             ${emoji} ${store.name}
                         </div>
                         ${beefulPayTag} <!-- ✅ 비플페이 가맹점 여부 표시 -->
+                        <div>승환대리 PICK</div>
+                        <div>승환대리 PICK</div>
+                        <div>승환대리 PICK</div>
+                        <div>승환대리 PICK</div>
+                        <div>승환대리 PICK</div>
+                        <div>승환대리 PICK</div>
                         <div id="walking-time-${store.name}" style="font-size: 14px; color: #555;"></div>
                         <a href="${directionsUrl}" target="_blank" style="
                             display: inline-block;
