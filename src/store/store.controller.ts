@@ -5,17 +5,23 @@ import { ZeroPossibleMarket } from '../entities/zero_possible_market.entity';
 import { LoggerService } from '../kafka/logger.service';
 import { ZeroPossibleService } from 'src/zero_possible_market/zeroPossible.service';
 
+//import { Controller, Get, Post, Body, Param } from '@nestjs/common';
+//import { SearchService } from '../elasticsearch/elasticsearch.service';
+
 @Controller('store')
 export class StoreController {
 	constructor(
 		private readonly storeService: StoreService,
 		private readonly zeroPossibleService: ZeroPossibleService,
 		private readonly loggerService: LoggerService,
+		//private readonly elasticService: SearchService,
 	) {}
 
 	@Get('/all')
 	async findAll(): Promise<Store[]> {
 		
+
+
 		return this.storeService.findAll();
 	}
 

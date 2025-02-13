@@ -1,5 +1,3 @@
-
-
 var zeroPayStores = [{ name: "알바천국", lat: 37.5032355765545, lng: 127.046582379785, type: "company" }];
     let zeroPayMarkers = [];
     let map;
@@ -221,6 +219,20 @@ var zeroPayStores = [{ name: "알바천국", lat: 37.5032355765545, lng: 127.046
         zeroPayStores = [{ name: "알바천국", lat: 37.5032355765545, lng: 127.046582379785, type: "company" }];
 
         try {
+            
+            const index = 'consuming_index_prod_type_prod';
+            const keyword = '스팀게임';
+    
+            const esResponse = await fetch(`/search/${index}?keyword=${encodeURIComponent(keyword)}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            
+            const data = await esResponse.json();
+            console.log('Search Result:', data);
+
             const response = await fetch('/store/all');
             const stores = await response.json();
 

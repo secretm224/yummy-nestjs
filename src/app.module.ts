@@ -10,6 +10,7 @@ import { join } from 'path';
 
 import { StoreModule } from './store/store.module'; //store module 추가
 import { KafkaModule } from './kafka/kafka.module'; //kafka module 추가
+import { SearchModule } from './elasticsearch/search.module'; // Elasticsearch module 추가
 import { LoggerService } from './kafka/logger.service'; //kafka logger service 추가
 
 @Module({
@@ -35,6 +36,7 @@ import { LoggerService } from './kafka/logger.service'; //kafka logger service �
     }),
     StoreModule,
     KafkaModule,
+    SearchModule
   ],
   controllers: [AppController],
   providers: [AppService, LoggerService],
