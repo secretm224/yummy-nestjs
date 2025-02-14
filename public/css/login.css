@@ -1,0 +1,48 @@
+@import url('https://cdn.jsdelivr.net/npm/pretendard@1.3.8/dist/web/static/pretendard.css');
+body {
+    font-family: "Comic Sans MS", "Pretendard", Arial, sans-serif;
+    background-color: #FFF8DC;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+.login-container {
+    background-color: #FFFAF0;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 300px;
+}
+.login-container h1 {
+    color: #FF8C00;
+    margin-bottom: 20px;
+}
+.kakao-login {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #FEE500;
+    padding: 12px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: 0.3s;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: bold;
+    color: #3C1E1E;
+    font-family: "Pretendard", Arial, sans-serif;
+}
+.kakao-login img {
+    width: 24px;
+    height: 24px;
+    margin-right: 10px;
+}
+.kakao-login:hover {
+    background-color: #E6D400;
+    transform: scale(1.05);
+}
