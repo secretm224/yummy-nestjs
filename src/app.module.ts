@@ -38,7 +38,7 @@ import { AuthModule } from './auth/auth.module';
     }),
     StoreModule,
     KafkaModule,
-    SearchModule
+    SearchModule,
     AuthModule,
   ],
   controllers: [AppController, AuthController],
