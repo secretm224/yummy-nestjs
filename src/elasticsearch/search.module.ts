@@ -4,6 +4,8 @@ import { ElasticsearchModule } from '@nestjs/elasticsearch';
 import { SearchService } from './search.service';
 import { SearchController } from './search.controller';
 
+/* npm install @nestjs/elasticsearch <- install */
+
 @Module({
     imports: [
         ConfigModule.forRoot({ 

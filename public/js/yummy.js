@@ -107,12 +107,6 @@ var zeroPayStores = [{ name: "알바천국", lat: 37.5032355765545, lng: 127.046
                             ${emoji} ${store.name}
                         </div>
                         ${beefulPayTag} <!-- ✅ 비플페이 가맹점 여부 표시 -->
-                        <div>승환대리 PICK</div>
-                        <div>승환대리 PICK</div>
-                        <div>승환대리 PICK</div>
-                        <div>승환대리 PICK</div>
-                        <div>승환대리 PICK</div>
-                        <div>승환대리 PICK</div>
                         <div id="walking-time-${store.name}" style="font-size: 14px; color: #555;"></div>
                         <a href="${directionsUrl}" target="_blank" style="
                             display: inline-block;
@@ -220,15 +214,16 @@ var zeroPayStores = [{ name: "알바천국", lat: 37.5032355765545, lng: 127.046
 
         try {
             
-            const index = 'consuming_index_prod_type_prod';
-            const keyword = '스팀게임';
+            /* Elasticsearch 테스트 코드 */
+            // const index = 'consuming_index_prod_type_prod';
+            // const keyword = '스팀게임';
     
-            const esResponse = await fetch(`/search/${index}?keyword=${encodeURIComponent(keyword)}`, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            });
+            // const esResponse = await fetch(`/search/${index}?keyword=${encodeURIComponent(keyword)}`, {
+            //     method: 'GET',
+            //     headers: {
+            //         'Content-Type': 'application/json'
+            //     }
+            // });
             
             const data = await esResponse.json();
             console.log('Search Result:', data);

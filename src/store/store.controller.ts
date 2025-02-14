@@ -14,7 +14,6 @@ export class StoreController {
 		private readonly storeService: StoreService,
 		private readonly zeroPossibleService: ZeroPossibleService,
 		private readonly loggerService: LoggerService,
-		//private readonly elasticService: SearchService,
 	) {}
 
 	@Get('/all')

@@ -36,6 +36,5 @@ export class SearchController {
 		};
 		
 		return this.searchService.search(index, searchDto);
-		//return this.searchService.search(index, keyword);
 	}
 }
