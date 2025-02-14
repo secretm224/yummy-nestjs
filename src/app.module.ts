@@ -12,6 +12,8 @@ import { StoreModule } from './store/store.module'; //store module 추가
 import { KafkaModule } from './kafka/kafka.module'; //kafka module 추가
 import { SearchModule } from './elasticsearch/search.module'; // Elasticsearch module 추가
 import { LoggerService } from './kafka/logger.service'; //kafka logger service 추가
+import { AuthController } from './auth/auth.controller';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -37,8 +39,9 @@ import { LoggerService } from './kafka/logger.service'; //kafka logger service �
     StoreModule,
     KafkaModule,
     SearchModule
+    AuthModule,
   ],
-  controllers: [AppController],
+  controllers: [AppController, AuthController],
   providers: [AppService, LoggerService],
 })
 export class AppModule {}

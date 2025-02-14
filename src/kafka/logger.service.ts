@@ -65,12 +65,9 @@ export class LoggerService implements OnModuleInit, OnModuleDestroy {
         }else{
             await this.client.emit(topic, message);
         }
-          
-
           console.log('log end kafka', message);
         } catch (error) {
             console.log('failed to log to kafka', error);
-
         }
     }
   

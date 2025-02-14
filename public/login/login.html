@@ -4,92 +4,68 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - YummyMap</title>
-    <style>
-        @import url('https://cdn.jsdelivr.net/npm/pretendard@1.3.8/dist/web/static/pretendard.css');
-        body {
-            font-family: "Comic Sans MS", "Pretendard", Arial, sans-serif;
-            background-color: #FFF8DC;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
-        .login-container {
-            background-color: #FFFAF0;
-            padding: 20px;
-            border-radius: 15px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            width: 300px;
-        }
-        .login-container h1 {
-            color: #FF8C00;
-            margin-bottom: 20px;
-        }
-        .kakao-login {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background-color: #FEE500;
-            padding: 12px;
-            border-radius: 8px;
-            border: none;
-            cursor: pointer;
-            transition: 0.3s;
-            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
-            text-decoration: none;
-            font-size: 16px;
-            font-weight: bold;
-            color: #3C1E1E;
-            font-family: "Pretendard", Arial, sans-serif;
-        }
-        .kakao-login img {
-            width: 24px;
-            height: 24px;
-            margin-right: 10px;
-        }
-        .kakao-login:hover {
-            background-color: #E6D400;
-            transform: scale(1.05);
-        }
-    </style>
+    <link rel="stylesheet" href="/css/login.css" type="text/css">
     <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.4/kakao.min.js"
      integrity="sha384-DKYJZ8NLiK8MN4/C5P2dtSmLQ4KwPaoqAfyA/DfmEc1VDxu4yyC7wy6K1Hs90nka" crossorigin="anonymous"></script>
-    <script>
+    <!-- <script>
+
+    </script> -->
+    <script type="text/javascript">
+        
         Kakao.init('4a2a51c4104deceb54f805eb34bc4f3d'); // 사용하려는 앱의 JavaScript 키 입력
-    </script>
-    <script>
+
         function loginWithKakao() {
           Kakao.Auth.authorize({
-             redirectUri: 'https://developers.kakao.com/tool/demo/oauth',
-            //redirectUri: 'http://secretm-yummy.com:3000/login/login.html',
+             prompt: 'select_account',
+             redirectUri: 'http://secretm-yummy.com:3000/login/login.html',
+             //redirectUri:'http://secretm-yummy.com:3000/auth/kakao/callback'
           });
         }
+ 
+        // displayToken();
+
+        // function displayToken() {
+          
+        //     console.log('call the token function');
+        //   var token = getCookie('authorize-access-token');
+        //   console.log(token);
+
+        //   if(token) {
+        //     Kakao.Auth.setAccessToken(token);
+        //     Kakao.Auth.getStatusInfo()
+        //       .then(function(res) {
+        //         if (res.status === 'connected') {
+        //           console.log('login success, token: ' + Kakao.Auth.getAccessToken());
+        //         }
+        //       })
+        //       .catch(function(err) {
+        //         Kakao.Auth.setAccessToken(null);
+        //       });
+        //   }
+        // }
       
-
-        displayToken();
-
-        function displayToken() {
-          var token = getCookie('authorize-access-token');
-         console.log(token);
-          if(token) {
-            Kakao.Auth.setAccessToken(token);
-            Kakao.Auth.getStatusInfo()
-              .then(function(res) {
-                if (res.status === 'connected') {
-                  console.log('login success, token: ' + Kakao.Auth.getAccessToken());
-                }
-              })
-              .catch(function(err) {
-                Kakao.Auth.setAccessToken(null);
-              });
-          }
+        // function getCookie(name) {
+        //   var parts = document.cookie.split(name + '=');
+        //   if (parts.length === 2) { return parts[1].split(';')[0]; }
+        // }
+        window.onload = function(){
+            const param_code = GetLoginCode();
+            console.log(param_code);
+            if(!!param_code){
+                GetTokenData(param_code);
+            }
         }
-      
-        function getCookie(name) {
-          var parts = document.cookie.split(name + '=');
-          if (parts.length === 2) { return parts[1].split(';')[0]; }
+
+        function GetLoginCode(){
+            const parm = new URLSearchParams(window.location.search);
+            const code = parm.get('code');
+            return code;
+        }
+
+        async function GetTokenData(code){
+            const response = await fetch('/auth/kakao/callback');
+            const tokens = await response.json();
+            console.log(tokens);
         }
       </script>
 
