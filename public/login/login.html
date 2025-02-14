@@ -7,9 +7,7 @@
     <link rel="stylesheet" href="/css/login.css" type="text/css">
     <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.4/kakao.min.js"
      integrity="sha384-DKYJZ8NLiK8MN4/C5P2dtSmLQ4KwPaoqAfyA/DfmEc1VDxu4yyC7wy6K1Hs90nka" crossorigin="anonymous"></script>
-    <!-- <script>
 
-    </script> -->
     <script type="text/javascript">
         
         Kakao.init('4a2a51c4104deceb54f805eb34bc4f3d'); // 사용하려는 앱의 JavaScript 키 입력
@@ -22,37 +20,11 @@
           });
         }
  
-        // displayToken();
-
-        // function displayToken() {
-          
-        //     console.log('call the token function');
-        //   var token = getCookie('authorize-access-token');
-        //   console.log(token);
-
-        //   if(token) {
-        //     Kakao.Auth.setAccessToken(token);
-        //     Kakao.Auth.getStatusInfo()
-        //       .then(function(res) {
-        //         if (res.status === 'connected') {
-        //           console.log('login success, token: ' + Kakao.Auth.getAccessToken());
-        //         }
-        //       })
-        //       .catch(function(err) {
-        //         Kakao.Auth.setAccessToken(null);
-        //       });
-        //   }
-        // }
-      
-        // function getCookie(name) {
-        //   var parts = document.cookie.split(name + '=');
-        //   if (parts.length === 2) { return parts[1].split(';')[0]; }
-        // }
         window.onload = function(){
             const param_code = GetLoginCode();
             console.log(param_code);
             if(!!param_code){
-                GetTokenData(param_code);
+                KaKaoLogin(param_code);
             }
         }
 
@@ -62,16 +34,51 @@
             return code;
         }
 
-        async function GetTokenData(code){
-            const response = await fetch('/auth/kakao/callback');
+        async function KaKaoLogin(code){
+            
+            const response = await fetch('/auth/kakao/callback',
+                                    {
+                                        method:'POST',
+                                        headers:{'Content-Type':'application/json'},
+                                        body:JSON.stringify({code:code})
+                                    });
+
             const tokens = await response.json();
             console.log(tokens);
+            if(!!tokens){
+                const access_token = tokens.kakao_access_token;
+                const userinfo = tokens.kakao_payload;
+
+                if(!!access_token){
+                   Kakao.Auth.setAccessToken(access_token);
+                    //console.log(userinfo.nickname);
+                    document.getElementById("login-container").style.display = 'none';
+                    document.getElementById("nickname").innerText = userinfo.nickname +"님 안녕하세요";
+                    document.getElementById("success-container").style.display = 'block';
+                }
+            }
         }
+
+        async function KaKaoLogout(){
+            Kakao.Auth.logout().then(function(response){
+                if(!Kakao.Auth.getAccessToken()){
+                    alert('로그아웃 되었습니다.');
+                    document.getElementById("success-container").style.display = 'none';
+                    document.getElementById("nickname").innerText ="";
+                    document.getElementById("login-container").style.display = 'block';
+                }
+            })
+            .catch(function(err){
+                alert(err);
+            });
+        }
+
+
       </script>
 
 </head>
 <body>
-    <div class="login-container">
+    <div class="login-container" id="login-container" style="display: block;">
         <h1>로그인하기</h1>
         <p>로그인하여 다양한 기능을 사용하세요.</p>
         <a class="kakao-login" onclick="loginWithKakao();">
@@ -79,5 +86,15 @@
             카카오톡으로 로그인
         </a>
     </div>
+
+    <div class="success-container" id="success-container"style="display: none;">
+        <h1>로그인 성공!</h1>
+        <p>YummyMap에 오신 것을 환영합니다.</p>
+        <div class="user-info">
+            <p><strong id="nickname"></strong></p>
+        </div>
+        <button class="logout-button" onclick="KaKaoLogout()">로그아웃</button>
+    </div>
+
 </body>
 </html>

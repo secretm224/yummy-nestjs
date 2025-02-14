@@ -46,3 +46,39 @@ body {
     background-color: #E6D400;
     transform: scale(1.05);
 }
+
+.success-container {
+    background-color: #FFFAF0;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 350px;
+}
+.success-container h1 {
+    color: #FF8C00;
+    margin-bottom: 15px;
+}
+.user-info {
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #FFE4B5;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+.logout-button {
+    margin-top: 15px;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    color: white;
+    background-color: #FF4500;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+.logout-button:hover {
+    background-color: #CC3700;
+    transform: scale(1.05);
+}
