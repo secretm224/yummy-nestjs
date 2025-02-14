@@ -225,8 +225,8 @@ var zeroPayStores = [{ name: "알바천국", lat: 37.5032355765545, lng: 127.046
             //     }
             // });
             
-            const data = await esResponse.json();
-            console.log('Search Result:', data);
+            // const data = await esResponse.json();
+            // console.log('Search Result:', data);
 
             const response = await fetch('/store/all');
             const stores = await response.json();
