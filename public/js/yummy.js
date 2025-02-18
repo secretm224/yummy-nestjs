@@ -32,7 +32,7 @@ var zeroPayStores = [{ name: "알바천국", lat: 37.5032355765545, lng: 127.046
                     origin: new naver.maps.Point(0, 0),
                     anchor: new naver.maps.Point(20, 40)
                 },
-                draggable: true
+                draggable: false
             });
 
             if(isIOS()){
