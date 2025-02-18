@@ -4,12 +4,10 @@ var zeroPayStores = [{ name: "알바천국", lat: 37.5032355765545, lng: 127.046
     let userLat = null;
     let userLng = null;
 
-    window.onload = SetStores;
+   window.onload = SetStores;
 
     function SetMap() {
-
-      
-        map = new naver.maps.Map('map', {
+     map = new naver.maps.Map('map', {
             center: new naver.maps.LatLng(37.5045028775835, 127.048942471228),
             zoom: 17
         });
@@ -121,16 +119,17 @@ var zeroPayStores = [{ name: "알바천국", lat: 37.5032355765545, lng: 127.046
                     </div>`
             });
 
-            naver.maps.Event.addListener(marker, "dragend", function(e) {
-                if(confirm("위치를 수정하시겠습니까?") == true){
-                    var lat = e.coord.y;
-                    var lng = e.coord.x;
-                    //document.getElementById("markerInfo").innerHTML = `📍 ${store.name} 이동됨:<br> 위도: ${lat}<br> 경도: ${lng}`;
-                    var store_json = { name: store.name, lat: lat, lng: lng, type: "store" };
+            //카리나님 요청사항 적용
+            // naver.maps.Event.addListener(marker, "dragend", function(e) {
+            //     if(confirm("위치를 수정하시겠습니까?") == true){
+            //         var lat = e.coord.y;
+            //         var lng = e.coord.x;
+            //         //document.getElementById("markerInfo").innerHTML = `📍 ${store.name} 이동됨:<br> 위도: ${lat}<br> 경도: ${lng}`;
+            //         var store_json = { name: store.name, lat: lat, lng: lng, type: "store" };
 
-                    updatecoords(store_json);
-                }
-            });
+            //         updatecoords(store_json);
+            //     }
+            // });
 
             naver.maps.Event.addListener(marker, "click", function() {
                 if (infowindow.getMap()) {
