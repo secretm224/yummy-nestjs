@@ -210,7 +210,7 @@ input[type="button"]:hover {
     padding: 10px 15px;
     font-size: 16px;
     font-weight: bold;
-    color: white;
+    color: #50504e;
     background-color: #FFD700;
     border: none;
     border-radius: 20px;
@@ -226,7 +226,7 @@ input[type="button"]:hover {
 /* 🍀 랜덤 추천 버튼 */
 .random-button {
 background-color: #FFD700;
-color: white;
+color: #50504e;
 font-size: 18px;
 font-weight: bold;
 padding: 15px 30px;
