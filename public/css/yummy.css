@@ -1,20 +1,21 @@
 body {
-    background-color: #FFF8DC; /* 부드러운 노란색 */
-    font-family: "Comic Sans MS", "Arial", sans-serif; /* 귀여운 폰트 */
+    background-color: #FFFFFF; /* ✅ 흰색 배경 */
+    font-family: "Pretendard", Arial, sans-serif; /* ✅ 귀여운 폰트 유지 */
     text-align: center;
     padding: 20px;
+    color: #333; /* ✅ 기본 텍스트 색상을 어두운 회색으로 변경 */
 }
 
 /* 타이틀 스타일 */
 h1, h2 {
-    color: #FF8C00; /* 오렌지색 */
+    color: #FFF8DC; /* ✅ 노란색 포인트 */
 }
 
 .title-container {
     text-align: center;
     margin-bottom: 20px;
     padding: 10px;
-    background-color: #FFFAF0; /* 부드러운 크림 색상 */
+    background-color: #FFF8DC; /* ✅ 부드러운 크림색 (노란색 느낌) */
     border-radius: 15px;
     box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.1);
 }
@@ -22,8 +23,7 @@ h1, h2 {
 .title-container h1 {
     font-size: 28px;
     font-weight: bold;
-    color: #FF8C00; /* 오렌지색 */
-    font-family: "Comic Sans MS", "Arial", sans-serif; /* 귀여운 폰트 */
+    color: #50504e; /* ✅ 노란색 포인트 */
     margin: 0;
     padding: 10px;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
@@ -31,7 +31,7 @@ h1, h2 {
 
 .title-container .subtitle {
     font-size: 16px;
-    color: #FF4500; /* 진한 오렌지 */
+    color: #FFB400; 
     font-family: "Comic Sans MS", "Arial", sans-serif;
     margin-top: -5px;
 }
@@ -52,11 +52,11 @@ input[type="text"] {
     max-width: 400px;
     padding: 10px;
     font-size: 16px;
-    border: 2px solid #FFA500; /* 오렌지 테두리 */
+    border: 2px solid #FFD700; 
     border-radius: 20px;
     outline: none;
     text-align: center;
-    background-color: #FFFAF0;
+    background-color: #FFF8DC;
     box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
@@ -67,7 +67,7 @@ input[type="button"] {
     font-size: 16px;
     font-weight: bold;
     color: white;
-    background-color: #FF8C00; /* 밝은 오렌지 */
+    background-color: #FFD700;  /* 밝은 오렌지 */
     border: none;
     border-radius: 20px;
     cursor: pointer;
@@ -77,7 +77,7 @@ input[type="button"] {
 
 /* 버튼 호버 효과 */
 input[type="button"]:hover {
-    background-color: #FF4500; /* 더 진한 오렌지 */
+    background-color: #FFC107;/* 더 진한 오렌지 */
     transform: scale(1.05);
 }
 
@@ -86,7 +86,7 @@ input[type="button"]:hover {
     margin-top: 15px;
     padding: 10px;
     font-size: 14px;
-    background-color: #FFECB3;
+    background-color: #FFF8DC;
     border-radius: 10px;
     display: inline-block;
     box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
@@ -161,7 +161,7 @@ input[type="button"]:hover {
 }
 
 #store-items::-webkit-scrollbar-thumb {
-    background: #FFA500; /* 스크롤바 색상 */
+    background: #FFD700; /* 스크롤바 색상 */
     border-radius: 4px;
 }
 
@@ -198,7 +198,7 @@ input[type="button"]:hover {
     max-width: 400px;
     padding: 10px;
     font-size: 16px;
-    border: 2px solid #FFA500;
+    border: 2px solid #FFD700;
     border-radius: 20px;
     outline: none;
     text-align: center;
@@ -211,7 +211,7 @@ input[type="button"]:hover {
     font-size: 16px;
     font-weight: bold;
     color: white;
-    background-color: #FF8C00;
+    background-color: #FFD700;
     border: none;
     border-radius: 20px;
     cursor: pointer;
@@ -225,7 +225,7 @@ input[type="button"]:hover {
 }
 /* 🍀 랜덤 추천 버튼 */
 .random-button {
-background-color: #FF8C00;
+background-color: #FFD700;
 color: white;
 font-size: 18px;
 font-weight: bold;
@@ -240,7 +240,7 @@ outline: none;
 }
 
 .random-button:hover {
-    background-color: #FF4500;
+    background-color: #FFD700;
     transform: scale(1.1);
 }
 
@@ -249,7 +249,7 @@ outline: none;
     display: none;
     font-size: 24px;
     font-weight: bold;
-    color: #FF8C00;
+    color: #FFD700;
     background: white;
     padding: 10px 20px;
     border-radius: 20px;
