@@ -4,6 +4,7 @@ import { Store } from '../entities/store.entity';
 import { ZeroPossibleMarket } from '../entities/zero_possible_market.entity';
 import { LoggerService } from '../kafka/logger.service';
 import { ZeroPossibleService } from 'src/zero_possible_market/zeroPossible.service';
+import { StoreLocationInfoService } from 'src/store_location_info/storeLocation.service';
 
 //import { Controller, Get, Post, Body, Param } from '@nestjs/common';
 //import { SearchService } from '../elasticsearch/elasticsearch.service';
@@ -13,6 +14,7 @@ export class StoreController {
 	constructor(
 		private readonly storeService: StoreService,
 		private readonly zeroPossibleService: ZeroPossibleService,
+		private readonly storeLocationInfoService: StoreLocationInfoService,
 		private readonly loggerService: LoggerService,
 	) {}
 
@@ -20,23 +22,24 @@ export class StoreController {
 	async findAll(): Promise<Store[]> {
 		
 
-
 		return this.storeService.findAll();
 	}
 
 	@Post('/add')
 	async create(@Body() store: Partial<Store>): Promise<Store | null> {
 		store.reg_dt = new Date();
-		store.reg_id = 'seunghwan';
+		store.reg_id = 'system';
 
 		try {
-			const saveStore = await this.storeService.create(store); // store 생성
+			const saveStore = await this.storeService.create(store); // store 생성			
 
 			if (saveStore != null) {
+				
+				await this.storeLocationInfoService.create(saveStore, store);
 				saveStore.is_beefulpay = store.is_beefulpay ?? false;
         		const zeroPossible = await this.zeroPossibleService.create(saveStore); // zeroPossible 생성
-
-				if(zeroPossible != null) {	//store와 zeroPossible 생성 성공시 로그 전송
+				
+				if (zeroPossible != null) {	//store와 zeroPossible 생성 성공시 로그 전송
 					await this.SendLog(store); //비동기 kafka로그 기록
 				}
 			}
