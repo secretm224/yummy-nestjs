@@ -49,6 +49,13 @@ $npm install @nestjs/serve-static
 # add env files
 $npm install dotenv
 $ npm install cross-env --save-dev
+#axios
+$npm install axios @nestjs/axios
+#elasticsearch
+$npm install @nestjs/elasticsearch
+#jwt 
+$npm install jsonwebtoken
+$npm install @types/jsonwebtoken --save-dev
 ```
 
 ## Compile and run the project
