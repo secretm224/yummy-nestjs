@@ -21,10 +21,17 @@
         }
  
         window.onload = function(){
-            const param_code = GetLoginCode();
-            console.log(param_code);
-            if(!!param_code){
-                KaKaoLogin(param_code);
+            
+            if(IsKakaoToken()){
+                console.log('kakao access token is ok');
+                GetKakoUserInfoByAccessToken();
+            }else{
+                const param_code = GetLoginCode();
+                console.log('login code' + param_code);
+            
+                if(!!param_code){
+                    KaKaoLogin(param_code);
+                }
             }
         }
 
@@ -44,14 +51,17 @@
                                     });
 
             const tokens = await response.json();
-            console.log(tokens);
+            //console.log(tokens);
             if(!!tokens){
                 const access_token = tokens.kakao_access_token;
                 const userinfo = tokens.kakao_payload;
 
                 if(!!access_token){
-                   Kakao.Auth.setAccessToken(access_token);
-                    //console.log(userinfo.nickname);
+
+                    removeCodeFormUrl();
+
+                    Kakao.Auth.setAccessToken(access_token);
+
                     document.getElementById("login-container").style.display = 'none';
                     document.getElementById("nickname").innerText = userinfo.nickname +"님 안녕하세요";
                     document.getElementById("success-container").style.display = 'block';
@@ -59,8 +69,10 @@
             }
         }
 
+        //error 확인
         async function KaKaoLogout(){
             Kakao.Auth.logout().then(function(response){
+                console.log(response);
                 if(!Kakao.Auth.getAccessToken()){
                     alert('로그아웃 되었습니다.');
                     document.getElementById("success-container").style.display = 'none';
@@ -69,10 +81,48 @@
                 }
             })
             .catch(function(err){
-                alert(err);
+                console.log('exception'+err);
+                alert('로그아웃 실패하였습니다.');
             });
+         }
+
+        function IsKakaoToken(){
+            const access_token = Kakao.Auth.getAccessToken();
+
+            if(!!access_token) return true;
+            else return false;
         }
 
+        async function GetKakoUserInfoByAccessToken()
+        {
+            const access_token = Kakao.Auth.getAccessToken();
+            if(!!access_token){
+                const url ='/auth/kakao/userinfo';
+                const response = await fetch(url,
+                                            {
+                                                method:'POST',
+                                                headers:{'Content-Type':'application/json'},
+                                                body:JSON.stringify({access_token:access_token})
+                                            });
+
+                const token_data = await response.json();                                             
+                console.log(token_data);
+                if(!!token_data){
+                    document.getElementById("login-container").style.display = 'none';
+                    document.getElementById("profile-image").src = token_data.image;
+                    document.getElementById("nickname").innerText = token_data.nickname +" 님 안녕하세요";
+                    document.getElementById("success-container").style.display = 'block';
+                }
+            }
+        }
+
+        function removeCodeFormUrl(){
+            const url = new URL(window.location.href);
+            if(url.searchParams.has('code')){
+                url.searchParams.delete('code');
+                window.history.replaceState({}, document.title, url.pathname + url.search);
+            }
+        }
 
       </script>
 
@@ -91,6 +141,7 @@
         <h1>로그인 성공!</h1>
         <p>YummyMap에 오신 것을 환영합니다.</p>
         <div class="user-info">
+            <img id="profile-image" src="" alt="카카오프로필" class="profile-img">
             <p><strong id="nickname"></strong></p>
         </div>
         <button class="logout-button" onclick="KaKaoLogout()">로그아웃</button>

@@ -20,7 +20,8 @@ import { LoggerService } from './logger.service';
                         brokers: process.env.KAFKA_BROKER ? process.env.KAFKA_BROKER.split(',') : [],
                     },
                     consumer: {
-                        groupId: 'yummy-store-consumer',
+                        //groupId: 'yummy-store-consumer',
+                        groupId: '',
                         // sessionTimeout: 45000,  // ✅ 60초로 증가 (기존: 45초)
                         // sessionTimeout: 80000,
                         // heartbeatInterval: 15000, // ✅ 15초 유지

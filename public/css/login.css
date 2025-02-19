@@ -82,3 +82,10 @@ body {
     background-color: #CC3700;
     transform: scale(1.05);
 }
+.profile-img {
+    width: 80px; /* ✅ 프로필 이미지 크기 */
+    height: 80px;
+    border-radius: 50%; /* ✅ 원형 프로필 */
+    margin-bottom: 10px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+}

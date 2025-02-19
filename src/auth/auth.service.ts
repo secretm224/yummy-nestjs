@@ -26,7 +26,7 @@ export class AuthService {
         try{
             const url = "https://kauth.kakao.com/oauth/token";
             //const redirect ="http://secretm-yummy.com:3000/auth/kakao/callback";
-            const redirect = "http://secretm-yummy.com:3000/login/login.html";
+            const redirect = 'http://secretm-yummy.com:3000/login/login.html';
             const param = new URLSearchParams({
                                                 grant_type:'authorization_code',
                                                 client_id:this.api_key,
@@ -36,7 +36,9 @@ export class AuthService {
 
             const header = {headers:{'content-Type':'application/x-www-form-urlencoded;charset=utf-8'}};
             const kakao_token = await axios.post(url,param,header);
+
             console.log("kakao token2="+kakao_token);
+
             if(!!kakao_token){
                 return kakao_token.data;
             }else{
@@ -45,6 +47,45 @@ export class AuthService {
 
         }catch(error){
             console.error('kakaoapi error = '+error.response?.data);
+        }
+    }
+
+
+    async GetKakaoUserInfo(access_token:string){
+        if(!access_token){
+            throw new HttpException('accesss tokens is empty',HttpStatus.BAD_REQUEST);
+        }
+
+        console.log('access_token = '+access_token);
+
+        try {
+            const url = 'https://kapi.kakao.com/v2/user/me';
+         
+            const header = {headers:{
+                'Authorization': `Bearer ${access_token}`, // ✅ 올바른 토큰 형식 (공백 포함)
+                'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
+            }};
+            
+            const data = new URLSearchParams({
+                property_keys: '["kakao_account.profile.nickname","kakao_account.profile.thumbnail_image"]'
+            });
+
+            const userinfo = await axios.post(url, data, header);
+
+            console.log(userinfo.data);
+            console.log(userinfo.data.kakao_account.profile.nickname);
+            console.log(userinfo.data.kakao_account.profile.thumbnail_image_url);
+
+            const nickname = userinfo.data.kakao_account.profile.nickname;
+            const image = userinfo.data.kakao_account.profile.thumbnail_image_url;
+
+            if(!!nickname && !!image){
+                return {nickname:nickname,image:image};
+            }
+
+        }catch(error){
+            console.error('get userinfo by access toekn'+error);
+            console.error(error.response?.data);
         }
     }
 }

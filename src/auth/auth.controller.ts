@@ -18,7 +18,7 @@ export class AuthController {
 
     @Post('kakao/callback')
     async GetKaKaoAuthCode(@Body("code") code:string){
-        
+
         console.log('kakao callback code = '+code);
 
         const logMessage: any = {
@@ -57,4 +57,16 @@ export class AuthController {
             return new HttpException('kakao auth failed',HttpStatus.BAD_REQUEST);
        }
     }
+
+    @Post("kakao/userinfo")
+    async GetUserInfoByAccessToken(@Body("access_token") access_token:string){
+       if(!!access_token){
+            const userinfo = await this.auth_service.GetKakaoUserInfo(access_token);
+            console.log(userinfo);
+            return userinfo;
+       }else{
+            return new HttpException('get userinfo failed by access tokens',HttpStatus.BAD_REQUEST);
+       }
+    }
+
 }
