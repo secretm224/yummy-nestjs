@@ -2,13 +2,14 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import axios from 'axios';
 import e from 'express';
 import * as path from 'path';
-//import { LoggerService } from '../kafka/logger.service';
+import { UserRepository } from './user.repository';
+
 
 
 
 @Injectable()
 export class AuthService {
-    //constructor(private readonly logger_service:LoggerService){}
+    constructor(private readonly userrepository:UserRepository){}
     private readonly api_key = "2fcfa96247ae04a4ad26cd853f1e5551";
 
     // https://kauth.kakao.com/oauth/token" \
@@ -40,6 +41,7 @@ export class AuthService {
             console.log("kakao token2="+kakao_token);
 
             if(!!kakao_token){
+                this.userrepository.SaveUser(kakao_token);
                 return kakao_token.data;
             }else{
                 throw new HttpException("kakao token data is empty",HttpStatus.BAD_REQUEST);
@@ -72,9 +74,9 @@ export class AuthService {
 
             const userinfo = await axios.post(url, data, header);
 
-            console.log(userinfo.data);
-            console.log(userinfo.data.kakao_account.profile.nickname);
-            console.log(userinfo.data.kakao_account.profile.thumbnail_image_url);
+            // console.log(userinfo.data);
+            // console.log(userinfo.data.kakao_account.profile.nickname);
+            // console.log(userinfo.data.kakao_account.profile.thumbnail_image_url);
 
             const nickname = userinfo.data.kakao_account.profile.nickname;
             const image = userinfo.data.kakao_account.profile.thumbnail_image_url;
