@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository  } from '@nestjs/typeorm';
 import { Store } from 'src/entities/store.entity';
+import { StoreLocationInfoTbl } from 'src/entities/store_location_info_tbl.entity';
 import { ZeroPossibleMarket } from 'src/entities/zero_possible_market.entity';
 import { Repository, DataSource } from 'typeorm';
 import { LoggerService } from '../kafka/logger.service';
@@ -18,8 +19,12 @@ export class StoreService {
 	) {}
 
 	async findAll(): Promise<Store[]> {
-		//store.seq = zero_possible_market.seq AND 
+
 		const entities = await this.storeRepository.createQueryBuilder('store')
+			.innerJoinAndSelect(
+				'store.store_location_info_tbl',
+				'store_location_info_tbl'
+			)
 			.leftJoinAndSelect(
 				'store.zero_possible_market', 
 				'zero_possible_market',
@@ -29,20 +34,24 @@ export class StoreService {
 			.select(
 				[
 					'store.name',
-					'store.lat',
-					'store.lng',
 					'store.type',
-					'zero_possible_market.seq'
+					'zero_possible_market.seq',
+					'store_location_info_tbl.address',
+					'store_location_info_tbl.lat',
+					'store_location_info_tbl.lng',
 				]
 			)
+			.where('store.use_yn = :use_yn', {use_yn: 'Y'})
 			.getMany();
 		
 		const storeData = entities.map((store) => ({
 			...store,
 			is_beefulpay: store.zero_possible_market ? true : false,
+			address: store.store_location_info_tbl.address,
+			lat: store.store_location_info_tbl.lat,
+			lng: store.store_location_info_tbl.lng
 		}));
 		
-		//console.log(storeData);
 		return storeData;
 	}
 
@@ -60,8 +69,8 @@ export class StoreService {
 			throw new Error('lat , lng is required');
 		}
 
-		const newStore =  this.storeRepository.create(store);
-		console.log("hoho:" + store.is_beefulpay);
+		store.use_yn = 'Y';
+		const newStore = this.storeRepository.create(store);
 
 		return this.storeRepository.save(newStore);
 	}
@@ -80,8 +89,8 @@ export class StoreService {
 			existingStore.lat = store.lat ?? existingStore.lat; // 기본값으로 기존 lat 사용
 			existingStore.lng = store.lng ?? existingStore.lng; // 기본값으로 기존 lng 사용
 			existingStore.chg_dt = new Date();
-			existingStore.chg_id = 'secretm';
-
+			existingStore.chg_id = 'system';
+			
 			await this.storeRepository.update(
 			{ name: store.name },
 			{

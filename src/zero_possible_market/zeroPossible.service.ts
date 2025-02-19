@@ -18,8 +18,6 @@ export class ZeroPossibleService {
 
         if (isBpay) {
             
-            console.log(store.seq);
-            
             const zeroPossible = this.zeroPossibleRepository.create(
                 {
                     seq: store.seq,
