@@ -11,17 +11,19 @@ export class UserRepository extends Repository<User> {
 
   async SaveUser(token:any){
 
-    console.log(token);
-    if(!token.refresh_token){
+    console.log('auth service = ' + token.data);
+    
+    if(!token?.data || !token?.data?.refresh_token){
         throw new HttpException('refresh toekn empty',HttpStatus.BAD_REQUEST);
     }
 
     const user = new User();
     user.login_channel = 'Kakao';
-    user.refresh_token = token.refresh_token;
+    user.refresh_token = token?.data?.refresh_token;
     user.reg_id = 'usersystem';
     user.reg_dt = new Date();
 
     return this.save(user);
+
   }
 }
