@@ -1,12 +1,15 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column} from 'typeorm';
 
-@Entity()
-export class User {
+@Entity('users')
+export class Users {
     @PrimaryGeneratedColumn()
     user_no: number;
 
     @Column({ type: 'varchar', length: 20, nullable: true })
     login_channel: string;
+
+    @Column({ type: 'bigint', nullable: true })
+    token_id: string;
 
     @Column({ type: 'varchar', length: 300, nullable: true })
     refresh_token: string;

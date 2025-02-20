@@ -41,7 +41,9 @@ export class AuthService {
             console.log("kakao token2="+kakao_token);
 
             if(!!kakao_token){
+
                 this.userrepository.SaveUser(kakao_token);
+                
                 return kakao_token.data;
             }else{
                 throw new HttpException("kakao token data is empty",HttpStatus.BAD_REQUEST);

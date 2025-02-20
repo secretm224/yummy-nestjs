@@ -1,12 +1,13 @@
 // user.repository.ts
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { DataSource, Repository } from 'typeorm';
-import { User } from '../entities/user.entity';
+import { Users } from '../entities/user.entity';
+import * as jwt from 'jsonwebtoken'
 
 @Injectable()
-export class UserRepository extends Repository<User> {
+export class UserRepository extends Repository<Users> {
   constructor(private dataSource: DataSource) {
-    super(User, dataSource.createEntityManager());
+    super(Users, dataSource.createEntityManager());
   }
 
   async SaveUser(token:any){
@@ -17,8 +18,17 @@ export class UserRepository extends Repository<User> {
         throw new HttpException('refresh toekn empty',HttpStatus.BAD_REQUEST);
     }
 
-    const user = new User();
+    let token_id = "0"; 
+    if(!!token?.data.id_token){
+      const user_info = jwt.decode(token.data.id_token);
+      if(!!user_info){
+        token_id = user_info?.sub?.toString() ?? "0";
+      }
+    }
+
+    const user = new Users();
     user.login_channel = 'Kakao';
+    user.token_id = token_id;
     user.refresh_token = token?.data?.refresh_token;
     user.reg_id = 'usersystem';
     user.reg_dt = new Date();
