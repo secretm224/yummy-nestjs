@@ -5,7 +5,7 @@ import { StoreLocationInfoTbl } from 'src/entities/store_location_info_tbl.entit
 import { ZeroPossibleMarket } from 'src/entities/zero_possible_market.entity';
 import { Repository, DataSource } from 'typeorm';
 import { LoggerService } from '../kafka/logger.service';
-
+import {Util} from '../util/datautil';
 import * as fs from 'fs';
 import * as path from 'path';
 
@@ -88,7 +88,7 @@ export class StoreService {
 		if (existingStore) {
 			existingStore.lat = store.lat ?? existingStore.lat; // 기본값으로 기존 lat 사용
 			existingStore.lng = store.lng ?? existingStore.lng; // 기본값으로 기존 lng 사용
-			existingStore.chg_dt = new Date();
+			existingStore.chg_dt = Util.GetKstDate();
 			existingStore.chg_id = 'system';
 			
 			await this.storeRepository.update(

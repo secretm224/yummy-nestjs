@@ -5,7 +5,7 @@ import { Users } from '../entities/user.entity';
 import { UserRepository } from './user.repository';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Users])], // UserRepository가 아닌 User Entity를 등록
+  imports: [TypeOrmModule.forFeature([Users,UserRepository])], // UserRepository가 아닌 User Entity를 등록
   providers: [AuthService,UserRepository],
   exports:[AuthService,UserRepository]
 

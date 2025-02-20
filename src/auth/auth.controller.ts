@@ -1,6 +1,6 @@
 import { Controller ,Post,Get,Query,Res,HttpException,HttpStatus, Body} from '@nestjs/common';
-import {Response} from 'express'
-import * as path from 'path';
+// import {Response} from 'express'
+// import * as path from 'path';
 
 import { LoggerService } from '../kafka/logger.service';
 import {AuthService} from './auth.service';
@@ -18,9 +18,7 @@ export class AuthController {
 
     @Post('kakao/callback')
     async GetKaKaoAuthCode(@Body("code") code:string){
-
-        console.log('kakao callback code = '+code);
-
+        //console.log('kakao callback code = '+code);
         const logMessage: any = {
                                     log_type: "auth",
                                     log_channel: "kakao",
@@ -32,9 +30,7 @@ export class AuthController {
 
        if(!!code){
             const kakao_token = await this.auth_service.GetKaKaoToken(code);
-            
-            console.log('kakao kakao_token = '+kakao_token);
-
+           // console.log('kakao kakao_token = '+kakao_token);
             const token_logMessage: any = {
                                         log_type: "auth",
                                         log_channel: "kakao",
@@ -62,11 +58,10 @@ export class AuthController {
     async GetUserInfoByAccessToken(@Body("access_token") access_token:string){
        if(!!access_token){
             const userinfo = await this.auth_service.GetKakaoUserInfo(access_token);
-            console.log(userinfo);
+           // console.log(userinfo);
             return userinfo;
        }else{
             return new HttpException('get userinfo failed by access tokens',HttpStatus.BAD_REQUEST);
        }
     }
-
 }

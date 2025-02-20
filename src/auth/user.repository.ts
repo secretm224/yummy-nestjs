@@ -2,7 +2,8 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { DataSource, Repository } from 'typeorm';
 import { Users } from '../entities/user.entity';
-import * as jwt from 'jsonwebtoken'
+import * as jwt from 'jsonwebtoken';
+import {Util} from '../util/datautil';
 
 @Injectable()
 export class UserRepository extends Repository<Users> {
@@ -27,13 +28,12 @@ export class UserRepository extends Repository<Users> {
     }
 
     const user = new Users();
-    user.login_channel = 'Kakao';
+    user.login_channel = 'KAKAO';
     user.token_id = token_id;
     user.refresh_token = token?.data?.refresh_token;
     user.reg_id = 'usersystem';
-    user.reg_dt = new Date();
+    user.reg_dt = Util.GetKstDate();
 
     return this.save(user);
-
   }
 }

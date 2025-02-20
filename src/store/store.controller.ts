@@ -5,6 +5,8 @@ import { ZeroPossibleMarket } from '../entities/zero_possible_market.entity';
 import { LoggerService } from '../kafka/logger.service';
 import { ZeroPossibleService } from 'src/zero_possible_market/zeroPossible.service';
 import { StoreLocationInfoService } from 'src/store_location_info/storeLocation.service';
+import {Util} from '../util/datautil';
+
 
 //import { Controller, Get, Post, Body, Param } from '@nestjs/common';
 //import { SearchService } from '../elasticsearch/elasticsearch.service';
@@ -27,7 +29,7 @@ export class StoreController {
 
 	@Post('/add')
 	async create(@Body() store: Partial<Store>): Promise<Store | null> {
-		store.reg_dt = new Date();
+		store.reg_dt = Util.GetKstDate();
 		store.reg_id = 'system';
 
 		try {

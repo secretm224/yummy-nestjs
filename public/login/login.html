@@ -23,11 +23,11 @@
         window.onload = function(){
             
             if(IsKakaoToken()){
-                console.log('kakao access token is ok');
+                //console.log('kakao access token is ok');
                 GetKakoUserInfoByAccessToken();
             }else{
                 const param_code = GetLoginCode();
-                console.log('login code' + param_code);
+                //console.log('login code' + param_code);
             
                 if(!!param_code){
                     KaKaoLogin(param_code);
@@ -57,12 +57,10 @@
                 const userinfo = tokens.kakao_payload;
 
                 if(!!access_token){
-
                     removeCodeFormUrl();
-
                     Kakao.Auth.setAccessToken(access_token);
-
                     document.getElementById("login-container").style.display = 'none';
+                    document.getElementById("profile-image").src = userinfo.picture;
                     document.getElementById("nickname").innerText = userinfo.nickname +"님 안녕하세요";
                     document.getElementById("success-container").style.display = 'block';
                 }
@@ -72,11 +70,12 @@
         //error 확인
         async function KaKaoLogout(){
             Kakao.Auth.logout().then(function(response){
-                console.log(response);
+                //console.log(response);
                 if(!Kakao.Auth.getAccessToken()){
                     alert('로그아웃 되었습니다.');
                     document.getElementById("success-container").style.display = 'none';
                     document.getElementById("nickname").innerText ="";
+                    document.getElementById("profile-image").src = "";
                     document.getElementById("login-container").style.display = 'block';
                 }
             })
@@ -106,7 +105,7 @@
                                             });
 
                 const token_data = await response.json();                                             
-                console.log(token_data);
+                //console.log(token_data);
                 if(!!token_data){
                     document.getElementById("login-container").style.display = 'none';
                     document.getElementById("profile-image").src = token_data.image;
