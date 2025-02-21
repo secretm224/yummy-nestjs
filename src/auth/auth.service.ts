@@ -3,15 +3,12 @@ import axios from 'axios';
 import e from 'express';
 import * as path from 'path';
 import { UserRepository } from './user.repository';
-import { access } from 'fs';
-
-
-
+// import { access } from 'fs';
 
 @Injectable()
 export class AuthService {
     constructor(private readonly userrepository:UserRepository){}
-    private readonly api_key = "2fcfa96247ae04a4ad26cd853f1e5551";
+    private readonly api_key = process?.env?.KAKAO_CLIENT_ID ?? "";
 
     // https://kauth.kakao.com/oauth/token" \
     // -H "Content-Type: application/x-www-form-urlencoded;charset=utf-8" \
@@ -26,9 +23,9 @@ export class AuthService {
         }
 
         try{
-            const url = "https://kauth.kakao.com/oauth/token";
+            const url = process.env.KAKAO_AUTH_URL ?? "";
             //const redirect ="http://secretm-yummy.com:3000/auth/kakao/callback";
-            const redirect = 'http://secretm-yummy.com:3000/login/login.html';
+            const redirect = process.env.KAKAO_REDIRECT_URL ?? "";
             const param = new URLSearchParams({
                                                 grant_type:'authorization_code',
                                                 client_id:this.api_key,
@@ -58,22 +55,8 @@ export class AuthService {
             throw new HttpException('accesss tokens is empty',HttpStatus.BAD_REQUEST);
         }
 
-        //access token 유효성 체크 추가 
-        //access token 으로 id 조회 
-        //console.log('access_token = '+access_token);
         try {
-
-            const check_url = "https://kapi.kakao.com/v1/user/access_token_info";
-            const check_header = {headers:{'Authorization': `Bearer ${access_token}`}};
-            const check_token = await axios.get(check_url,check_header);
-            // console.log('check token = '+check_token);
-            
-            //token 만료
-            if(check_token.status != HttpStatus.OK){
-            // 토큰 재발급 로직을 태운다
-            }
-
-            const url = 'https://kapi.kakao.com/v2/user/me';
+            const url = `${process.env.KAKAO_API_URL ?? ""}/v2/user/me`;
             const header = {headers:{
                 'Authorization': `Bearer ${access_token}`, 
                 'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
@@ -84,15 +67,11 @@ export class AuthService {
             });
 
             const userinfo = await axios.post(url, data, header);
-            // console.log(userinfo.data);
-            // console.log(userinfo.data.kakao_account.profile.nickname);
-            // console.log(userinfo.data.kakao_account.profile.thumbnail_image_url);
-
             const nickname = userinfo.data.kakao_account.profile.nickname;
             const image = userinfo.data.kakao_account.profile.thumbnail_image_url;
 
             if(!!nickname && !!image){
-                return {nickname:nickname,image:image};
+                return {nickname:nickname,picture:image};
             }
 
         }catch(error){
@@ -108,8 +87,7 @@ export class AuthService {
         }
 
         let is_token = false;
-
-        const url = 'https://kapi.kakao.com/v1/user/access_token_info';
+        const url = `${process.env.KAKAO_API_URL ?? ""}/v1/user/access_token_info`;
         const header = {headers:{'Authorization': `Bearer ${access_token}`}};
         const check_token = await axios.get(url,header);
 
@@ -128,13 +106,13 @@ export class AuthService {
     // -d "client_id=${REST_API_KEY}" \
     // -d "refresh_token=${USER_REFRESH_TOKEN}"
 
-    async GetAccessTokenByRefreshToken(access_token:string , refresh_token:string){
-        //	https://kauth.kakao.com/oauth/token
-        if(!access_token || !refresh_token){
+    async GetAccessTokenByRefreshToken(refresh_token:string){
+
+        if(!refresh_token){
             throw new HttpException('bad request',HttpStatus.BAD_REQUEST);
         }
 
-        const url = "https://kauth.kakao.com/oauth/token";
+        const url = process.env.KAKAO_AUTH_URL ?? "";
         const rest_api_key = this.api_key;
         const header = {headers:{'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'}};
         const data = new URLSearchParams({
@@ -147,7 +125,8 @@ export class AuthService {
          if(!!ax_token){
             return {
                 access_token:ax_token.data.access_token,
-                refresh_token:ax_token.data.access_token
+                refresh_token:ax_token.data.access_token,
+                id_token:ax_token.data.id_token
             }
          }
     }

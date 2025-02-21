@@ -21,14 +21,12 @@
         }
  
         window.onload = function(){
-            
             if(IsKakaoToken()){
                 //console.log('kakao access token is ok');
                 GetKakoUserInfoByAccessToken();
             }else{
                 const param_code = GetLoginCode();
                 //console.log('login code' + param_code);
-            
                 if(!!param_code){
                     KaKaoLogin(param_code);
                 }
@@ -105,15 +103,21 @@
                                             {
                                                 method:'POST',
                                                 headers:{'Content-Type':'application/json'},
-                                                body:JSON.stringify({access_token:access_token})
+                                                body:JSON.stringify({access_token:access_token}),
+                                                credentials: 'include'
                                             });
 
-                const token_data = await response.json();                                             
+                const token_data = await response.json();     
+                const new_access_token = token_data.kakao_access_token;
+                const userinfo = token_data.kakao_payload;    
+
+                if(new_access_token)
+                    Kakao.Auth.setAccessToken(new_access_token);                                   
                 //console.log(token_data);
-                if(!!token_data){
+                if(!!userinfo){
                     document.getElementById("login-container").style.display = 'none';
-                    document.getElementById("profile-image").src = token_data.image;
-                    document.getElementById("nickname").innerText = token_data.nickname +" 님 안녕하세요";
+                    document.getElementById("profile-image").src = userinfo.picture;
+                    document.getElementById("nickname").innerText = userinfo.nickname +" 님 안녕하세요";
                     document.getElementById("success-container").style.display = 'block';
                 }
             }

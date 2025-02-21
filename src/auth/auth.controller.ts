@@ -62,25 +62,46 @@ export class AuthController {
     }
 
     @Post("kakao/userinfo")
-    async GetUserInfoByAccessToken(@Body("access_token") access_token:string,@Req() req: Request){
-        //const refreshToken = req.cookies.refresh_token; 
-
-
-
+    async GetUserInfoByAccessToken(@Body("access_token") access_token:string,
+                                   @Req() req: Request,
+                                   @Res() res:Response){
+                                    
        if(!!access_token){
-
             const check_token = await this.auth_service.CheckAccessTokenInfo(access_token);
-
-
-
-
-
             
-            const userinfo = await this.auth_service.GetKakaoUserInfo(access_token);
-           // console.log(userinfo);
-            //return userinfo;
-       }else{
-            //return new HttpException('get userinfo failed by access tokens',HttpStatus.BAD_REQUEST);
-       }
+            if(check_token){
+                const userinfo = await this.auth_service.GetKakaoUserInfo(access_token);
+                if(userinfo){
+                    res.json({kakao_access_token:access_token,
+                              kakao_payload:userinfo}) 
+                }else{
+                    return new HttpException('get userinfo failed by access tokens',HttpStatus.BAD_REQUEST);
+                }
+            }else{
+               const refrech_token = req.cookies['refrech_token'];
+               if(refrech_token){
+                   const new_token = await this.auth_service.GetAccessTokenByRefreshToken(refrech_token);
+                   if(new_token){
+                    const new_access_token = new_token.access_token;
+                    const new_refresh_token = new_token.refresh_token;
+                    const payload = jwt.decode(new_token.id_token);
+
+                    if(!!new_refresh_token){
+                        res.cookie('refrech_token',new_refresh_token,
+                                                             {
+                                                                httpOnly:true,
+                                                                secure:false,
+                                                                sameSite:true
+                                                             });
+                    }
+
+                    res.json({kakao_access_token:new_access_token,
+                              kakao_payload:payload})
+                   }else{
+                       return new HttpException('refresh token failed',HttpStatus.BAD_REQUEST);
+                   }
+                }
+            }
+        } 
     }
 }
