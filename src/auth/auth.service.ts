@@ -125,7 +125,7 @@ export class AuthService {
          if(!!ax_token){
             return {
                 access_token:ax_token.data.access_token,
-                refresh_token:ax_token.data.access_token,
+                refresh_token:ax_token.data.refresh_token,
                 id_token:ax_token.data.id_token
             }
          }
