@@ -55,10 +55,12 @@
             if(!!tokens){
                 const access_token = tokens.kakao_access_token;
                 const userinfo = tokens.kakao_payload;
-
+//                
                 if(!!access_token){
                     removeCodeFormUrl();
                     Kakao.Auth.setAccessToken(access_token);
+                    localStorage.setItem('accessToken', access_token);
+
                     document.getElementById("login-container").style.display = 'none';
                     document.getElementById("profile-image").src = userinfo.picture;
                     document.getElementById("nickname").innerText = userinfo.nickname +"님 안녕하세요";
@@ -89,8 +91,17 @@
 
         function IsKakaoToken(){
             const access_token = Kakao.Auth.getAccessToken();
+            const l_accessToken = localStorage.getItem('accessToken');
 
-            if(!!access_token) return true;
+            if(!!access_token || !!l_accessToken) {
+                if(access_token === null && !!l_accessToken){
+                    Kakao.Auth.setAccessToken(l_accessToken);
+                }else if(!!access_token && l_accessToken === null){
+                    localStorage.setItem('accessToken', access_token);
+                }
+
+                return true;
+            }
             else return false;
         }
 
@@ -111,8 +122,11 @@
                 const new_access_token = token_data.kakao_access_token;
                 const userinfo = token_data.kakao_payload;    
 
-                if(new_access_token)
-                    Kakao.Auth.setAccessToken(new_access_token);                                   
+                if(new_access_token){
+                    Kakao.Auth.setAccessToken(new_access_token);  
+                    localStorage.setItem('accessToken', access_token);
+                }
+                                                     
                 //console.log(token_data);
                 if(!!userinfo){
                     document.getElementById("login-container").style.display = 'none';

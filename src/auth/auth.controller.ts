@@ -68,7 +68,7 @@ export class AuthController {
                                     
        if(!!access_token){
             const check_token = await this.auth_service.CheckAccessTokenInfo(access_token);
-            
+
             if(check_token){
                 const userinfo = await this.auth_service.GetKakaoUserInfo(access_token);
                 if(userinfo){
