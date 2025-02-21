@@ -1,6 +1,13 @@
 import { Inject, Injectable, OnModuleInit,OnModuleDestroy } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
 import { Kafka } from 'kafkajs';
+import {Util} from '../util/datautil';
+
+//file log
+import * as fs from 'fs';
+import * as path from 'path';
+
+
 
 @Injectable()
 export class LoggerService implements OnModuleInit, OnModuleDestroy {
@@ -52,23 +59,38 @@ export class LoggerService implements OnModuleInit, OnModuleDestroy {
 
     
     async logTokafka(topic: string, message: any) {
-        try {
-          console.log('log start kafka', message);
+        // try {
+        //   console.log('log start kafka', message);
           
-        if(!this.client){
+        // if(!this.client){
 
-            console.error('kafka setting error');
+        //     console.error('kafka setting error');
 
-            setTimeout(() => {
-                this.client.emit(topic, message);
-            },3000);            
-        }else{
-            await this.client.emit(topic, message);
+        //     setTimeout(() => {
+        //         this.client.emit(topic, message);
+        //     },3000);            
+        // }else{
+        //     await this.client.emit(topic, message);
+        // }
+        //   console.log('log end kafka', message);
+        // } catch (error) {
+        //     console.log('failed to log to kafka', error);
+        // }
+        const data = JSON.stringify(message);
+        this.logTofile(data);
+    }
+
+    private logTofile(message: string): void 
+    {
+        const logFilePath = path.join(__dirname, `../../logs/${new Date().toDateString()}.log`);
+        const titmestamp = new Date().toISOString();
+        const logMessage = `[${titmestamp}] - ${message}\n`;
+
+        if (!fs.existsSync(path.dirname(logFilePath))) {
+            fs.mkdirSync(path.dirname(logFilePath), { recursive: true });
         }
-          console.log('log end kafka', message);
-        } catch (error) {
-            console.log('failed to log to kafka', error);
-        }
+
+        fs.appendFileSync(logFilePath, logMessage, 'utf8');
     }
   
 }

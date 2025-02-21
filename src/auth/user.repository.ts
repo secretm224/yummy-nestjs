@@ -34,6 +34,7 @@ export class UserRepository extends Repository<Users> {
     user.reg_id = 'usersystem';
     user.reg_dt = Util.GetKstDate();
 
-    return this.save(user);
+   return this.save(user);
+   
   }
 }

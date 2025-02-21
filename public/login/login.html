@@ -44,14 +44,16 @@
         async function KaKaoLogin(code){
             
             const response = await fetch('/auth/kakao/callback',
-                                    {
-                                        method:'POST',
-                                        headers:{'Content-Type':'application/json'},
-                                        body:JSON.stringify({code:code})
-                                    });
+                                        {
+                                            method:'POST',
+                                            headers:{'Content-Type':'application/json'},
+                                            body:JSON.stringify({code:code}),
+                                            credentials: 'include' // 쿠키 설정을 하기 위함
+                                        });
 
             const tokens = await response.json();
-            //console.log(tokens);
+            console.log(JSON.stringify(tokens));
+
             if(!!tokens){
                 const access_token = tokens.kakao_access_token;
                 const userinfo = tokens.kakao_payload;
@@ -64,6 +66,8 @@
                     document.getElementById("nickname").innerText = userinfo.nickname +"님 안녕하세요";
                     document.getElementById("success-container").style.display = 'block';
                 }
+            }else{
+                alert('로그인 실패 다시 시도해주세요');
             }
         }
 
