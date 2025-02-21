@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Body, Query, Param } from '@nestjs/common';
 import { SearchService } from './search.service';
-import { SearchDto } from './dto/search.dto/search.dto';
-import { SearchResultDto } from './dto/search.dto/search-result.dto';
+import { StoreDto } from './dto/store.dto/store.dto';
+import { StoreSearch } from 'src/entities/store_search.entity';
 
 @Controller('search')
 export class SearchController {
@@ -20,21 +20,28 @@ export class SearchController {
 	// ) {
 	// 	return this.searchService.addDocument(index, id, body);
 	// }
+	
+	// Test code
+	// @Get(':index')
+	// async search(
+	// 	@Param('index') index: string, 
+	// 	@Query('keyword') keyword: string
+	// ): Promise<SearchResultDto> {
+		
+	// 	const searchDto: SearchDto = {
+	// 		query: {
+	// 			match: {
+	// 				consume_keyword: keyword
+	// 			}
+	// 		}
+	// 	};
+		
+	// 	return this.searchService.search(index, searchDto);
+	// }
 
-	@Get(':index')
-	async search(
-		@Param('index') index: string, 
-		@Query('keyword') keyword: string
-	): Promise<SearchResultDto> {
-		
-		const searchDto: SearchDto = {
-			query: {
-				match: {
-					consume_keyword: keyword
-				}
-			}
-		};
-		
-		return this.searchService.search(index, searchDto);
+	@Get('allData')
+	async getAllStores(
+	): Promise<StoreSearch[]> {
+		return this.searchService.searchAll<StoreSearch>('yummy-index', StoreSearch);
 	}
 }

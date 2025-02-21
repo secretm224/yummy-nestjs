@@ -1,35 +1,29 @@
 import { Injectable } from '@nestjs/common';
 import { ElasticsearchService } from '@nestjs/elasticsearch';
-import { SearchDto } from './dto/search.dto/search.dto';
-import { SearchResultDto } from './dto/search.dto/search-result.dto';
+import { StoreSearch } from 'src/entities/store_search.entity';
+import { SearchResponse } from '@elastic/elasticsearch/lib/api/types';
 
 @Injectable()
 export class SearchService {
     constructor(private readonly elasticService: ElasticsearchService) {}
 
-//   async createIndex(index: string) {
-//     return this.elasticsearchService.indices.create({ index });
-//   }
-
-//   async addDocument(index: string, id: string, body: any) {
-//     return this.elasticsearchService.index({
-//       index,
-//       id,
-//       body,
-//     });
-//   }
-
-    async search(index: string, searchDto: SearchDto): Promise<SearchResultDto> {
-        
-        console.log(searchDto);
-
-        const response = await this.elasticService.search({
-            index,
-            body: searchDto,
+    /*
+        특정 인덱스의 모든 데이터를 가져오는 함수 -> Elasticsearch 특성상 한번에 10,000개만 가져올 수 있으므로 주의.
+    */
+    async searchAll<T>(index: string, model: new (data: any) => T): Promise<T[]> {
+        const result: SearchResponse<any> = await this.elasticService.search({
+            index: index,
+            body: {
+                query: {
+                    match_all: {}
+                },
+                size: 10000
+            }
         });
-            
-        const hits = response.hits.hits.map(hit => hit._source);
 
-        return {hits};
+        return result.hits.hits.map(hit => new model({
+            ...hit._source, 
+            timestamp: hit._source.timestamp ? new Date(hit._source.timestamp) : undefined
+        }));
     }
 }

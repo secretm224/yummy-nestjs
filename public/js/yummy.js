@@ -227,7 +227,15 @@ var zeroPayStores = [{ name: "알바천국", lat: 37.5032355765545, lng: 127.046
             // const data = await esResponse.json();
             // console.log('Search Result:', data);
 
-            const response = await fetch('/store/all');
+            /* Elasticsearch 에서 가져오는 방식 */
+            const response = await fetch(`/search/allData`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            //const response = await fetch('/store/all'); -> ORM 방식: DB 에서 가져오는 방식
             const stores = await response.json();
 
             stores.forEach(store => {
@@ -238,7 +246,7 @@ var zeroPayStores = [{ name: "알바천국", lat: 37.5032355765545, lng: 127.046
                     lat: store.lat,
                     lng: store.lng,
                     type: store.type,
-                    isBeefulPay: store.is_beefulpay
+                    isBeefulPay: store.zero_possible
                 });
             });
             
