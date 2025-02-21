@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Query, Param } from '@nestjs/common';
+import { Controller, Get, Post, Body, Query, Param ,Headers} from '@nestjs/common';
 import { SearchService } from './search.service';
 import { StoreDto } from './dto/store.dto/store.dto';
 import { StoreSearch } from 'src/entities/store_search.entity';
@@ -39,9 +39,16 @@ export class SearchController {
 	// 	return this.searchService.search(index, searchDto);
 	// }
 
+	// async findAll(@Headers('yummy-key') apikey: string): Promise<Store[]> {
+
+
 	@Get('allData')
-	async getAllStores(
-	): Promise<StoreSearch[]> {
+	async getAllStores(@Headers('yummy-key') apikey: string): Promise<StoreSearch[]> {
+
+		if (!apikey || apikey !== process?.env?.YUMMY_KEY) {
+			throw new Error('yummy-key is invalid');
+		}
+
 		return this.searchService.searchAll<StoreSearch>('yummy-index', StoreSearch);
 	}
 }
