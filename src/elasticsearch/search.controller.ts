@@ -45,7 +45,7 @@ export class SearchController {
 	@Get('allData')
 	async getAllStores(@Headers('yummy-key') apikey: string): Promise<StoreSearch[]> {
 
-		if (!apikey || apikey !== process?.env?.YUMMY_KEY) {
+		if (!apikey || apikey !== process?.env?.YUMMY_API_KEY) {
 			throw new Error('yummy-key is invalid');
 		}
 
