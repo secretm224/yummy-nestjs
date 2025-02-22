@@ -102,6 +102,7 @@
 
                 return true;
             }
+            //if(!!access_token) return true;
             else return false;
         }
 
@@ -124,7 +125,7 @@
 
                 if(new_access_token){
                     Kakao.Auth.setAccessToken(new_access_token);  
-                    localStorage.setItem('accessToken', access_token);
+                   localStorage.setItem('accessToken', new_access_token);
                 }
                                                      
                 //console.log(token_data);
