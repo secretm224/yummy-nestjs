@@ -87,9 +87,16 @@ export class AuthService {
         }
 
         let is_token = false;
-        const url = `${process.env.KAKAO_API_URL ?? ""}/v1/user/access_token_info`;
-        const header = {headers:{'Authorization': `Bearer ${access_token}`}};
-        const check_token = await axios.get(url,header);
+        let check_token;
+
+        try{
+            const url = `${process.env.KAKAO_API_URL ?? ""}/v1/user/access_token_info`;
+            const header = {headers:{'Authorization': `Bearer ${access_token}`}};
+            const check_token = await axios.get(url,header);
+        }catch(error){
+            check_token = null;
+            is_token = false;
+        }
 
         if(!!check_token && check_token.status === HttpStatus.OK){
             is_token = true;
@@ -112,22 +119,31 @@ export class AuthService {
             throw new HttpException('bad request',HttpStatus.BAD_REQUEST);
         }
 
-        const url = process.env.KAKAO_AUTH_URL ?? "";
-        const rest_api_key = this.api_key;
-        const header = {headers:{'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'}};
-        const data = new URLSearchParams({
-                grant_type:'refresh_token',
-                client_id : rest_api_key,
-                refresh_token:refresh_token
-        });
-        
-         const ax_token = await axios.post(url, data, header);
-         if(!!ax_token){
-            return {
-                access_token:ax_token.data.access_token,
-                refresh_token:ax_token.data.refresh_token,
-                id_token:ax_token.data.id_token
+        try{
+            const url = process.env.KAKAO_AUTH_URL ?? "";
+            const rest_api_key = this.api_key;
+            const header = {headers:{'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'}};
+            const data = new URLSearchParams({
+                    grant_type:'refresh_token',
+                    client_id : rest_api_key,
+                    refresh_token:refresh_token
+            });
+            
+            const ax_token = await axios.post(url, data, header);
+            if(!!ax_token){
+                return {
+                    access_token:ax_token.data.access_token,
+                    refresh_token:ax_token.data.refresh_token,
+                    id_token:ax_token.data.id_token
+                }
             }
-         }
+        }catch(error){
+            return {
+                access_token:null,
+                refresh_token:null,
+                id_token:null
+            }
+        }
+            
     }
 }
