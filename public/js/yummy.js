@@ -213,46 +213,7 @@ var zeroPayStores = [{ name: "알바천국", lat: 37.5032355765545, lng: 127.046
 
         try {
             
-            /* Elasticsearch 테스트 코드 */
-            // const index = 'consuming_index_prod_type_prod';
-            // const keyword = '스팀게임';
-    
-            // const esResponse = await fetch(`/search/${index}?keyword=${encodeURIComponent(keyword)}`, {
-            //     method: 'GET',
-            //     headers: {
-            //         'Content-Type': 'application/json'
-            //     }
-            // });
-            
-            // const data = await esResponse.json();
-            // console.log('Search Result:', data);
-            
-            /* Redis 테스트 */
-            // const redisTest = await fetch('/redis/test', {
-            //     method: 'GET',
-            //     headers: {
-            //         'yummy-key': '123123', 
-            //         'Content-Type': 'application/json'
-            //     }
-            // }).then(res => res.json())
-            //   .then(data => console.log('✅ [Fetch Response]', data))
-            //   .catch(err => console.error('❌ [Fetch Error]', err));
-            // console.log(redisTest);
-            
-            // const key = 'test';
-
-            // const redisResp = await fetch(`/redis?key=${encodeURIComponent(key)}`, {
-            //     method: 'POST',
-            //     headers: {
-            //         'yummy-key': 'zkflsk123',
-            //         'Content-Type': 'application/json'
-            //     }
-            // });
-            
-            // console.log(redisResp);
-
-
-            /* Elasticsearch 에서 가져오는 방식 */
+            /* Elasticsearch 에서 Store 데이터를 가져오는 방식 */
             const response = await fetch(`/search/allData`, {
                 method: 'GET',
                 headers: {

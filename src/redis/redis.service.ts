@@ -12,9 +12,9 @@ export class RedisService {
     async getValue(key: string): Promise<string | null> {
         console.log("TEST!!!");
 
-        let test = await this.redis.get(key);
+        const test = await this.redis.get(key);
 
-        return await test;
+        return test;
     }
 
     async deleteValue(key: string): Promise<void> {

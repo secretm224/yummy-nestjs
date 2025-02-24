@@ -11,17 +11,16 @@ import * as path from 'path';
 
 @Injectable()
 export class LoggerService implements OnModuleInit, OnModuleDestroy {
-    private kafkaTopic: string; // .env 파일에서 불러올 토픽을 저장
+    private kafkaTopic: string; /* .env 파일에서 불러올 토픽을 저장 */ 
     private kafka: Kafka;
     private admin: any;
     
     constructor(@Inject('KAFKA_SERVICE') private client: ClientKafka) {
         const kafka_brokers = process.env.KAFKA_BROKER ? process.env.KAFKA_BROKER.split(',') : [];
-        console.log('kafka_brokers:', kafka_brokers);
+        
         this.kafka = new Kafka({
             brokers:kafka_brokers ?? [],
         });
-        
     }
 
     async onModuleInit() {

@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { ElasticsearchService } from '@nestjs/elasticsearch';
-import { StoreSearch } from 'src/entities/store_search.entity';
 import { SearchResponse } from '@elastic/elasticsearch/lib/api/types';
 
 @Injectable()
