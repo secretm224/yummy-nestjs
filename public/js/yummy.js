@@ -226,6 +226,31 @@ var zeroPayStores = [{ name: "알바천국", lat: 37.5032355765545, lng: 127.046
             
             // const data = await esResponse.json();
             // console.log('Search Result:', data);
+            
+            /* Redis 테스트 */
+            // const redisTest = await fetch('/redis/test', {
+            //     method: 'GET',
+            //     headers: {
+            //         'yummy-key': '123123', 
+            //         'Content-Type': 'application/json'
+            //     }
+            // }).then(res => res.json())
+            //   .then(data => console.log('✅ [Fetch Response]', data))
+            //   .catch(err => console.error('❌ [Fetch Error]', err));
+            // console.log(redisTest);
+            
+            // const key = 'test';
+
+            // const redisResp = await fetch(`/redis?key=${encodeURIComponent(key)}`, {
+            //     method: 'POST',
+            //     headers: {
+            //         'yummy-key': 'zkflsk123',
+            //         'Content-Type': 'application/json'
+            //     }
+            // });
+            
+            // console.log(redisResp);
+
 
             /* Elasticsearch 에서 가져오는 방식 */
             const response = await fetch(`/search/allData`, {
@@ -253,6 +278,7 @@ var zeroPayStores = [{ name: "알바천국", lat: 37.5032355765545, lng: 127.046
             
             //console.log(zeroPayStores);
 
+
             if(zeroPayStores.length <=0){
                 alert("등록된 가게가 없습니다.");
             }
@@ -262,6 +288,7 @@ var zeroPayStores = [{ name: "알바천국", lat: 37.5032355765545, lng: 127.046
 
         } catch (error) {
             console.error('Error fetching store data:', error);
+            alert('Error fetching store data:', error);
         }
     }
 

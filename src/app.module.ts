@@ -8,19 +8,19 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 
-import { StoreModule } from './store/store.module'; //store module 추가
-import { KafkaModule } from './kafka/kafka.module'; //kafka module 추가
-import { SearchModule } from './elasticsearch/search.module'; // Elasticsearch module 추가
-import { LoggerService } from './kafka/logger.service'; //kafka logger service 추가
+import { StoreModule } from './store/store.module'; 
+import { KafkaModule } from './kafka/kafka.module'; /* kafka module */
+import { SearchModule } from './elasticsearch/search.module'; /* Elasticsearch module */
+import { LoggerService } from './kafka/logger.service'; 
 import { AuthController } from './auth/auth.controller';
-import { AuthModule } from './auth/auth.module';
+import { AuthModule } from './auth/auth.module'; /* auth module */
+import { RedisModule } from './redis/redis.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       envFilePath:
         process.env.NODE_ENV === 'development' ? '.env' : '.env.production',
-      //envFilePath: '.env.local',//local
       isGlobal: true,
     }),
 
@@ -40,6 +40,7 @@ import { AuthModule } from './auth/auth.module';
     KafkaModule,
     SearchModule,
     AuthModule,
+    RedisModule
   ],
   controllers: [AppController, AuthController],
   providers: [AppService, LoggerService],
