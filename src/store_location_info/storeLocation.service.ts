@@ -32,27 +32,4 @@ export class StoreLocationInfoService {
         
         return this.storeLocationRepository.save(storeLocationInfo);
     }
-    // async create(store: Partial<Store>): Promise<ZeroPossibleMarket | null> {
-        
-    //     const isBpay = store.is_beefulpay;
-
-    //     if (isBpay) {
-            
-    //         console.log(store.seq);
-            
-    //         const zeroPossible = this.zeroPossibleRepository.create(
-    //             {
-    //                 seq: store.seq,
-    //                 name: store.name,
-    //                 use_yn: 'Y',
-    //                 reg_dt: store.reg_dt,
-    //                 reg_id: store.reg_id
-    //             }
-    //         );
-            
-    //         return this.zeroPossibleRepository.save(zeroPossible);
-    //     } else {
-    //         return null;
-    //     }
-    // }
 }

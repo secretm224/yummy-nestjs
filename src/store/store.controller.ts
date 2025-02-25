@@ -1,15 +1,12 @@
 import { Controller, Get, Post, Body } from '@nestjs/common';
 import { StoreService } from './store.service';
 import { Store } from '../entities/store.entity';
-import { ZeroPossibleMarket } from '../entities/zero_possible_market.entity';
-import { LoggerService } from '../kafka/logger.service';
 import { ZeroPossibleService } from 'src/zero_possible_market/zeroPossible.service';
+import { KafkaService } from 'src/kafka_producer/kafka.service';
 import { StoreLocationInfoService } from 'src/store_location_info/storeLocation.service';
-import {Util} from '../util/datautil';
+import { Util } from '../util/datautil';
 
 
-//import { Controller, Get, Post, Body, Param } from '@nestjs/common';
-//import { SearchService } from '../elasticsearch/elasticsearch.service';
 
 @Controller('store')
 export class StoreController {
@@ -17,19 +14,17 @@ export class StoreController {
 		private readonly storeService: StoreService,
 		private readonly zeroPossibleService: ZeroPossibleService,
 		private readonly storeLocationInfoService: StoreLocationInfoService,
-		private readonly loggerService: LoggerService,
+		private readonly loggerService: KafkaService,
 	) {}
 
 	@Get('/all')
 	async findAll(): Promise<Store[]> {
-		
-
 		return this.storeService.findAll();
 	}
 
 	@Post('/add')
 	async create(@Body() store: Partial<Store>): Promise<Store | null> {
-		store.reg_dt = Util.GetKstDate();
+		store.reg_dt = Util.GetUtcDate();
 		store.reg_id = 'system';
 
 		try {
@@ -48,40 +43,22 @@ export class StoreController {
 			
 			return saveStore;
 		} catch(err) {
-			// 로깅해야함.
       		await this.SendLog(err);
 			return null;
 		}
+
+		//return null;
 	}
-  // @Post('/add')
-  // async create(@Body() Partial<Store>): Promise<Store | null> {
-
-  //   // const storeDate: Partial<Store> = {
-  //   //   ...body,
-  //   //   reg_dt: new Date(),
-  //   //   reg_id: 'secretm'
-  //   // }
-
-  //   //const isBpay = body.is_beefulpay;
-    
-  //   //store.
-  //   //this.SendLog(store); //비동기 kafka로그 기록
-  //   //this.SendLog(zero_possible); //비동기 kafka로그 기록
-
-  //   return this.storeService.create(storeDate, isBpay);
-  // }
 
 	@Post('/update')
 	async update(@Body() store: Partial<Store>): Promise<Store | null> {
 		return this.storeService.update(store);
 	}
 
-  	// LoggerService
+  	/* LoggerService */ 
 	async SendLog(message: any) {
 		try {
-			console.log('log start kafka', message);
-			await this.loggerService.logTokafka('yummy-store', message);
-			//console.log('log end kafka', message);
+			await this.loggerService.sendMessage('yummy-store', message);
 		} catch (error) {
 			console.log('faile to log to kafka', error);
 		}

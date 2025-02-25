@@ -4,11 +4,11 @@ import { Store } from 'src/entities/store.entity'; // Store 엔티티 경로를 
 import { ZeroPossibleMarket } from 'src/entities/zero_possible_market.entity'; // Store 엔티티 경로를 확인하세요
 import { StoreService } from './store.service';
 import { StoreController } from './store.controller';
-import { KafkaModule } from '../kafka/kafka.module';
+import { KafkaModule } from 'src/kafka_producer/kafka.module';
 import { ZeroPossibleService } from 'src/zero_possible_market/zeroPossible.service';
 import { StoreLocationInfoTbl } from 'src/entities/store_location_info_tbl.entity';
 import { StoreLocationInfoService } from 'src/store_location_info/storeLocation.service';
-//import { LoggerService } from '../kafka/logger.service'; //
+
 
 @Module({
   imports: [

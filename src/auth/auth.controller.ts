@@ -1,6 +1,7 @@
 import { Controller ,Post,Get,Query,Res,Req,HttpException,HttpStatus, Body} from '@nestjs/common';
 // import * as path from 'path';
-import { LoggerService } from '../kafka/logger.service';
+// import { LoggerService } from '../kafka/logger.service';
+import { KafkaService } from 'src/kafka_producer/kafka.service';
 import {AuthService} from './auth.service';
 import * as jwt from 'jsonwebtoken'
 import {Response,Request} from 'express'
@@ -9,12 +10,11 @@ import {Response,Request} from 'express'
 export class AuthController {
 
     constructor(
-        private readonly logger_service:LoggerService,
+        private readonly kafka_service:KafkaService,
         private readonly auth_service:AuthService
     ){}
 
     // private readonly api_key = "2fcfa96247ae04a4ad26cd853f1e5551";
-
     @Post('kakao/callback')
     //async GetKaKaoAuthCode(@Body("code") code:string){
      async GetKaKaoAuthCode(@Body("code") code:string, @Res() res:Response){
@@ -26,7 +26,7 @@ export class AuthController {
                                     data_value: code,
                                 };
 
-        await this.logger_service.logTokafka('yummy-store',logMessage);
+        await this.kafka_service.sendMessage('yummy-store',logMessage);
 
        if(!!code){
             const kakao_token = await this.auth_service.GetKaKaoToken(code);
@@ -38,7 +38,7 @@ export class AuthController {
                                         data_value: kakao_token,
                                     };
                                     
-            await this.logger_service.logTokafka('yummy-store',token_logMessage);
+            await this.kafka_service.sendMessage('yummy-store',token_logMessage);
             
             const access_token = kakao_token.access_token;
             const refresh_token = kakao_token.refresh_token;

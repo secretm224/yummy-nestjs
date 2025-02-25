@@ -4,7 +4,7 @@ import { Store } from 'src/entities/store.entity';
 import { StoreLocationInfoTbl } from 'src/entities/store_location_info_tbl.entity';
 import { ZeroPossibleMarket } from 'src/entities/zero_possible_market.entity';
 import { Repository, DataSource } from 'typeorm';
-import { LoggerService } from '../kafka/logger.service';
+import { KafkaService } from 'src/kafka_producer/kafka.service';
 import {Util} from '../util/datautil';
 import * as fs from 'fs';
 import * as path from 'path';
@@ -15,9 +15,10 @@ export class StoreService {
 		private readonly dataSource: DataSource,
 		@InjectRepository(Store)
 		private storeRepository: Repository<Store>,
-		private readonly loggerService: LoggerService
+		private readonly loggerService: KafkaService
 	) {}
 
+	/* Deprecated */
 	async findAll(): Promise<Store[]> {
 
 		const entities = await this.storeRepository.createQueryBuilder('store')
@@ -54,7 +55,7 @@ export class StoreService {
 		
 		return storeData;
 	}
-
+	
 	async findByName(name: string): Promise<Store | null> {
 		return await this.storeRepository.findOneBy({ name }) || null; // 에러 나서 await 붙여둠 나중에는 빼도 됨.
 	}
@@ -75,10 +76,6 @@ export class StoreService {
 		return this.storeRepository.save(newStore);
 	}
 
-	//this.logTofile(`store created: ${JSON.stringify(store)}`);
-	//return null;
-	// return savedStore;
-
 	async update(store: Partial<Store>): Promise<Store | null> {
 		if (!store.name) {
 			throw new Error('store name is required for update');
@@ -88,7 +85,7 @@ export class StoreService {
 		if (existingStore) {
 			existingStore.lat = store.lat ?? existingStore.lat; // 기본값으로 기존 lat 사용
 			existingStore.lng = store.lng ?? existingStore.lng; // 기본값으로 기존 lng 사용
-			existingStore.chg_dt = Util.GetKstDate();
+			existingStore.chg_dt = Util.GetUtcDate();
 			existingStore.chg_id = 'system';
 			
 			await this.storeRepository.update(
@@ -106,38 +103,4 @@ export class StoreService {
 
 		return null;
 	}
-
-	private logTofile(message: string): void {
-
-		const logFilePath = path.join(__dirname, '../../logs/create_store.log');
-		const titmestamp = new Date().toISOString();
-		const logMessage = `[${titmestamp}] - ${message}\n`;
-
-		if (!fs.existsSync(path.dirname(logFilePath))) {
-			fs.mkdirSync(path.dirname(logFilePath), { recursive: true });
-		}
-
-		fs.appendFileSync(logFilePath, logMessage, 'utf8');
-	}
-	
-	/**
-	 * 제네릭한 저장 함수 (중복 제거 + 로깅 포함)
-	 * 
-	 * @param manager 
-	 * @param entityClass 
-	 * @param data 
-	 * @returns 
-	 */
-	// private async saveEntityWithLog<T>(manager: any, entityClass: { new(): T }, data: Partial<T>): Promise<T> {
-	// 	const entity = manager.create(entityClass, data);
-	// 	const savedEntity = await manager.save(entity);
-		
-	// 	// Kafka 로그 전송
-	// 	this.loggerService.logTokafka('entity-created', {
-	// 	  entity: entityClass.name,
-	// 	  data: savedEntity
-	// 	});
-		
-	// 	return savedEntity;
-	// }
 }

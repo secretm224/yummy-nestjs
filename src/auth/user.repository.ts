@@ -32,7 +32,7 @@ export class UserRepository extends Repository<Users> {
     user.token_id = token_id;
     user.refresh_token = token?.data?.refresh_token;
     user.reg_id = 'usersystem';
-    user.reg_dt = Util.GetKstDate();
+    user.reg_dt = Util.GetUtcDate();
 
    return this.save(user);
    

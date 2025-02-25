@@ -1,13 +1,8 @@
-
 export class Util {
 
-    static GetKstDate():Date{
+    static GetUtcDate(): Date{
         let date = new Date();
-        
-        if(process.env.NODE_ENV === 'production'){
-            date = new Date(date.getTime() + 9 * 60 * 60 * 1000);
-        }
-
-        return date;
+        const utc_date = date.toISOString() as unknown as Date;
+        return utc_date;
     } 
 }

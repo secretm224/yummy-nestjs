@@ -11,10 +11,10 @@ export class ZeroPossibleMarket {
     @Column({ type: 'char', length: 1, nullable: true })
     use_yn: string;
 
-    @Column({ type: 'datetime', nullable: false })
+    @Column({ type: 'timestamp', nullable: false })
     reg_dt: Date;
     
-    @Column({ type: 'datetime', nullable: true })
+    @Column({ type: 'timestamp', nullable: true })
     chg_dt: Date;
 
     @Column({ type: 'varchar', length: 25, nullable: false })

@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn, BeforeInsert } from 'typeorm';
 import { ZeroPossibleMarket } from '../entities/zero_possible_market.entity';
 import { StoreLocationInfoTbl } from './store_location_info_tbl.entity';
 
@@ -16,18 +16,18 @@ export class Store {
     @Column({ type: 'char', length: 1, default: 'Y', nullable: true })
     use_yn: string;
 
-    @Column({ type: 'datetime', nullable: false })
+    @Column({ type: 'timestamp', nullable: false })
     reg_dt: Date;
 
     @Column({ type: 'varchar', length: 25, nullable: false })
     reg_id: string;
 
-    @Column({ type: 'datetime', nullable: true })
+    @Column({ type: 'timestamp', nullable: true })
     chg_dt: Date;
 
     @Column({ type: 'varchar', length: 25, nullable: true })
     chg_id: string;
-
+    
     /* 아래 구조는 개선이 필요해 보임 */
     is_beefulpay: boolean;
     address: string;

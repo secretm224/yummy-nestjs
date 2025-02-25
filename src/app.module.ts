@@ -9,14 +9,14 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 
 import { StoreModule } from './store/store.module'; 
-// import { KafkaModule } from './kafka/kafka.module'; /* kafka module */
-import { KafkaModule } from './kafka_producer/kafka.module';
-import { SearchModule } from './elasticsearch/search.module'; /* Elasticsearch module */
-import { LoggerService } from './kafka/logger.service'; 
+import { KafkaModule } from './kafka_producer/kafka.module'; /* kafka module */
+import { KafkaService } from './kafka_producer/kafka.service';
+import { SearchModule } from './elasticsearch/search.module'; /* Elasticsearch module */ 
 import { AuthController } from './auth/auth.controller';
 import { AuthModule } from './auth/auth.module'; /* auth module */
 import { RedisModule } from './redis/redis.module'; /* redis module */
 import { RequestIpMiddleware } from './middlware/request-ip.middleware';
+import { KafkaProvider } from './kafka_producer/kafka.provider';
 
 @Module({
 	imports: [
@@ -25,17 +25,20 @@ import { RequestIpMiddleware } from './middlware/request-ip.middleware';
 				process.env.NODE_ENV === 'development' ? '.env' : '.env.production',
 			isGlobal: true,
 		}),
-
 		ServeStaticModule.forRoot({
 			rootPath: join(process.cwd(), 'public'),
 			serveRoot: '/public',
 		}),
-
 		TypeOrmModule.forRootAsync({
 			imports: [ConfigModule],
 			inject: [ConfigService],
 			useFactory: (configService: ConfigService) => {
-				return typeOrmConfig(configService);
+				const baseConfig = typeOrmConfig(configService);
+				return {
+                    ...baseConfig,
+                    timezone: 'Z', /* MySQL의 경우 UTC로 강제 저장 */ 
+                };
+				//return typeOrmConfig(configService);
 			},
 		}),
 		StoreModule,
@@ -45,7 +48,7 @@ import { RequestIpMiddleware } from './middlware/request-ip.middleware';
 		RedisModule
 	],
 	controllers: [AppController, AuthController],
-	providers: [AppService, LoggerService],
+	providers: [AppService, KafkaService, KafkaProvider],
 })
 
 /* Ip 추적을 위함 */

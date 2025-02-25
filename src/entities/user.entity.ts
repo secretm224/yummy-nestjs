@@ -14,13 +14,13 @@ export class Users {
     @Column({ type: 'varchar', length: 300, nullable: true })
     refresh_token: string;
 
-    @Column({ type: 'datetime', nullable: true })
+    @Column({ type: 'timestamp', nullable: true })
     reg_dt: Date;
 
     @Column({ type: 'varchar', length: 25, nullable: true })
     reg_id: string;
 
-    @Column({ type: 'datetime', nullable: true })
+    @Column({ type: 'timestamp', nullable: true })
     chg_dt: Date;
 
     @Column({ type: 'varchar', length: 25, nullable: true })
