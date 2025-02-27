@@ -21,15 +21,24 @@
         }
  
         window.onload = function(){
-            if(IsKakaoToken()){
-                //console.log('kakao access token is ok');
-                GetKakoUserInfoByAccessToken();
+            
+            // if(IsKakaoToken()){
+            //     //console.log('kakao access token is ok');
+            //     GetKakoUserInfoByAccessToken();
+            // }else{
+            //     const param_code = GetLoginCode();
+            
+            //     //console.log('login code' + param_code);
+            //     if(!!param_code){
+            //       KaKaoLogin(param_code);
+            //     }
+            // }
+
+            const param_code = GetLoginCode();
+            if(!!param_code){
+                KaKaoLogin(param_code);
             }else{
-                const param_code = GetLoginCode();
-                //console.log('login code' + param_code);
-                if(!!param_code){
-                    KaKaoLogin(param_code);
-                }
+                GetKakoUserInfoByAccessToken();
             }
         }
 
@@ -40,7 +49,6 @@
         }
 
         async function KaKaoLogin(code){
-            
             const response = await fetch('/auth/kakao/callback',
                                         {
                                             method:'POST',
@@ -50,7 +58,6 @@
                                         });
 
             const tokens = await response.json();
-            console.log(JSON.stringify(tokens));
 
             if(!!tokens){
                 const access_token = tokens.kakao_access_token;
@@ -60,6 +67,7 @@
                     removeCodeFormUrl();
                     Kakao.Auth.setAccessToken(access_token);
                     localStorage.setItem('accessToken', access_token);
+                    
 
                     document.getElementById("login-container").style.display = 'none';
                     document.getElementById("profile-image").src = userinfo.picture;
@@ -74,7 +82,7 @@
         //error 확인
         async function KaKaoLogout(){
             Kakao.Auth.logout().then(function(response){
-                //console.log(response);
+                
                 if(!Kakao.Auth.getAccessToken()){
                     alert('로그아웃 되었습니다.');
                     document.getElementById("success-container").style.display = 'none';
@@ -91,24 +99,36 @@
 
         function IsKakaoToken(){
             const access_token = Kakao.Auth.getAccessToken();
-            const l_accessToken = localStorage.getItem('accessToken');
+            //const l_accessToken = localStorage.getItem('accessToken');
 
-            if(!!access_token || !!l_accessToken) {
-                if(access_token === null && !!l_accessToken){
-                    Kakao.Auth.setAccessToken(l_accessToken);
-                }else if(!!access_token && l_accessToken === null){
-                    localStorage.setItem('accessToken', access_token);
-                }
+            // if(!!access_token || !!l_accessToken) {
+            //     if(access_token === null && !!l_accessToken){
+            //         Kakao.Auth.setAccessToken(l_accessToken);
+            //     }else if(!!access_token && l_accessToken === null){
+            //         localStorage.setItem('accessToken', access_token);
+            //     }
 
-                return true;
-            }
-            //if(!!access_token) return true;
+            //     return true;
+            // }
+            if(!!access_token) return true;
             else return false;
         }
 
         async function GetKakoUserInfoByAccessToken()
         {
-            const access_token = Kakao.Auth.getAccessToken();
+            let access_token = Kakao.Auth.getAccessToken();
+            let l_accessToken = localStorage.getItem('accessToken');
+            
+            if(access_token === null && !!l_accessToken){
+                Kakao.Auth.setAccessToken(l_accessToken);
+                access_token = l_accessToken;
+            }else if(!!access_token && l_accessToken === null){
+                localStorage.setItem('accessToken', access_token);
+                l_accessToken = access_token;
+
+            }
+
+            //const access_token = Kakao.Auth.getAccessToken();
             if(!!access_token){
                 const url ='/auth/kakao/userinfo';
                 const response = await fetch(url,
