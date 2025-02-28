@@ -1,0 +1,150 @@
+@import url('https://cdn.jsdelivr.net/npm/pretendard@1.3.8/dist/web/static/pretendard.css');
+
+body {
+    font-family: "Comic Sans MS", "Pretendard", Arial, sans-serif;
+    background-color: #FFF8DC;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+/* ✅ 푸터 스타일 */
+footer {
+    text-align: center;
+    padding: 15px;
+    font-size: 14px;
+    color: #333;
+    background-color: #FFFAF0;
+    border-top: 1px solid #FFA500;
+    margin-top: auto;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+/* ✅ 헤더 스타일 (푸터와 통일된 스타일 적용) */
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #FFFAF0;
+    padding: 15px 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 1000;
+    border-bottom: 1px solid #FFA500;
+}
+
+/* ✅ 햄버거 버튼 위치 조정 */
+.hamburger-menu {
+    font-size: 24px;
+    cursor: pointer;
+    padding: 10px;
+    position: absolute;
+    right: 40px;
+}
+
+/* 사이드바 스타일 */
+.sidebar {
+    position: fixed;
+    top: 0;
+    right: -250px; /* 처음에는 숨김 */
+    width: 250px;
+    height: 100%;
+    background: #FFF8DC;
+    box-shadow: -2px 0 10px rgba(0, 0, 0, 0.2);
+    transition: right 0.3s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 80px; /* ✅ 헤더와 겹치지 않도록 여백 추가 */
+}
+
+/* 사이드바가 활성화될 때 */
+.sidebar.active {
+    right: 0;
+}
+
+/* 닫기 버튼 */
+.sidebar .close-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    font-size: 20px;
+    cursor: pointer;
+}
+/* 🟠 프로필 이미지 */
+.sidebar .profile-info img {
+    width: 60px; /* ✅ 사이즈 조정 */
+    height: 60px;
+    border-radius: 50%;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    margin-bottom: 10px;
+}
+
+/* 🟠 닉네임 스타일 */
+.sidebar .profile-info p {
+    font-size: 16px;
+    font-weight: bold;
+    color: #3C1E1E;
+}
+/* 리스트 스타일 */
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+    width: 100%;
+    text-align: center;
+}
+
+/* 각 리스트 항목에 구분선 추가 */
+.sidebar ul li {
+    padding: 15px 0;
+    width: 100%;
+    border-bottom: 1px solid #FFD700; /* 노란색 구분선 */
+}
+
+/* 마지막 항목은 구분선 제거 */
+.sidebar ul li:last-child {
+    border-bottom: none;
+}
+
+/* 리스트 항목의 링크 스타일 */
+.sidebar ul li a {
+    text-decoration: none;
+    color: #3C1E1E;
+    font-weight: bold;
+    display: block;
+    padding: 10px 0;
+    transition: 0.3s;
+}
+
+/* 호버 효과 */
+.sidebar ul li a:hover {
+    background-color: #FFD700;
+}
+
+/* 로그인 버튼 스타일 수정 */
+.sidebar .login-button {
+    width: 80%;
+    text-align: center;
+    display: block;
+    margin: 20px auto; /* 🟢 위쪽 여백 추가해서 헤더와 겹치지 않도록 조정 */
+    padding: 12px 0;
+    background-color: #FF8C00;
+    color: white;
+    font-weight: bold;
+    border-radius: 8px;
+    text-decoration: none;
+}
+
+.sidebar .login-button:hover {
+    background-color: #E67E22;
+}

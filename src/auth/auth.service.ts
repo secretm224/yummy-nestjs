@@ -93,18 +93,20 @@ export class AuthService {
             const url = `${process.env.KAKAO_API_URL ?? ""}/v1/user/access_token_info`;
             const header = {headers:{'Authorization': `Bearer ${access_token}`}};
             const check_token = await axios.get(url,header);
+
+            if(!!check_token && check_token.status === HttpStatus.OK){
+                is_token = true;
+            }else {
+                is_token = false;
+            }
+            
+            return is_token;
+
         }catch(error){
             check_token = null;
             is_token = false;
         }
-
-        if(!!check_token && check_token.status === HttpStatus.OK){
-            is_token = true;
-        }else {
-            is_token = false;
-        }
-
-        return is_token;
+       
     }
 
     // curl -v -X POST "https://kauth.kakao.com/oauth/token" \

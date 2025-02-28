@@ -21,18 +21,6 @@
         }
  
         window.onload = function(){
-            
-            // if(IsKakaoToken()){
-            //     //console.log('kakao access token is ok');
-            //     GetKakoUserInfoByAccessToken();
-            // }else{
-            //     const param_code = GetLoginCode();
-            
-            //     //console.log('login code' + param_code);
-            //     if(!!param_code){
-            //       KaKaoLogin(param_code);
-            //     }
-            // }
 
             const param_code = GetLoginCode();
             if(!!param_code){
@@ -128,7 +116,6 @@
 
             }
 
-            //const access_token = Kakao.Auth.getAccessToken();
             if(!!access_token){
                 const url ='/auth/kakao/userinfo';
                 const response = await fetch(url,

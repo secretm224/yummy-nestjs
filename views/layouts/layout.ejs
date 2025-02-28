@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+
+    <!-- 공통 CSS -->
+     <link rel="stylesheet" href="/css/common.css">
+     <script src="/js/common.js"></script>
+
+    <%- typeof css !== "undefined" ? css : "" %>
+     <!-- <%- css %> -->
+</head>
+<body>
+    <header>
+        <!-- 제목 정해야함 -->
+        <h1></h1> 
+        <div class="hamburger-menu" onclick="toggleSidebar()">☰</div>
+    </header>
+
+    <div class="sidebar" id="sidebar">
+        <span class="close-btn" onclick="toggleSidebar()">✖</span>
+        <ul>
+            <% if (typeof user !== 'undefined' && user) { %>
+                <li>
+                    <img src="<%= user.profileImage %>" alt="프로필" class="profile-img">
+                    <p><strong><%= user.nickname %></strong></p>
+                </li>
+                <li><a href="#">내 정보</a></li>
+                <li><a href="#">설정</a></li>
+                <li><a href="#" onclick="logout()">로그아웃</a></li>
+            <% } else { %>
+                <li><a href="/login" class="login-button">로그인</a></li>
+            <% } %>
+
+            <li><a href="#" class="">준비 중</a></li>
+        </ul>
+    </div>
+    
+    <main>
+        <%- body %> <!-- 페이지별 컨텐츠 삽입 -->
+    </main>
+
+    <footer>
+        <p class="copyright">© 2025 Yummy 🍫 초코송이가 만들었어요! 🍪</p>
+        <p><a href="">support@yummymap.com</a></p>
+    </footer>
+
+   
+    <%- typeof script !== "undefined" ? script : "" %> 
+</body>
+</html>
