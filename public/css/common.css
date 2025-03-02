@@ -11,36 +11,47 @@ body {
     margin: 0;
 }
 
-/* ✅ 푸터 스타일 */
 footer {
     text-align: center;
-    padding: 15px;
-    font-size: 14px;
+    padding: 0px;
+    font-size: 12px;
     color: #333;
     background-color: #FFFAF0;
     border-top: 1px solid #FFA500;
-    margin-top: auto;
     width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
 }
 
-/* ✅ 헤더 스타일 (푸터와 통일된 스타일 적용) */
+/* ✅ 헤더 스타일 (귀엽게 변경) */
 header {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     background-color: #FFFAF0;
-    padding: 15px 20px;
+    padding: 8px 12px; /* ✅ 높이 조정 */
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     display: flex;
     justify-content: space-between;
     align-items: center;
     z-index: 1000;
     border-bottom: 1px solid #FFA500;
+}
+
+/* ✅ 헤더의 h1 폰트 귀엽게 + 이모티콘 추가 */
+header h1 {
+    font-family: "DungGeunMo", "Pretendard", cursive;
+    font-size: 20px;
+    color: #FFA500; 
+    text-shadow: 2px 2px 2px rgba(255, 182, 193, 0.5); /* 부드러운 그림자 효과 */
+}
+
+/* ✅ 헤더 이모티콘 추가 */
+header h1::before {
+    content: "🍫🍄 "; /* 왼쪽에 토끼 이모티콘 */
+}
+
+header h1::after {
+    content: " 🍫🍄"; /* 오른쪽에도 토끼 이모티콘 */
 }
 
 /* ✅ 햄버거 버튼 위치 조정 */
@@ -147,4 +158,27 @@ header {
 
 .sidebar .login-button:hover {
     background-color: #E67E22;
+}
+
+/* 푸터 위치 고정 */
+footer {
+    position: absolute;
+    bottom: 0px;
+    font-size: 14px;
+    color: #666;
+}
+/* ✅ 카피라이터 추가 */
+.copyright {
+    margin-top: 20px;
+    font-size: 12px;
+    color: #999;
+    text-align: center;
+    font-weight: bold;
+}
+.profile-img {
+    width: 80px; /* ✅ 프로필 이미지 크기 */
+    height: 80px;
+    border-radius: 50%; /* ✅ 원형 프로필 */
+    margin-bottom: 10px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
 }

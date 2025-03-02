@@ -9,13 +9,27 @@
      <link rel="stylesheet" href="/css/common.css">
      <script src="/js/common.js"></script>
 
+     <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.4/kakao.min.js"
+     integrity="sha384-DKYJZ8NLiK8MN4/C5P2dtSmLQ4KwPaoqAfyA/DfmEc1VDxu4yyC7wy6K1Hs90nka" 
+     crossorigin="anonymous"></script>
+
+     <script>
+        document.addEventListener("DOMContentLoaded", function () {
+           // console.log("🚀 DOM이 준비되었습니다.");
+            if (window.Kakao && !Kakao.isInitialized()) {
+                Kakao.init('4a2a51c4104deceb54f805eb34bc4f3d');
+                console.log("Kakao SDK 초기화 완료:", Kakao.isInitialized());
+            }
+        });
+    </script>
+
     <%- typeof css !== "undefined" ? css : "" %>
      <!-- <%- css %> -->
 </head>
 <body>
     <header>
         <!-- 제목 정해야함 -->
-        <h1></h1> 
+        <h1><a href="/" style="text-decoration: none; color: inherit;">가야 할 지도</a></h1> 
         <div class="hamburger-menu" onclick="toggleSidebar()">☰</div>
     </header>
 
@@ -24,12 +38,17 @@
         <ul>
             <% if (typeof user !== 'undefined' && user) { %>
                 <li>
-                    <img src="<%= user.profileImage %>" alt="프로필" class="profile-img">
-                    <p><strong><%= user.nickname %></strong></p>
+                    <img  src="<%= user.picture %>" alt="프로필" class="profile-img">
+                    <p><strong ><%= user.name %></strong></p>
                 </li>
                 <li><a href="#">내 정보</a></li>
                 <li><a href="#">설정</a></li>
                 <li><a href="#" onclick="logout()">로그아웃</a></li>
+
+                <% if (user.is_admin) { %>
+                    <li><a href="/admin">관리자 페이지</a></li>
+                <% } %>
+
             <% } else { %>
                 <li><a href="/login" class="login-button">로그인</a></li>
             <% } %>
@@ -43,11 +62,9 @@
     </main>
 
     <footer>
-        <p class="copyright">© 2025 Yummy 🍫 초코송이가 만들었어요! 🍪</p>
+        <p class="copyright">© 2025 Yummy 🍫 초코송이가 만들었어요! 🍄</p>
         <p><a href="">support@yummymap.com</a></p>
     </footer>
-
-   
     <%- typeof script !== "undefined" ? script : "" %> 
 </body>
 </html>

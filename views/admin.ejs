@@ -1,0 +1,28 @@
+<% // 관리자 페이지 %>
+<%- css = '<link rel="stylesheet" href="/css/admin.css">' %>
+
+<div class="admin-container">
+    <h2>관리자 페이지</h2>
+
+    <!-- ✅ 탭 메뉴 -->
+    <div class="tabs">
+        <div class="tab active" onclick="changeTab(0)">색인</div>
+        <div class="tab" onclick="changeTab(1)">추가 기능</div>
+    </div>
+
+    <!-- ✅ 첫 번째 탭: 색인 -->
+    <div class="tab-content active">
+        <h3>색인 관리</h3>
+        <button class="button" id="staticIndexBtn">정적 색인 실행하기</button>
+        <button class="button" id="dynamicIndexBtn">동적 색인 실행하기</button>
+    </div>
+
+    <!-- ✅ 두 번째 탭: 확장 가능 -->
+    <div class="tab-content">
+        <h3>추가 기능</h3>
+        <p>추가 기능이 여기에 들어갑니다.</p>
+    </div>
+</div>
+
+<!-- ✅ 관리자 페이지 전용 스크립트 추가 -->
+<%- script = '<script src="../public/js/admin.js"></script>' %>

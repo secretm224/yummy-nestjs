@@ -30,25 +30,25 @@
 ```bash
 
 # npm setup
-$ npm install
-$ npm install -g npm
-$  npm -v
+$npm install
+$npm install -g npm
+$npm -v
 
 # nestjs install 
-$ npm install -g @nestjs/cli
-$ nest -v
+$npm install -g @nestjs/cli
+$nest -v
 
 # add nestjs orm inject
-$ npm install @nestjs/platform-express
+$npm install @nestjs/platform-express
 # add nestjs kafka
-$ npm install @nestjs/microservices kafkajs
+$npm install @nestjs/microservices kafkajs
 # add config
 $npm install @nestjs/config
 # add static serve (public)
 $npm install @nestjs/serve-static
 # add env files
 $npm install dotenv
-$ npm install cross-env --save-dev
+$npm install cross-env --save-dev
 #axios
 $npm install axios @nestjs/axios
 #elasticsearch
@@ -56,6 +56,17 @@ $npm install @nestjs/elasticsearch
 #jwt 
 $npm install jsonwebtoken
 $npm install @types/jsonwebtoken --save-dev
+#http only cookie 추가
+$npm install cookie-parser
+#redis
+$npm install ioredis
+#ejs
+$npm install --save ejs
+#layout
+$npm install express-ejs-layouts
+#express session
+$npm install passport @nestjs/passport passport-local express-session
+$npm install --save-dev @types/express-session
 ```
 
 ## Compile and run the project

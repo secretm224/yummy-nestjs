@@ -1,6 +1,6 @@
 import { Controller, Get, Res ,Render ,Req} from '@nestjs/common';
 import { AppService } from './app.service';
-import { Response } from 'express';
+import { Response , Request } from 'express';
 import { join } from 'path';
 
 @Controller()
@@ -15,23 +15,11 @@ export class AppController {
 
   @Get('login')
   @Render('login') 
-  loginPage() {
+  loginPage(@Req() req: Request) {
       return {
           title: '로그인 - YummyMap',
-          css: '<link rel="stylesheet" href="/css/login.css">'
+          css: '<link rel="stylesheet" href="/css/login.css">',
+          error: req.query.error || null // 
       };
   }
-
-  // @Get('*')
-  // async setUser(@Req() req, @Res() res, next: Function) {
-  //   const user = req.cookies['user'];
-  //   if (!user) {
-  //     res.redirect('/login');
-  //   }
-
-  //   //console.log(JSON.stringify(user));
-  //   // res.json(JSON.stringify(user));
-  //   //return res.render('index', { user });
-  //   // console.log('req.url = '+req.url);
-  // }
 }

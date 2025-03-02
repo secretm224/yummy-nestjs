@@ -1,0 +1,84 @@
+/* ✅ 관리자 페이지 전체 스타일 */
+.admin-container {
+    width: 80%;
+    margin: auto;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+}
+
+/* ✅ 탭 스타일 */
+.tabs {
+    display: flex;
+    border-bottom: 3px solid #007bff;
+    margin-bottom: 10px;
+}
+
+.tab {
+    padding: 12px 20px;
+    cursor: pointer;
+    border: 1px solid #007bff;
+    border-bottom: none;
+    background-color: #e9ecef;
+    transition: 0.3s;
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+    text-align: center;
+    flex: 1;
+}
+
+.tab.active {
+    background-color: #007bff;
+    color: white;
+}
+
+/* ✅ 탭 내용 스타일 */
+.tab-content {
+    display: none;
+    padding: 20px;
+    border: 1px solid #007bff;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+/* ✅ 버튼 스타일 */
+.button {
+    padding: 12px 20px;
+    margin: 10px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    transition: 0.3s;
+    border-radius: 5px;
+    display: inline-block;
+}
+
+.button:hover {
+    background-color: #218838;
+}
+
+/* ✅ 관리자 페이지 반응형 (모바일 대응) */
+@media (max-width: 768px) {
+    .admin-container {
+        width: 95%;
+    }
+
+    .tab {
+        padding: 10px;
+        font-size: 14px;
+    }
+
+    .button {
+        font-size: 14px;
+        padding: 10px 15px;
+    }
+}

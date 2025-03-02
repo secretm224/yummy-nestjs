@@ -17,6 +17,7 @@ import { AuthModule } from './auth/auth.module'; /* auth module */
 import { RedisModule } from './redis/redis.module'; /* redis module */
 import { RequestIpMiddleware } from './middlware/request-ip.middleware';
 import { KafkaProvider } from './kafka_producer/kafka.provider';
+import { AdminModule } from './admin/admin.module';
 
 @Module({
 	imports: [
@@ -45,7 +46,8 @@ import { KafkaProvider } from './kafka_producer/kafka.provider';
 		KafkaModule,
 		SearchModule,
 		AuthModule,
-		RedisModule
+		RedisModule,
+		AdminModule
 	],
 	controllers: [AppController, AuthController],
 	providers: [AppService, KafkaService, KafkaProvider],

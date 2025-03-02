@@ -9,7 +9,7 @@ function loginWithKakao() {
 
   window.onload = function(){
     
-      Kakao.init('4a2a51c4104deceb54f805eb34bc4f3d'); // 사용하려는 앱의 JavaScript 키 입력
+    //   Kakao.init('4a2a51c4104deceb54f805eb34bc4f3d'); // 사용하려는 앱의 JavaScript 키 입력
 
       const param_code = GetLoginCode();
       if(!!param_code){
@@ -38,16 +38,15 @@ function loginWithKakao() {
 
       if(!!tokens){
           const access_token = tokens.kakao_access_token;
-          const userinfo = tokens.kakao_payload;
+          //const userinfo = tokens.kakao_payload;
 //                
           if(!!access_token){
-              removeCodeFormUrl();
-              Kakao.Auth.setAccessToken(access_token);
-              //localStorage.setItem('accessToken', access_token);
-              document.getElementById("login-container").style.display = 'none';
-              document.getElementById("profile-image").src = userinfo.picture;
-              document.getElementById("nickname").innerText = userinfo.nickname +"님 안녕하세요";
-              document.getElementById("success-container").style.display = 'block';
+           Kakao.Auth.setAccessToken(access_token);
+            //   document.getElementById("login-container").style.display = 'none';
+            //   document.getElementById("profile-image").src = userinfo.picture;
+            //   document.getElementById("nickname").innerText = userinfo.nickname +"님 안녕하세요";
+            //   document.getElementById("success-container").style.display = 'block';
+            window.location.href = "/login";
           }
       }else{
           alert('로그인 실패 다시 시도해주세요');
@@ -65,6 +64,18 @@ function loginWithKakao() {
               document.getElementById("nickname").innerText ="";
               document.getElementById("profile-image").src = "";
               document.getElementById("login-container").style.display = 'block';
+
+              const url ='/auth/logout';
+              const response =  fetch(url,
+                                            {
+                                                method:'POST',
+                                                headers:{'Content-Type':'application/json'},
+                                                credentials: 'include'
+                                            });
+                                            
+            setTimeout(() => {
+                window.location.href = "/login";
+            }, 500);
           }
       })
       .catch(function(err){
@@ -92,19 +103,12 @@ function loginWithKakao() {
 
   async function GetKakoUserInfoByAccessToken()
   {
-      let access_token = Kakao.Auth.getAccessToken();
-      //let l_accessToken = localStorage.getItem('accessToken');
-      
-    //   if(access_token === null && !!l_accessToken){
-    //       Kakao.Auth.setAccessToken(l_accessToken);
-    //       access_token = l_accessToken;
-    //   }else if(!!access_token && l_accessToken === null){
-    //       localStorage.setItem('accessToken', access_token);
-    //       l_accessToken = access_token;
+    const session_res = await fetch('/auth/session'); // 📌 현재 로그인한 사용자 정보 가져오기
+    const user = await session_res.json();
 
-    //   }
-
-      //if(!!access_token){
+    if (!user){
+        let access_token = Kakao.Auth.getAccessToken();
+        //if(!!access_token){
           const url ='/auth/kakao/userinfo';
           const response = await fetch(url,
                                       {
@@ -113,30 +117,38 @@ function loginWithKakao() {
                                           body:JSON.stringify({access_token:access_token}),
                                           credentials: 'include'
                                       });
-
+  
           const token_data = await response.json();     
           const new_access_token = token_data.kakao_access_token;
           const userinfo = token_data.kakao_payload;    
-
+  
           if(new_access_token){
               Kakao.Auth.setAccessToken(new_access_token);  
-             //localStorage.setItem('accessToken', new_access_token);
+              //localStorage.setItem('accessToken', new_access_token);
           }
+            
+            setTimeout(() => {
+                 window.location.href = "/login";
+          }, 500);
+  
+    }
+
+        
                                                
           //console.log(token_data);
-          if(!!userinfo){
-              document.getElementById("login-container").style.display = 'none';
-              document.getElementById("profile-image").src = userinfo.picture;
-              document.getElementById("nickname").innerText = userinfo.nickname +" 님 안녕하세요";
-              document.getElementById("success-container").style.display = 'block';
-          }
+        //   if(!!userinfo){
+        //       document.getElementById("login-container").style.display = 'none';
+        //       document.getElementById("profile-image").src = userinfo.picture;
+        //       document.getElementById("nickname").innerText = userinfo.nickname +" 님 안녕하세요";
+        //       document.getElementById("success-container").style.display = 'block';
+        //   }
       //}
   }
 
-  function removeCodeFormUrl(){
-      const url = new URL(window.location.href);
-      if(url.searchParams.has('code')){
-          url.searchParams.delete('code');
-          window.history.replaceState({}, document.title, url.pathname + url.search);
-      }
-  }
+//   function removeCodeFormUrl(){
+//       const url = new URL(window.location.href);
+//       if(url.searchParams.has('code')){
+//           url.searchParams.delete('code');
+//           window.history.replaceState({}, document.title, url.pathname + url.search);
+//       }
+//   }

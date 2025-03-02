@@ -5,6 +5,7 @@ import { KafkaService } from 'src/kafka_producer/kafka.service';
 import {AuthService} from './auth.service';
 import * as jwt from 'jsonwebtoken'
 import {Response,Request} from 'express'
+import * as session from 'express-session';
 
 @Controller('auth')
 export class AuthController {
@@ -16,7 +17,7 @@ export class AuthController {
 
     
     @Post('kakao/callback')
-     async GetKaKaoAuthCode(@Body("code") code:string, @Res() res:Response){
+     async GetKaKaoAuthCode(@Body("code") code:string, @Res() res:Response, @Req() req:Request){
         const logMessage: any = {
                                     log_type: "auth",
                                     log_channel: "kakao",
@@ -61,6 +62,27 @@ export class AuthController {
                                                          });
             }
 
+            const userinfo = payload as jwt.JwtPayload;
+            let is_admin = false;
+            if(!!userinfo && !! userinfo.nickname){
+               if(userinfo.nickname === '문호석' || userinfo.nickname === '신승환'){
+                   is_admin = true;
+               }
+            }
+
+            req.session.user = {
+                name: userinfo?.nickname || 'GUEST',
+                picture: userinfo?.picture || '',
+                is_admin: is_admin,
+                login_channel: 'kakao',
+            };
+            
+            console.log('세션에 저장된 유저 정보:', req.session.user);
+            
+            req.session.save(err => {
+                if (err) console.error('세션 저장 실패:', err);
+            });
+
             res.json({kakao_access_token:access_token,
                       kakao_payload:payload}) 
             
@@ -84,21 +106,39 @@ export class AuthController {
             if(check_token){
                 const userinfo = await this.auth_service.GetKakaoUserInfo(access_token);
                 if(userinfo){
-                    const user_json = {
-                        user: {
-                          name: userinfo?.nickname || '',
-                          picture: userinfo?.picture || ''
-                        }
-                      };
+                    // const user_json = {
+                    //     user: {
+                    //       name: userinfo?.nickname || '',
+                    //       picture: userinfo?.picture || ''
+                    //     }
+                    //   };
                       
-                    if(!!user_json){
-                        res.cookie('user',user_json,
-                                                    {
-                                                    httpOnly:true,
-                                                    secure:false,
-                                                    sameSite:true
-                                                    });
+                    // if(!!user_json){
+                    //     res.cookie('user',user_json,
+                    //                                 {
+                    //                                     httpOnly:true,
+                    //                                     secure:false,
+                    //                                     sameSite:true
+                    //                                 });
+                    // }
+                    let is_admin = false;
+                    if(!!userinfo && !! userinfo.nickname){
+                       if(userinfo.nickname === '문호석' || userinfo.nickname === '신승환'){
+                           is_admin = true;
+                       }
                     }
+
+                    req.session.user = {
+                        name: userinfo?.nickname || 'GUEST',
+                        picture: userinfo?.picture || '',
+                        is_admin: is_admin,
+                        login_channel: 'kakao',
+                    };
+                    
+                    console.log('세션에 저장된 유저 정보:', req.session.user);
+                    req.session.save(err => {
+                        if (err) console.error('세션 저장 실패:', err);
+                    });
 
                     return res.json({kakao_access_token:access_token,
                                      kakao_payload:userinfo}) 
@@ -141,14 +181,33 @@ export class AuthController {
                               picture: userinfo?.picture || ''
                             }
                           };
-                        if(!!user_json){
-                            res.cookie('user',user_json,
-                                                        {
-                                                            httpOnly:true,
-                                                            secure:false,
-                                                            sameSite:true
-                                                        });
+
+                        // if(!!user_json){
+                        //     res.cookie('user',user_json,
+                        //                                 {
+                        //                                     httpOnly:true,
+                        //                                     secure:false,
+                        //                                     sameSite:true
+                        //                                 });
+                        // }
+                        let is_admin = false;
+                        if(!!userinfo && !! userinfo.nickname){
+                           if(userinfo.nickname === '문호석' || userinfo.nickname === '신승환'){
+                               is_admin = true;
+                           }
                         }
+
+                        req.session.user = {
+                            name: userinfo?.nickname || 'GUEST',
+                            picture: userinfo?.picture || '',
+                            is_admin: is_admin,
+                            login_channel: 'kakao',
+                        };
+
+                        console.log('세션에 저장된 유저 정보:', req.session.user);
+                        req.session.save(err => {
+                            if (err) console.error('세션 저장 실패:', err);
+                        });        
                     }
 
                    return res.json({kakao_access_token:new_access_token,
@@ -164,11 +223,20 @@ export class AuthController {
         }
     }
 
-    // @Post('logout')
-    // logout(@Res() res: Response) {
-    //   // 쿠키 삭제
-    //   res.clearCookie('access_token');
-    //   res.redirect('/login');
-    // }
+    @Get('session')
+    async getUserInfoBySession(@Req() req: Request) {
+        return req.session.user ? req.session.user : { message: 'yummy No session found' };
+    }
+
+    @Post('logout')
+    logout(@Req() req: Request, @Res() res: Response) {
+        req.session.user = undefined;
+        
+        req.session.destroy(() => {
+            res.clearCookie('access_token');
+            res.clearCookie('refresh_token');
+            res.redirect('/');
+        });
+    }
 
 }
