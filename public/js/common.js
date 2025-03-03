@@ -50,9 +50,9 @@ async function CallKaKaoLogout() {
             credentials: 'include'
         });
 
-        alert("카카오 로그아웃 완료");
+        alert("로그아웃 완료");
         setTimeout(() => {
-            window.location.href = "/login";
+            window.location.href = "/";
         }, 500);
     } catch (err) {
         console.error("카카오 로그아웃 실패:", err);
