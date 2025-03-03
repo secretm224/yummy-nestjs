@@ -1,0 +1,214 @@
+/* ✅ 전체 페이지 스타일 */
+body {
+    background-color: #FFFFFF;
+    font-family: "Pretendard", Arial, sans-serif;
+    text-align: center;
+    padding: 0;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100vh;
+    overflow: auto; /* ✅ 지도 안 보이는 문제 해결 */
+}
+
+/* ✅ 메인 컨테이너 */
+main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    flex-grow: 1;
+    padding-top: 50px; /* ✅ 헤더와 간격 조정 */
+    padding-bottom: 80px; /* ✅ 푸터와 간격 조정 */
+}
+
+/* ✅ 지도 스타일 */
+#map {
+    width: 85%;
+    max-width: 900px;
+    height: 500px;
+    margin-top: 250px;
+    margin-bottom: 50px;
+    border-radius: 15px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    background-color: #e9e9e9;
+    display: block;
+    position: relative;
+}
+
+/* ✅ 맛집 리스트 컨테이너 */
+#store-list-container {
+    position: absolute;
+    top: 120px; /* ✅ 헤더와 간격 조정 */
+    left: 10px; /* ✅ 화면 밖으로 나가지 않게 조정 */
+    width: 250px;
+    transition: left 0.3s ease-in-out;
+    z-index: 1000;
+}
+
+/* ✅ 리스트 버튼 (보이도록 수정) */
+#store-list-toggle {
+    position: absolute;
+    top: 0px; /* ✅ 버튼이 리스트 위쪽에 위치하도록 수정 */
+    left: 10px;
+    width: 50px;
+    height: 50px;
+    background-color: #FFD700;
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+    line-height: 50px;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.3);
+    transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out;
+    z-index: 1100; /* ✅ 지도 위에 보이도록 수정 */
+}
+
+#store-list-toggle:hover {
+    background-color: #FFA500;
+    transform: scale(1.1);
+}
+
+/* ✅ 맛집 리스트 박스 */
+#store-list {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+    width: 250px;
+    padding: 15px;
+    max-height: 250px; /* ✅ 최대 5개까지만 보이도록 수정 */
+    overflow-y: auto;
+    display: none;
+    position: absolute;
+    top: 60px;
+    left: 60px;
+}
+
+/* ✅ 리스트가 활성화될 때 */
+#store-list-container.active {
+    left: 10px; /* ✅ 보이도록 수정 */
+}
+
+#store-list.active {
+    display: block;
+}
+
+/* ✅ 리스트 제목 */
+#store-list h3 {
+    font-size: 18px;
+    font-weight: bold;
+    color: #FF4500;
+    display: flex;
+    align-items: center;
+}
+
+/* ✅ 리스트 아이템 스타일 */
+#store-items {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+#store-items li {
+    background: #FFF8DC;
+    border-radius: 8px;
+    padding: 10px;
+    margin: 5px 0;
+    text-align: center;
+    font-size: 14px;
+    font-weight: bold;
+    border-left: 5px solid #FFD700;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* ✅ 푸터 위치 조정 */
+footer {
+    width: 100%;
+    text-align: center;
+    padding: 15px;
+    font-size: 12px;
+    background-color: #FFFAF0;
+    border-top: 1px solid #FFA500;
+    position: relative;
+    margin-top: auto;
+}
+
+/* ✅ 버튼 컨테이너 (맵 오른쪽에 배치) */
+.map-buttons {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 1000;
+}
+
+/* ✅ 랜덤 추천 버튼 */
+.random-button,
+.reset-button {
+    padding: 12px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.3);
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+}
+/* ✅ 등록 버튼 스타일 */
+.register-button {
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    color: white;
+    background-color: #FF8C00; /* 주황색 */
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: 0.3s;
+    box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* ✅ 버튼 호버 효과 */
+.register-button:hover {
+    background-color: #E67E22;
+    transform: scale(1.05);
+}
+
+/* ✅ 버튼을 중앙 정렬 (필요한 경우) */
+.register-button-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+/* ✅ 랜덤 추천 버튼 (초록색) */
+.random-button {
+    background-color: #32CD32;
+}
+
+.random-button:hover {
+    background-color: #2E8B57;
+}
+
+/* ✅ 맵 초기화 버튼 (주황색) */
+.reset-button {
+    background-color: #FFA500;
+}
+
+.reset-button:hover {
+    background-color: #FF6347;
+}

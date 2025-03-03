@@ -63,6 +63,8 @@ async function bootstrap() {
   //전체 페이지에서 사용할 수 있는 변수 설정
   app.use((req, res, next) => {
     res.locals.user = req.session?.user || null;
+    res.locals.error = req.query.error || null;
+    res.locals.currentPage = req.path;
     next();
   });
 

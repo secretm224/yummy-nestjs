@@ -59,3 +59,7 @@ async function CallKaKaoLogout() {
         alert("카카오 로그아웃 실패");
     }
 }
+function filterStoreList() {
+    alert('준비중 입니다');
+    return;       
+}

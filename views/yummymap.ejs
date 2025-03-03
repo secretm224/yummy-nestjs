@@ -1,0 +1,60 @@
+<% // 🍙 오늘 뭐 먹지??? 🍕 페이지 %>
+
+<!-- 네이버 지도 API -->
+<script src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=87ni0cgqze&submodules=geocoder"></script>
+
+<!-- CSS 추가 -->
+<%- css = '<link rel="stylesheet" href="/css/yummymap.css">' %>
+<!-- 
+<div class="title-container">
+    <h1>🍙 오늘 뭐 먹지? 🍕</h1>
+    <p class="subtitle">✨ 행복한 고민! 맛집을 골라볼까요? ✨</p>
+</div> -->
+
+<!-- ✅ 검색 기능 -->
+<!-- <div class="search-container">
+    <input type="text" id="searchInput" placeholder="🔍 검색할 가게명을 입력하세요!">
+    <button class="search-button" onclick="filterStoreList()">검색</button>
+</div> -->
+
+<!-- ✅ 맛집 리스트 -->
+<div id="store-list-container">
+    <div id="store-list-toggle" onclick="toggleStoreList()">📜</div>
+    <div id="store-list">
+        <h3>📌 맛집 리스트</h3>
+        <ul id="store-items"></ul>
+    </div>
+</div>
+
+<div id="recommendation"></div>
+
+<!-- ✅ 네이버 지도 -->
+<div id="map">
+    <div class="map-buttons">
+        <button class="random-button" onclick="recommendRandomStore()">🍀 랜덤 추천</button>
+        <button class="reset-button" onclick="resetMap()">🔄 맵 초기화</button>
+        <% if (typeof user !== 'undefined' && user) { %>
+            <button class="register-button" onclick="location.href='/public/yummyMap.html'">🥳 음식점 등록</button>
+            <!-- <% if (user.is_admin) { %>
+                <button class="admin-button" onclick="toggleAdminPage()">🔧 관리자 페이지</button>
+            <% } %> -->
+         <% } %>
+    </div>
+</div>
+
+<!-- ✅ 음식점 등록 -->
+<!-- <div class="register-container">
+    <input type="text" id="storeName" placeholder="🍞 예: 파리바게트">
+    <input type="text" id="storeAddress" placeholder="📍 서울 강남구 테헤란로 326 I-TOWER">
+
+    <label class="beefulpay-container">
+        <img src="../public/pay.png" alt="비플페이">
+        <input type="checkbox" id="isBeefulPay">
+        <span class="beefulpay-text">비플페이 가맹점</span>
+    </label>
+
+    <button class="submit-button" onclick="GetGeocode()">🥳 음식점 등록</button>
+</div> -->
+
+<!-- JS 추가 -->
+<%- script = '<script src="../public/js/yummymap.js"></script>' %>
