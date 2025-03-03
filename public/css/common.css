@@ -321,3 +321,53 @@ main {
 .sidebar.active ~ main #map {
     margin-right: 260px; /* 지도도 같이 이동 */
 }
+/* 🗺️ 지도 스타일 반응형 조정 */
+#map {
+    width: 100vw; /* 화면 전체 너비 */
+    height: calc(100vh - 60px); /* 헤더 높이를 제외한 전체 높이 */
+    max-width: 1200px; /* 최대 너비 설정 */
+    max-height: 800px; /* 최대 높이 설정 */
+    margin: 0 auto; /* 가운데 정렬 */
+    transition: margin-right 0.3s ease-in-out, width 0.3s ease-in-out, height 0.3s ease-in-out;
+}
+
+/* ✅ 사이드바 활성화 시 지도 크기 조정 */
+.sidebar.active ~ main #map {
+    margin-right: 260px; /* 사이드바 너비만큼 이동 */
+    width: calc(100vw - 260px); /* 사이드바 제외한 너비 */
+}
+
+/* ✅ 반응형 설정 */
+@media (max-width: 1024px) {
+    #map {
+        width: 90vw;
+        height: calc(100vh - 80px);
+    }
+
+    .sidebar.active ~ main #map {
+        width: calc(90vw - 260px);
+    }
+}
+
+@media (max-width: 768px) {
+    #map {
+        width: 95vw;
+        height: calc(100vh - 100px);
+    }
+
+    .sidebar.active ~ main #map {
+        width: calc(95vw - 260px);
+    }
+}
+
+@media (max-width: 480px) {
+    #map {
+        width: 100vw;
+        height: calc(100vh - 120px);
+        max-height: none;
+    }
+
+    .sidebar.active ~ main #map {
+        width: 100vw;
+    }
+}
