@@ -130,7 +130,6 @@ function loginWithKakao() {
             setTimeout(() => {
                  window.location.href = "/login";
           }, 500);
-  
     }
 
         

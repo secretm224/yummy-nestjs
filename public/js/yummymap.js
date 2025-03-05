@@ -3,11 +3,12 @@ var zeroPayStores = [{ name: "알바천국", lat: 37.5032355765545, lng: 127.046
     let map;
     let userLat = null;
     let userLng = null;
+    let markers = [];
 
    window.onload = SetStores;
 
     function SetMap() {
-     map = new naver.maps.Map('map', {
+        map = new naver.maps.Map('map', {
             center: new naver.maps.LatLng(37.5045028775835, 127.048942471228),
             zoom: 17
         });
@@ -19,7 +20,7 @@ var zeroPayStores = [{ name: "알바천국", lat: 37.5032355765545, lng: 127.046
 
        var referenceStore = zeroPayStores.find(store => store.name === "알바천국");
 
-       zeroPayStores.forEach(function(store) {
+      zeroPayStores.forEach(function(store) {
              var iconUrl = store.isBeefulPay ? beefulPayIcon : (store.type === "company" ? companyIcon : storeIcon);
 
             var marker = new naver.maps.Marker({
@@ -34,6 +35,8 @@ var zeroPayStores = [{ name: "알바천국", lat: 37.5032355765545, lng: 127.046
                 },
                 draggable: false
             });
+
+            markers.push(marker);
 
             if(isIOS()){
 
@@ -139,6 +142,88 @@ var zeroPayStores = [{ name: "알바천국", lat: 37.5032355765545, lng: 127.046
                     }
                 }
             });
+        });
+
+        console.log(typeof naver.maps);
+        console.log(typeof MarkerClustering);
+
+        // var htmlMarker1 = {
+        //     content: '<div style="cursor:pointer;width:40px;height:40px;line-height:42px;font-size:10px;color:white;text-align:center;font-weight:bold;background:url(/example/images/cluster-marker-1.png);background-size:contain;"></div>',
+        //     size: N.Size(40, 40),
+        //     anchor: N.Point(20, 20)
+        // },
+        // htmlMarker2 = {
+        //     content: '<div style="cursor:pointer;width:40px;height:40px;line-height:42px;font-size:10px;color:white;text-align:center;font-weight:bold;background:url(/example/images/cluster-marker-2.png);background-size:contain;"></div>',
+        //     size: N.Size(40, 40),
+        //     anchor: N.Point(20, 20)
+        // },
+        // htmlMarker3 = {
+        //     content: '<div style="cursor:pointer;width:40px;height:40px;line-height:42px;font-size:10px;color:white;text-align:center;font-weight:bold;background:url(/example/images/cluster-marker-3.png);background-size:contain;"></div>',
+        //     size: N.Size(40, 40),
+        //     anchor: N.Point(20, 20)
+        // },
+        // htmlMarker4 = {
+        //     content: '<div style="cursor:pointer;width:40px;height:40px;line-height:42px;font-size:10px;color:white;text-align:center;font-weight:bold;background:url(/example/images/cluster-marker-4.png);background-size:contain;"></div>',
+        //     size: N.Size(40, 40),
+        //     anchor: N.Point(20, 20)
+        // },
+        // htmlMarker5 = {
+        //     content: '<div style="cursor:pointer;width:40px;height:40px;line-height:42px;font-size:10px;color:white;text-align:center;font-weight:bold;background:url(/example/images/cluster-marker-5.png);background-size:contain;"></div>',
+        //     size: N.Size(40, 40),
+        //     anchor: N.Point(20, 20)
+        // };
+
+        // var markerClustering = new MarkerClustering({
+        //     minClusterSize: 2,
+        //     maxZoom: 13,
+        //     map: map,
+        //     markers: markers,
+        //     disableClickZoom: false,
+        //     gridSize: 60,
+        //     icons: [htmlMarker1, htmlMarker2, htmlMarker3, htmlMarker4, htmlMarker5],
+        //     indexGenerator: [10, 100, 200, 500, 1000],
+        //     stylingFunction: function(clusterMarker, count) {
+        //         $(clusterMarker.getElement()).find('div:first-child').text(count);
+        //     }
+        // });
+        var clusterer = new MarkerClustering({
+            minClusterSize: 2,  
+            maxZoom: 16,  
+            map: map,  
+            markers: markers, 
+            disableClickZoom: false,  // 클러스터 클릭 시 확대 여부
+            gridSize: 60,  // 클러스터 범위
+            icons: [
+                {
+                    content: `<div style="width: 40px; height: 40px; background-color: rgba(255, 165, 0, 0.8); 
+                              border-radius: 50%; display: flex; align-items: center; 
+                              justify-content: center; font-size: 14px; font-weight: bold; color: white;">#count#</div>`,
+                    size: new naver.maps.Size(40, 40),
+                    anchor: new naver.maps.Point(20, 20)
+                }
+            ]
+            // icons: [
+            //     {
+            //         content: function(cluster) {  // ✅ 클러스터 개수를 동적으로 적용
+            //             return `
+            //                 <div style="
+            //                     width: 40px; 
+            //                     height: 40px; 
+            //                     background-color: rgba(255, 165, 0, 0.8); 
+            //                     border-radius: 50%; 
+            //                     display: flex; 
+            //                     align-items: center; 
+            //                     justify-content: center; 
+            //                     font-size: 14px; 
+            //                     font-weight: bold; 
+            //                     color: white;">
+            //                     ${cluster.getCount()}  <!-- ✅ 마커 개수 표시 -->
+            //                 </div>`;
+            //         },
+            //         size: new naver.maps.Size(40, 40),
+            //         anchor: new naver.maps.Point(20, 20)
+            //     }
+            // ]
         });
     }
 
@@ -367,7 +452,4 @@ var zeroPayStores = [{ name: "알바천국", lat: 37.5032355765545, lng: 127.046
         map.closeInfoWindow();
     }
 
-    function filterStoreList() {
-        alert('준비중 입니다');
-        return;       
-    }
+    
