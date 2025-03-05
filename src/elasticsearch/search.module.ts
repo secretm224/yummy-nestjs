@@ -3,11 +3,13 @@ import { ConfigModule } from '@nestjs/config';
 import { ElasticsearchModule } from '@nestjs/elasticsearch';
 import { SearchService } from './search.service';
 import { SearchController } from './search.controller';
+import { KafkaModule } from 'src/kafka_producer/kafka.module';
 
 /* npm install @nestjs/elasticsearch <- install */
 
 @Module({
     imports: [
+        KafkaModule,
         ConfigModule.forRoot({ 
             isGlobal: true,
             envFilePath:process.env.NODE_ENV === 'development' ? '.env' : '.env.production',

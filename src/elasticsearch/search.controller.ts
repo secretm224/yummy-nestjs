@@ -1,10 +1,14 @@
 import { Controller, Get, Post, Body, Query, Param ,Headers} from '@nestjs/common';
 import { SearchService } from './search.service';
+import { KafkaService } from 'src/kafka_producer/kafka.service';
 import { StoreSearch } from 'src/entities/store_search.entity';
 
 @Controller('search')
 export class SearchController {
-	constructor(private readonly searchService: SearchService) {}
+	constructor(
+		private readonly searchService: SearchService,
+		private readonly loggerService: KafkaService,
+	) {}
 
 	// @Post('index/:index')
 	// async createIndex(@Param('index') index: string) {
@@ -51,18 +55,37 @@ export class SearchController {
 		return this.searchService.searchAll<StoreSearch>('yummy-index', StoreSearch);
 	}
 
-	
-	/* 테스트 코드 -> 검색결과 API*/
-	@Get('searchStoreDatas')
-	async getSearchStoreDatas(
+	@Get('autoComplete')
+	async getAutoComplete(
 		@Query('searchData') searchData: string
-	): Promise<StoreSearch[]> {
-
-		/* 01. 문자열 파싱 */
-		searchData = this.searchService.stringTranformationFunction(searchData);
-		console.log(searchData);
-
-		return this.searchService.searchStoreDate<StoreSearch>('yummy-index', searchData, StoreSearch);
+	): Promise<StoreSearch[] | null> {
+		
+		try {
+			const searchDto = this.searchService.stringTranformationFunction(searchData); /* 문자열 파싱 */
+			return this.searchService.searchAutoCompleteDatas<StoreSearch>('yummy-index', searchDto, StoreSearch);	
+		} catch(err) {
+			await this.SendLog(err);
+			return null;
+		}	
 	}
+
 	
+	// /* 테스트 코드 -> 검색결과 API*/
+	// @Get('searchStoreDatas')
+	// async getSearchStoreDatas(
+	// 	@Query('searchData') searchData: string
+	// ): Promise<StoreSearch[]> {
+
+	// 	/* 01. 문자열 파싱 */
+	// 	searchData = this.searchService.stringTranformationFunction(searchData);
+
+	// 	return this.searchService.searchStoreDate<StoreSearch>('yummy-index', searchData, StoreSearch);
+	// }
+	async SendLog(message: any) {
+		try {
+			await this.loggerService.sendMessage('yummy-store', message);
+		} catch (error) {
+			console.log('faile to log to kafka', error);
+		}
+	}
 }
