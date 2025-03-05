@@ -25,9 +25,19 @@ export class SearchService {
     };
     
     private ENG_TO_KOR_MAP: { [key: string]: string } = {
-        'q': 'ㅂ', 'w': 'ㅈ', 'e': 'ㄷ', 'r': 'ㄱ', 't': 'ㅅ', 'y': 'ㅛ', 'u': 'ㅕ', 'i': 'ㅑ', 'o': 'ㅐ', 'p': 'ㅔ',
-        'a': 'ㅁ', 's': 'ㄴ', 'd': 'ㅇ', 'f': 'ㄹ', 'g': 'ㅎ', 'h': 'ㅗ', 'j': 'ㅓ', 'k': 'ㅏ', 'l': 'ㅣ',
-        'z': 'ㅋ', 'x': 'ㅌ', 'c': 'ㅊ', 'v': 'ㅍ', 'b': 'ㅠ', 'n': 'ㅜ', 'm': 'ㅡ'
+        /* 첫 번째 행 */ 
+        'q': 'ㅂ',  'w': 'ㅈ',  'e': 'ㄷ',  'r': 'ㄱ',  't': 'ㅅ',
+        'y': 'ㅛ',  'u': 'ㅕ',  'i': 'ㅑ',  'o': 'ㅐ',  'p': 'ㅔ',
+        'Q': 'ㅃ',  'W': 'ㅉ',  'E': 'ㄸ',  'R': 'ㄲ',  'T': 'ㅆ',
+        'Y': 'ㅛ',  'U': 'ㅕ',  'I': 'ㅑ',  'O': 'ㅐ',  'P': 'ㅔ',
+        /* 두 번째 행 */ 
+        'a': 'ㅁ',  's': 'ㄴ',  'd': 'ㅇ',  'f': 'ㄹ',  'g': 'ㅎ',
+        'h': 'ㅗ',  'j': 'ㅓ',  'k': 'ㅏ',  'l': 'ㅣ',
+        'A': 'ㅁ',  'S': 'ㄴ',  'D': 'ㅇ',  'F': 'ㄹ',  'G': 'ㅎ',
+        'H': 'ㅗ',  'J': 'ㅓ',  'K': 'ㅏ',  'L': 'ㅣ',
+        /* 세 번째 행 */ 
+        'z': 'ㅋ',  'x': 'ㅌ',  'c': 'ㅊ',  'v': 'ㅍ',  'b': 'ㅠ',  'n': 'ㅜ',  'm': 'ㅡ',
+        'Z': 'ㅋ',  'X': 'ㅌ',  'C': 'ㅊ',  'V': 'ㅍ',  'B': 'ㅠ',  'N': 'ㅜ',  'M': 'ㅡ'
     };
     
     /*
@@ -53,141 +63,85 @@ export class SearchService {
     /* 문자열 변환 함수 */
     stringTranformationFunction(searchData: string): string {
 
-        const sanitizedData = searchData.replace(/[^a-zA-Z0-9가-힣\s]/g, ''); /* 특수문자 제거 */ 
-        const convertedChars = searchData.split('').map(char => this.ENG_TO_KOR_MAP[char] || char);
+        const sanitizedData = searchData.replace(/[^a-zA-Z0-9가-힣\s]/g, '').split(''); /* 특수문자 제거 */ 
+        const jamos: string[] = sanitizedData.map(ch => {
+            return this.ENG_TO_KOR_MAP[ch] || ch;
+        });
+
+        //const res = this.assembleSyllables(jamos);
+        //console.log("res: " + res);
+
         
-        console.log("convertedChars: " + convertedChars.join(''));
-    
+        return "test";
+    }
+
+    private assembleSyllables(jamos: string[]): string {
         let result = "";
-        const buffer: string[] = [];
-        
-        //const completeChar = String.fromCharCode(0xAC00 + (1 * 21 + 2) * 28 + 1);
-        //console.log(completeChar);
-
-        let choIndex = -1;
-        let jungIndex = -1;
-        let jongIndex = 0;
-        
-        for (let i = 0; i < convertedChars.length; i++) {
-            buffer.push(convertedChars[i]);
-
-            if (buffer.length == 1 && this.CHO.includes(buffer[0])) {
-                choIndex = this.CHO.indexOf(buffer[0]);
-            } else if (buffer.length == 2 && this.JUNG.includes(buffer[1])) {
-                const nextIdx = i + 1;
-                const twoNextIdx = i + 2;
-                const threeNextIdex = i + 3;
-                
-                jungIndex = this.JUNG.indexOf(buffer[1]);
-                
-                if (nextIdx < convertedChars.length && this.JUNG.includes(convertedChars[nextIdx])) {
-                    /* 겹받침 중성이 존재하는 경우 */ 
-                    const combinedString = buffer[1] + convertedChars[nextIdx];
-                    const combinedJung = this.DOUBLE_JUNG_MAP[combinedString];
-                    jungIndex = this.JUNG.indexOf(combinedJung);
-
-                    if (jungIndex != -1) {
-                        i++;
-
-                        if (twoNextIdx < convertedChars.length && this.JONG.includes(convertedChars[twoNextIdx]) && threeNextIdex < convertedChars.length && this.CHO.includes(convertedChars[threeNextIdex])) {
-                            /* 겹받침 중성에 종성까지 존재하는 경우 -> 겹받침 중성에는 겹받침 종성은 올 수 없다. */
-                            jongIndex = this.JONG.indexOf(convertedChars[twoNextIdx]);
-                            i++;
-                        }
-
-                        const completeChar = String.fromCharCode(0xAC00 + (choIndex * 21 + jungIndex) * 28 + jongIndex);
-                        result += completeChar;
+        let idx = 0;
     
-                        choIndex = jungIndex = -1;
-                        jongIndex = 0;
-                        buffer.length = 0; // 버퍼 초기화
-                    }
-                    
-                } else if (nextIdx < convertedChars.length && this.JONG.includes(convertedChars[nextIdx])) {
-                    i++;
-                    /* 겹받침 종성인지 확인 */
-                    if (twoNextIdx < convertedChars.length && this.JONG.includes(convertedChars[twoNextIdx])) {
-                        const combinedString = convertedChars[nextIdx] + convertedChars[twoNextIdx];
-                        const combinedJong = this.DOUBLE_JONG_MAP[combinedString];
-                        jongIndex = this.JONG.indexOf(combinedJong);
-                        i++;
-                    } 
-                    
-                    const completeChar = String.fromCharCode(0xAC00 + (choIndex * 21 + jungIndex) * 28 + jongIndex);
-                    result += completeChar;
-                    
-                    choIndex = jungIndex = -1;
-                    jongIndex = 0;
-                    buffer.length = 0; // 버퍼 초기화
-                }
-            } else if (buffer.length == 3 && this.JONG.includes(buffer[2])) {
-                console.log("test");
+        while (idx < jamos.length) {
+            /* 1. 초성 처리 */ 
+            const initial = jamos[idx];
+
+            if (!this.CHO.includes(initial)) {
+                result += initial;
+                idx++;
+                continue;
             }
-        }
-
-        console.log(result);
-
-
-
-        // for (const char of convertedChars) {
-        //     buffer.push(char);
-
-        //     if (buffer.length == 1 && this.CHO.includes(buffer[0])) {
-        //         choIndex = this.CHO.indexOf(buffer[0]);
-        //     } else if (buffer.length >= 2) {
-
-        //         if (buffer.length == 2 && this.JUNG.includes(buffer[1])) {
-
-        //         }
-
-        //     }
-
-        //     // if (buffer.length == 1 && this.CHO.includes(buffer[0])) {
-        //     //     choIndex = this.CHO.indexOf(buffer[0]);
-        //     // } else if (buffer.length == 2 && this.JUNG.includes(buffer[1])) {
-        //     //     jungIndex = this.JUNG.indexOf(buffer[1]);
-        //     // } else if (buffer.length == 3 && this.JONG.includes(buffer[2])) {
-
-        //     // } else if (buffer.length == 3 && !this.JONG.includes(buffer[2])) {
-        //     //     /* 사이즈는 3개이나 종성에서 존재하지 않는 경우 ->  */
-                
-        //     // }
-
-        // }
-
-        // for (const char of convertedChars) {
-        //     buffer.push(char);
-        //     console.log("len = " + buffer.length);
             
-        //     if (buffer.length >= 2 && this.CHO.includes(buffer[0]) && this.JUNG.includes(buffer[1])) {
-        //         const choIndex = this.CHO.indexOf(buffer[0]);
-        //         const jungIndex = this.JUNG.indexOf(buffer[1]);
-        //         let jongIndex = 0; // 초기에 종성 존재하지 않음.
+            idx++;
+            
+            /* 2. 중성 처리 (필수) */ 
+            if (idx >= jamos.length || !this.JUNG.includes(jamos[idx])) {
+                /* 중성이 없으면 초성만 추가 */ 
+                result += initial;
+                continue;
+            }
+            let medial = jamos[idx];
+            idx++;
 
-        //         if (buffer.length >= 3 && this.JONG.includes(buffer[2])) {
-        //             // 종성이 있을 경우
-        //             jongIndex = this.JONG.indexOf(buffer[2]);
-                    
-        //             if (jongIndex == -1) {
-        //                 jongIndex = 0;
-        //                 const completeChar = String.fromCharCode(0xAC00 + (choIndex * 21 + jungIndex) * 28 + jongIndex);
-                            
-        //                 console.log("completeChar: " + completeChar);
-        //                 result += completeChar;
-        //             }
-        //         }
-        //     }
-        // }
+            /* 2-1. 겹모음 처리: 중성과 다음 자모 결합 */ 
+            if (idx < jamos.length) {
+                const possibleDouble = medial + jamos[idx];
+                if (this.DOUBLE_JUNG_MAP[possibleDouble]) {
+                    medial = this.DOUBLE_JUNG_MAP[possibleDouble];
+                    idx++;
+                }
+            }
 
-        //let res = result + buffer.join('');
-        //console.log("result: " + result);
+            /* 3. 종성 처리 (선택적) */ 
+            let finalConsonant = "";
+            
+            /* 만약 다음 자모가 존재하고, 그것이 종성 후보라면 */ 
+            if (idx < jamos.length && this.JONG.includes(jamos[idx])) {
+                /* 
+                    Lookahead: 만약 그 다음 자모가 존재하고 중성(모음)이라면, 현재 자모를 종성으로 사용하지 않고 다음 음절의 초성으로 넘긴다.
+                */
+                if (idx + 1 < jamos.length && this.JUNG.includes(jamos[idx + 1])) {
+                    // Do nothing; finalConsonant remains ""
+                } else {
+                    finalConsonant = jamos[idx];
+                    idx++;
+                    /* 겹받침 처리: 다음 자모와 결합 가능한 경우 */ 
+                    if (idx < jamos.length && this.JONG.includes(jamos[idx])) {
+                    const possibleDoubleFinal = finalConsonant + jamos[idx];
+                    if (this.DOUBLE_JONG_MAP[possibleDoubleFinal]) {
+                        finalConsonant = this.DOUBLE_JONG_MAP[possibleDoubleFinal];
+                        idx++;
+                    }
+                    }
+                }
+            }
 
-        // 의미없는 단어 한글변환
-        //const convEngToKor = searchData.split('').map(char => ENG_TO_KOR_MAP[char] || char).join('');
-
-        //console.log(convEngToKor)
-        
-        return sanitizedData;
+            /* 4. 완성형 한글 조합 (유니코드 공식 사용) */ 
+            const choIndex = this.CHO.indexOf(initial);
+            const jungIndex = this.JUNG.indexOf(medial);
+            const jongIndex = this.JONG.indexOf(finalConsonant);
+            const syllableCode = 0xAC00 + (choIndex * 21 + jungIndex) * 28 + (jongIndex > -1 ? jongIndex : 0);
+            result += String.fromCharCode(syllableCode);
+        }
+    
+        return result;
     }
 
 
