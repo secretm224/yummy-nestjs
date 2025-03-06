@@ -17,7 +17,7 @@ export class AppController {
   @Render('yummymap') 
   getYummyMap(@Req() req: Request) {
       return {
-        title: '로그인 - YummyMap',
+        title: '가야할 지도도',
         //css: '<link rel="stylesheet" href="/css/yummy.css" type="text/css">',
         error: req.query.error || null // page에 error가 있으면 error를 넘겨줌
     };

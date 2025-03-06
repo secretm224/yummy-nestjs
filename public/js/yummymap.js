@@ -189,9 +189,6 @@ var zeroPayStores = [{ name: "알바천국", lat: 37.5032355765545, lng: 127.046
             indexGenerator: [10, 100, 200, 500, 1000],
             
              stylingFunction: function(clusterMarker, count) {
-                console.log(clusterMarker.getElement());
-                console.log(clusterMarker);
-                console.log(count);
                 $(clusterMarker.getElement()).find('div:first-child').text(count);
             }
         });
