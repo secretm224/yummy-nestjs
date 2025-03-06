@@ -2,7 +2,9 @@ import { Controller, Get, Post, Body, Query, Param ,Headers} from '@nestjs/commo
 import { SearchService } from './search.service';
 import { KafkaService } from 'src/kafka_producer/kafka.service';
 import { StoreSearch } from 'src/entities/store_search.entity';
+import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 
+@ApiTags('search') 
 @Controller('search')
 export class SearchController {
 	constructor(
@@ -44,7 +46,8 @@ export class SearchController {
 
 	// async findAll(@Headers('yummy-key') apikey: string): Promise<Store[]> {
 
-
+	@ApiOperation({ summary: 'search data inquery', description: 'inquery to search data' })
+	@ApiResponse({ status: 200, description: 'inquery store data by search' })
 	@Get('allData')
 	async getAllStores(@Headers('yummy-key') apikey: string): Promise<StoreSearch[]> {
 		

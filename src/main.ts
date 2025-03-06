@@ -6,6 +6,8 @@ import * as cookieParser from 'cookie-parser';
 import * as expressLayouts from 'express-ejs-layouts';
 import * as session from 'express-session';
 import * as passport from 'passport';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+
 
 // import RedisStore from 'connect-redis';
 // import { createClient } from 'redis';
@@ -67,6 +69,17 @@ async function bootstrap() {
     res.locals.currentPage = req.path;
     next();
   });
+
+   // ✅ Swagger 설정 추가
+   const config = new DocumentBuilder()
+   .setTitle('Yummy API')
+   .setDescription('Yummy 서비스 API 문서')
+   .setVersion('1.0')
+   .addBearerAuth() // JWT 인증 추가 (옵션)
+   .build();
+
+    const document = SwaggerModule.createDocument(app, config);
+    SwaggerModule.setup('api-docs', app, document);
 
   await app.listen(process.env.PORT ?? 5176);
 }

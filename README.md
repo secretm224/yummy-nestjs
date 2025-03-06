@@ -67,6 +67,9 @@ $npm install express-ejs-layouts
 #express session
 $npm install passport @nestjs/passport passport-local express-session
 $npm install --save-dev @types/express-session
+#swagger
+$npm install --save @nestjs/swagger swagger-ui-express
+
 ```
 
 ## Compile and run the project

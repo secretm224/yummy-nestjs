@@ -6,8 +6,10 @@ import { KafkaService } from 'src/kafka_producer/kafka.service';
 import { StoreLocationInfoService } from 'src/store_location_info/storeLocation.service';
 import { Util } from '../util/datautil';
 
+import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 
 
+@ApiTags('store') 
 @Controller('store')
 export class StoreController {
 	constructor(
@@ -22,6 +24,8 @@ export class StoreController {
 		return this.storeService.findAll();
 	}
 
+	@ApiOperation({ summary: 'add store data', description: 'insert to store data' })
+	@ApiResponse({ status: 200, description: 'return to success store data' })
 	@Post('/add')
 	async create(@Body() store: Partial<Store>): Promise<Store | null> {
 		store.reg_dt = Util.GetUtcDate();
