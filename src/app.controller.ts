@@ -17,11 +17,23 @@ export class AppController {
   @Render('yummymap') 
   getYummyMap(@Req() req: Request) {
       return {
-        title: '가야할 지도도',
+        title: '가야할 지도',
         //css: '<link rel="stylesheet" href="/css/yummy.css" type="text/css">',
         error: req.query.error || null // page에 error가 있으면 error를 넘겨줌
     };
   }
+
+  @Get('/registerStore')
+  @Render('registerStore') 
+  registerStore(@Req() req: Request) {
+      return {
+        title: '상점 등록하기',
+        //css: '<link rel="stylesheet" href="/css/yummy.css" type="text/css">',
+        error: req.query.error || null // page에 error가 있으면 error를 넘겨줌
+    };
+  }
+
+//
 
 
   @Get('login')

@@ -1,0 +1,21 @@
+<%- css = '<link rel="stylesheet" href="/css/registerStore.css">' %>
+<div class="register-container">
+    <h2>🥳 음식점 등록</h2>
+
+    <form id="storeRegisterForm">
+        <label for="storeName">🍽️ 음식점 이름</label>
+        <input type="text" id="storeName" placeholder="음식점 이름을 입력하세요" required>
+
+        <label for="storeAddress">📍 주소 입력</label>
+        <input type="text" id="storeAddress" placeholder="주소를 입력하세요" required>
+
+        <div class="checkbox-container">
+            <input type="checkbox" id="isBeefulPay">
+            <label for="isBeefulPay">💳 제로페이 가맹점 여부</label>
+        </div>
+
+        <button type="button" class="submit-button" onclick="registerStore()">등록하기</button>
+    </form>
+</div>
+<%- script = '<script src="../public/js/registerStore.js"></script>' %>
+<script src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=87ni0cgqze&submodules=geocoder"></script>

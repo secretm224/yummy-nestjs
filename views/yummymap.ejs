@@ -23,7 +23,7 @@
         <button class="random-button" onclick="recommendRandomStore()">🍀 랜덤 추천</button>
         <button class="reset-button" onclick="resetMap()">🔄 맵 초기화</button>
         <% if (typeof user !== 'undefined' && user) { %>
-            <button class="register-button" onclick="location.href='/public/yummyMap.html'">✨ 장소 등록 </button>
+            <button class="register-button" onclick="location.href='/registerStore'">✨ 장소 등록 </button>
             <% if (user.is_admin) { %>
                 <label class="toggle-draggable">
                     <input type="checkbox" onchange="toggleMarkerDraggable()"> 🔧 마커 이동 설정

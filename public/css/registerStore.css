@@ -1,0 +1,127 @@
+/* ✅ 전체 페이지 스타일 */
+body {
+    background-color: #FFF8DC;
+    font-family: "Pretendard", Arial, sans-serif;
+    text-align: center;
+    padding: 0;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh; 
+    overflow: hidden;
+    margin: 0;
+}
+
+/* ✅ 음식점 등록 컨테이너 */
+.register-container {
+    width: 380px; 
+    padding: 30px; 
+    border-radius: 15px;
+    background: white;
+    box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.15);
+    max-width: 380px;
+    padding: 25px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+/* ✅ 입력 필드 정렬 및 가독성 향상 */
+.register-container input[type="text"] {
+    width: 100%;
+    padding: 14px 18px;
+    font-size: 16px; 
+    border-radius: 10px; 
+    border: 2px solid #FFD700;
+    background-color: #FFFAF0;
+    font-size: 14px;
+    text-align: left;
+    outline: none;
+    margin-top: 5px;
+    display: block;
+    box-sizing: border-box; 
+}
+
+/* ✅ placeholder(안내 문구) 스타일 변경 */
+.register-container input[type="text"]::placeholder {
+    color: #999; /* 연한 회색으로 가독성 높임 */
+    font-size: 15px;
+    font-weight: normal;
+    text-align: left;
+}
+
+/* ✅ 입력 그룹 정렬 */
+.input-group {
+    width: 100%;
+    text-align: left;
+    margin-bottom: 14px; /* 간격 조정 */
+}
+
+/* ✅ 입력 필드와 라벨 정렬 */
+.input-group label {
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 16px;
+    font-size: 14px;
+}
+
+/* ✅ 입력 필드와 체크박스가 정렬되도록 설정 */
+.checkbox-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 15px; /* ✅ 가독성 증가 */
+}
+
+/* ✅ 등록 버튼 스타일 */
+.register-button {
+    width: 100%;
+    padding: 14px;
+    font-size: 18px; 
+    border-radius: 12px;
+    font-weight: bold;
+    color: white;
+    background-color: #FF8C00;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+
+.register-button:hover {
+    background-color: #E67E22;
+}
+
+/* ✅ 체크박스 컨테이너 */
+.checkbox-container {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 8px;
+    width: 100%;
+    margin-top: 15px;
+}
+
+/* ✅ 등록 버튼 */
+.submit-button {
+    width: 100%;
+    padding: 12px;
+    background-color: #FF8C00;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    transition: 0.3s;
+    margin-top: 20px;
+}
+
+.submit-button:hover {
+    background-color: #E67E22;
+    transform: scale(1.05);
+}
