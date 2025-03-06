@@ -19,14 +19,27 @@ async function registerStore()
             return;
         }
 
-        var firstItem = response.result.items[0];
-        console.log(firstItem);
-        var lat = firstItem.point.y;
-        var lng = firstItem.point.x;
-        var address = firstItem.address;
+        let firstItem = response.result.items[0];
+        let lat = firstItem.point.y;
+        let lng = firstItem.point.x;
+        let address = firstItem.address;
+        let location_county = firstItem.addrdetail.country;
+        let location_city = firstItem.addrdetail.sido; 
+        let location_district = firstItem.addrdetail.sigugun;
 
         if(!!lat && !!lng && !!address){
-            var addjson = { name: name,address:address, lat: lat, lng: lng, type: "store" , is_beefulpay: isBeefulPay};
+            let addjson = { 
+                            name: name,
+                            address:address, 
+                            lat: lat, 
+                            lng: lng, 
+                            type: "store" , 
+                            is_beefulpay: isBeefulPay,
+                            location_county: location_county,
+                            location_city: location_city,
+                            location_district: location_district
+                        };
+
             addStore(addjson);
         }else{
             alert('상점을 등록 할수 없습니다.');
@@ -34,38 +47,6 @@ async function registerStore()
         }
     });
 }
-
-
-// function GetGeocode() {
-//     var address = document.getElementById("storeAddress").value;
-//     var name = document.getElementById("storeName").value;
-//     var isBeefulPay = document.getElementById("isBeefulPay").checked;
-    
-//     if (!address || !name) {
-//         alert("🍕 음식점명과 주소를 입력해주세요!");
-//         return;
-//     }
-
-//     naver.maps.Service.geocode({ address: address }, function(status, response) {
-//         if (status !== naver.maps.Service.Status.OK) {
-//             alert("주소를 찾을 수 없습니다.");
-//             return;
-//         }
-
-//         var firstItem = response.result.items[0];
-//         var lat = firstItem.point.y;
-//         var lng = firstItem.point.x;
-//         var address = firstItem.address;
-
-//         if(!!lat && !!lng && !!address){
-//             var addjson = { name: name,address:address, lat: lat, lng: lng, type: "store" , is_beefulpay: isBeefulPay};
-//             addStore(addjson);
-//         }else{
-//             alert('상점을 등록 할수 없습니다.');
-//             return;
-//         }
-//     });
-// }
 
 async function addStore(store)
 {
@@ -83,10 +64,12 @@ async function addStore(store)
 
         if(!!result){
             alert("🍕 음식점이 등록되었습니다.");
-            SetStores();
+        }else{
+            alert("🍕 음식점 등록에 실패했습니다");
         }
 
     } catch (error) {
         console.error('Error adding store:', error);
     }
 }
+

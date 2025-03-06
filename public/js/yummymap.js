@@ -216,36 +216,36 @@ var zeroPayStores = [{ name: "알바천국", lat: 37.5032355765545, lng: 127.046
         marker.setZIndex(200); // 선택된 마커를 맨 위로
     }
     
-    function GetGeocode() {
-        var address = document.getElementById("storeAddress").value;
-        var name = document.getElementById("storeName").value;
-        var isBeefulPay = document.getElementById("isBeefulPay").checked;
+    // function GetGeocode() {
+    //     var address = document.getElementById("storeAddress").value;
+    //     var name = document.getElementById("storeName").value;
+    //     var isBeefulPay = document.getElementById("isBeefulPay").checked;
         
-        if (!address || !name) {
-            alert("🍕 음식점명과 주소를 입력해주세요!");
-            return;
-        }
+    //     if (!address || !name) {
+    //         alert("🍕 음식점명과 주소를 입력해주세요!");
+    //         return;
+    //     }
 
-        naver.maps.Service.geocode({ address: address }, function(status, response) {
-            if (status !== naver.maps.Service.Status.OK) {
-                alert("주소를 찾을 수 없습니다.");
-                return;
-            }
+    //     naver.maps.Service.geocode({ address: address }, function(status, response) {
+    //         if (status !== naver.maps.Service.Status.OK) {
+    //             alert("주소를 찾을 수 없습니다.");
+    //             return;
+    //         }
 
-            var firstItem = response.result.items[0];
-            var lat = firstItem.point.y;
-            var lng = firstItem.point.x;
-            var address = firstItem.address;
+    //         var firstItem = response.result.items[0];
+    //         var lat = firstItem.point.y;
+    //         var lng = firstItem.point.x;
+    //         var address = firstItem.address;
 
-            if(!!lat && !!lng && !!address){
-                var addjson = { name: name,address:address, lat: lat, lng: lng, type: "store" , is_beefulpay: isBeefulPay};
-                addStore(addjson);
-            }else{
-                alert('상점을 등록 할수 없습니다.');
-                return;
-            }
-        });
-    }
+    //         if(!!lat && !!lng && !!address){
+    //             var addjson = { name: name,address:address, lat: lat, lng: lng, type: "store" , is_beefulpay: isBeefulPay};
+    //             addStore(addjson);
+    //         }else{
+    //             alert('상점을 등록 할수 없습니다.');
+    //             return;
+    //         }
+    //     });
+    // }
 
     //📏 거리 계산 함수 (Haversine Formula)
     function getDistance(lat1, lon1, lat2, lon2) {
@@ -310,29 +310,29 @@ var zeroPayStores = [{ name: "알바천국", lat: 37.5032355765545, lng: 127.046
         }
     }
 
-    async function addStore(store)
-    {
-        try {
+    // async function addStore(store)
+    // {
+    //     try {
         
-            const response = await fetch("/store/add", {
-                                    method: 'POST',
-                                    headers: {
-                                        'Content-Type': 'application/json',
-                                    },
-                                    body: JSON.stringify(store),
-                                });
+    //         const response = await fetch("/store/add", {
+    //                                 method: 'POST',
+    //                                 headers: {
+    //                                     'Content-Type': 'application/json',
+    //                                 },
+    //                                 body: JSON.stringify(store),
+    //                             });
 
-            const result = await response.json();
+    //         const result = await response.json();
 
-            if(!!result){
-                alert("🍕 음식점이 등록되었습니다.");
-                SetStores();
-            }
+    //         if(!!result){
+    //             alert("🍕 음식점이 등록되었습니다.");
+    //             SetStores();
+    //         }
 
-        } catch (error) {
-            console.error('Error adding store:', error);
-        }
-    }
+    //     } catch (error) {
+    //         console.error('Error adding store:', error);
+    //     }
+    // }
 
 
     async function updatecoords(store)
