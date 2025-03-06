@@ -179,7 +179,7 @@ var zeroPayStores = [{ name: "알바천국", lat: 37.5032355765545, lng: 127.046
 //        console.log(htmlMarker5);
 
         var clusterer = new MarkerClustering({
-            minClusterSize: 2,  
+            minClusterSize: 1,  // 클러스터 최소 크기 2에서 1로 변경
             maxZoom: 16,  
             map: map,  
             markers: markers, 
@@ -187,7 +187,6 @@ var zeroPayStores = [{ name: "알바천국", lat: 37.5032355765545, lng: 127.046
             gridSize: 100,  // 클러스터 범위
             icons: [htmlMarker1,htmlMarker2,htmlMarker3,htmlMarker4,htmlMarker5],
             indexGenerator: [10, 100, 200, 500, 1000],
-            
              stylingFunction: function(clusterMarker, count) {
                 $(clusterMarker.getElement()).find('div:first-child').text(count);
             }
