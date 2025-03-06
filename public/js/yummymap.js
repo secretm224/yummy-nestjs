@@ -144,87 +144,58 @@ var zeroPayStores = [{ name: "알바천국", lat: 37.5032355765545, lng: 127.046
             });
         });
 
-        console.log(typeof naver.maps);
-        console.log(typeof MarkerClustering);
+        var htmltag1 = `<div style="cursor:pointer;width:40px;height:40px;line-height:42px;font-size:10px;color:white;text-align:center;font-weight:bold;background:url(/public/cluster-marker-1.png);background-size:contain;"></div>`;
+        var htmltag2 = `<div style="cursor:pointer;width:40px;height:40px;line-height:42px;font-size:10px;color:white;text-align:center;font-weight:bold;background:url(/public/cluster-marker-2.png);background-size:contain;"></div>`;
+        var htmltag3 = `<div style="cursor:pointer;width:40px;height:40px;line-height:42px;font-size:10px;color:white;text-align:center;font-weight:bold;background:url(/public/cluster-marker-3.png);background-size:contain;"></div>`;
+        var htmltag4 = `<div style="cursor:pointer;width:40px;height:40px;line-height:42px;font-size:10px;color:white;text-align:center;font-weight:bold;background:url(/public/cluster-marker-4.png);background-size:contain;"></div>`;
+        var htmltag5 = `<div style="cursor:pointer;width:40px;height:40px;line-height:42px;font-size:10px;color:white;text-align:center;font-weight:bold;background:url(/public/cluster-marker-5.png);background-size:contain;"></div>`;
 
-        // var htmlMarker1 = {
-        //     content: '<div style="cursor:pointer;width:40px;height:40px;line-height:42px;font-size:10px;color:white;text-align:center;font-weight:bold;background:url(/example/images/cluster-marker-1.png);background-size:contain;"></div>',
-        //     size: N.Size(40, 40),
-        //     anchor: N.Point(20, 20)
-        // },
-        // htmlMarker2 = {
-        //     content: '<div style="cursor:pointer;width:40px;height:40px;line-height:42px;font-size:10px;color:white;text-align:center;font-weight:bold;background:url(/example/images/cluster-marker-2.png);background-size:contain;"></div>',
-        //     size: N.Size(40, 40),
-        //     anchor: N.Point(20, 20)
-        // },
-        // htmlMarker3 = {
-        //     content: '<div style="cursor:pointer;width:40px;height:40px;line-height:42px;font-size:10px;color:white;text-align:center;font-weight:bold;background:url(/example/images/cluster-marker-3.png);background-size:contain;"></div>',
-        //     size: N.Size(40, 40),
-        //     anchor: N.Point(20, 20)
-        // },
-        // htmlMarker4 = {
-        //     content: '<div style="cursor:pointer;width:40px;height:40px;line-height:42px;font-size:10px;color:white;text-align:center;font-weight:bold;background:url(/example/images/cluster-marker-4.png);background-size:contain;"></div>',
-        //     size: N.Size(40, 40),
-        //     anchor: N.Point(20, 20)
-        // },
-        // htmlMarker5 = {
-        //     content: '<div style="cursor:pointer;width:40px;height:40px;line-height:42px;font-size:10px;color:white;text-align:center;font-weight:bold;background:url(/example/images/cluster-marker-5.png);background-size:contain;"></div>',
-        //     size: N.Size(40, 40),
-        //     anchor: N.Point(20, 20)
-        // };
+        var htmlMarker1 = {
+            content: htmltag1,
+            size: N.Size(40, 40),
+            anchor: N.Point(20, 20)
+        },
+        htmlMarker2 = {
+            content: htmltag2,
+            size: N.Size(40, 40),
+            anchor: N.Point(20, 20)
+        },
+        htmlMarker3 = {
+            content: htmltag3,
+            size: N.Size(40, 40),
+            anchor: N.Point(20, 20)
+        },
+        htmlMarker4 = {
+            content: htmltag4,
+            size: N.Size(40, 40),
+            anchor: N.Point(20, 20)
+        },
+        htmlMarker5 = {
+            content: htmltag5,
+            size: N.Size(40, 40),
+            anchor: N.Point(20, 20)
+        };
 
-        // var markerClustering = new MarkerClustering({
-        //     minClusterSize: 2,
-        //     maxZoom: 13,
-        //     map: map,
-        //     markers: markers,
-        //     disableClickZoom: false,
-        //     gridSize: 60,
-        //     icons: [htmlMarker1, htmlMarker2, htmlMarker3, htmlMarker4, htmlMarker5],
-        //     indexGenerator: [10, 100, 200, 500, 1000],
-        //     stylingFunction: function(clusterMarker, count) {
-        //         $(clusterMarker.getElement()).find('div:first-child').text(count);
-        //     }
-        // });
+//        console.log(htmlMarker5);
+
         var clusterer = new MarkerClustering({
             minClusterSize: 2,  
             maxZoom: 16,  
             map: map,  
             markers: markers, 
             disableClickZoom: false,  // 클러스터 클릭 시 확대 여부
-            gridSize: 60,  // 클러스터 범위
-            icons: [
-                {
-                    content: `<div style="width: 40px; height: 40px; background-color: rgba(255, 165, 0, 0.8); 
-                              border-radius: 50%; display: flex; align-items: center; 
-                              justify-content: center; font-size: 14px; font-weight: bold; color: white;">#count#</div>`,
-                    size: new naver.maps.Size(40, 40),
-                    anchor: new naver.maps.Point(20, 20)
-                }
-            ]
-            // icons: [
-            //     {
-            //         content: function(cluster) {  // ✅ 클러스터 개수를 동적으로 적용
-            //             return `
-            //                 <div style="
-            //                     width: 40px; 
-            //                     height: 40px; 
-            //                     background-color: rgba(255, 165, 0, 0.8); 
-            //                     border-radius: 50%; 
-            //                     display: flex; 
-            //                     align-items: center; 
-            //                     justify-content: center; 
-            //                     font-size: 14px; 
-            //                     font-weight: bold; 
-            //                     color: white;">
-            //                     ${cluster.getCount()}  <!-- ✅ 마커 개수 표시 -->
-            //                 </div>`;
-            //         },
-            //         size: new naver.maps.Size(40, 40),
-            //         anchor: new naver.maps.Point(20, 20)
-            //     }
-            // ]
+            gridSize: 100,  // 클러스터 범위
+            icons: [htmlMarker1,htmlMarker2,htmlMarker3,htmlMarker4,htmlMarker5],
+            indexGenerator: [10, 100, 200, 500, 1000],
+            
+             stylingFunction: function(clusterMarker, count) {
+                console.log(clusterMarker.getElement());
+                console.log(clusterMarker);
+                console.log(count);
+                $(clusterMarker.getElement()).find('div:first-child').text(count);
+            }
         });
+
     }
 
     function isIOS() {
