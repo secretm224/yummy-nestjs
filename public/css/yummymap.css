@@ -251,3 +251,30 @@ footer {
 .reset-button:hover {
     background-color: #FF6347;
 }
+/* ✅ 마커 이동 체크박스 스타일 */
+.toggle-draggable {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #333;
+    background-color: white;
+    border: 2px solid #FFD700;
+    padding: 5px 10px;
+    border-radius: 10px;
+    cursor: pointer;
+    box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.2);
+    transition: 0.3s;
+}
+
+.toggle-draggable input {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+}
+
+.toggle-draggable:hover {
+    background-color: #FFFACD;
+    transform: scale(1.05);
+}

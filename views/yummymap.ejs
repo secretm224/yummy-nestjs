@@ -5,17 +5,6 @@
 
 <!-- CSS 추가 -->
 <%- css = '<link rel="stylesheet" href="/css/yummymap.css">' %>
-<!-- 
-<div class="title-container">
-    <h1>🍙 오늘 뭐 먹지? 🍕</h1>
-    <p class="subtitle">✨ 행복한 고민! 맛집을 골라볼까요? ✨</p>
-</div> -->
-
-<!-- ✅ 검색 기능 -->
-<!-- <div class="search-container">
-    <input type="text" id="searchInput" placeholder="🔍 검색할 가게명을 입력하세요!">
-    <button class="search-button" onclick="filterStoreList()">검색</button>
-</div> -->
 
 <!-- ✅ 맛집 리스트 -->
 <div id="store-list-container">
@@ -34,10 +23,12 @@
         <button class="random-button" onclick="recommendRandomStore()">🍀 랜덤 추천</button>
         <button class="reset-button" onclick="resetMap()">🔄 맵 초기화</button>
         <% if (typeof user !== 'undefined' && user) { %>
-            <button class="register-button" onclick="location.href='/public/yummyMap.html'">🥳 음식점 등록</button>
-            <!-- <% if (user.is_admin) { %>
-                <button class="admin-button" onclick="toggleAdminPage()">🔧 관리자 페이지</button>
-            <% } %> -->
+            <button class="register-button" onclick="location.href='/public/yummyMap.html'">✨ 장소 등록 </button>
+            <% if (user.is_admin) { %>
+                <label class="toggle-draggable">
+                    <input type="checkbox" onchange="toggleMarkerDraggable()"> 🔧 마커 이동 설정
+                </label>
+            <% } %>
          <% } %>
     </div>
 </div>

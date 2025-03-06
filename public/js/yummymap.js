@@ -116,17 +116,16 @@ var zeroPayStores = [{ name: "알바천국", lat: 37.5032355765545, lng: 127.046
                     </div>`
             });
 
-            //카리나님 요청사항 적용
-            // naver.maps.Event.addListener(marker, "dragend", function(e) {
-            //     if(confirm("위치를 수정하시겠습니까?") == true){
-            //         var lat = e.coord.y;
-            //         var lng = e.coord.x;
-            //         //document.getElementById("markerInfo").innerHTML = `📍 ${store.name} 이동됨:<br> 위도: ${lat}<br> 경도: ${lng}`;
-            //         var store_json = { name: store.name, lat: lat, lng: lng, type: "store" };
+            naver.maps.Event.addListener(marker, "dragend", function(e) {
+                if(confirm("위치를 수정하시겠습니까?") == true){
+                    var lat = e.coord.y;
+                    var lng = e.coord.x;
+                    //document.getElementById("markerInfo").innerHTML = `📍 ${store.name} 이동됨:<br> 위도: ${lat}<br> 경도: ${lng}`;
+                    var store_json = { name: store.name, lat: lat, lng: lng, type: "store" };
 
-            //         updatecoords(store_json);
-            //     }
-            // });
+                    updatecoords(store_json);
+                }
+            });
 
             naver.maps.Event.addListener(marker, "click", function() {
                 if (infowindow.getMap()) {
@@ -192,6 +191,20 @@ var zeroPayStores = [{ name: "알바천국", lat: 37.5032355765545, lng: 127.046
             }
         });
 
+    }
+
+    function toggleMarkerDraggable() {
+        let isDraggable = document.getElementById('toggleDraggable').checked;
+    
+        markers.forEach(marker => {
+            marker.setDraggable(isDraggable);
+        });
+    
+        if (isDraggable) {
+            alert("마커 이동이 활성화되었습니다.");
+        } else {
+            alert("마커 이동이 비활성화되었습니다.");
+        }
     }
 
     function isIOS() {
