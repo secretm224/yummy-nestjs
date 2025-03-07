@@ -21,6 +21,10 @@
                 console.log("Kakao SDK 초기화 완료:", Kakao.isInitialized());
             }
         });
+
+        window.env = {
+            kakao_redirect_uri: "<%= kakao_redirect_uri %>"
+        };
     </script>
 
     <%- typeof css !== "undefined" ? css : "" %>

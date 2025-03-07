@@ -3,10 +3,10 @@
 function loginWithKakao() {
     Kakao.Auth.authorize({
        prompt: 'select_account',
-       redirectUri: '/login',
+       redirectUri: window.env.kakao_redirect_uri,
     });
   }
-  
+
   window.onload = function(){
     
     //   Kakao.init('4a2a51c4104deceb54f805eb34bc4f3d'); // 사용하려는 앱의 JavaScript 키 입력
@@ -35,7 +35,7 @@ function loginWithKakao() {
                                   });
 
       const tokens = await response.json();
-    
+
       if(!!tokens){
           const access_token = tokens.kakao_access_token;
           //const userinfo = tokens.kakao_payload;

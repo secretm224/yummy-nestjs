@@ -67,6 +67,7 @@ async function bootstrap() {
     res.locals.user = req.session?.user || null;
     res.locals.error = req.query.error || null;
     res.locals.currentPage = req.path;
+    res.locals.kakao_redirect_uri = process.env.KAKAO_REDIRECT_URL;
     next();
   });
 
