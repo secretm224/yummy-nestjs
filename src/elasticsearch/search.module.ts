@@ -5,7 +5,6 @@ import { SearchService } from './search.service';
 import { SearchController } from './search.controller';
 import { KafkaModule } from 'src/kafka_producer/kafka.module';
 
-/* npm install @nestjs/elasticsearch <- install */
 
 @Module({
     imports: [

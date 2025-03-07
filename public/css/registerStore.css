@@ -125,3 +125,49 @@ body {
     background-color: #E67E22;
     transform: scale(1.05);
 }
+
+
+/* select 박스를 감싸는 div */
+.custom-select {
+    position: relative;
+}
+
+/* 기본 select 스타일 제거 후 커스텀 스타일 적용 */
+.custom-select select {
+    width: 100%;
+    padding: 14px 90px;
+    font-size: 16px; 
+    border: 2px solid #FFD700;
+    border-radius: 8px;
+    background-color: #FFFAF0;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    font-weight: bold;
+    color: #999;
+}
+
+/* 화살표 아이콘 추가 */
+.custom-select::after {
+    content: "▼";
+    position: absolute;
+    top: 50%;
+    right: 15px;
+    transform: translateY(-50%);
+    pointer-events: none;
+    font-size: 14px;
+    color: #FFD700;
+}
+
+/* hover 효과 */
+.custom-select select:hover {
+    border-color: #0056b3;
+}
+
+/* focus 효과 */
+.custom-select select:focus {
+    outline: none;
+    border-color: #0056b3;
+    box-shadow: 0 0 5px rgba(0, 91, 187, 0.5);
+}
