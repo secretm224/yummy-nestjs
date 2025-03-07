@@ -1,3 +1,9 @@
+<% if (typeof user !== 'undefined') { %>
+    <script>
+        alert("로그인해야 가능한 서비스 입니다.");
+        window.location.href = '/login';
+    </script>
+<% } %>
 <%- css = '<link rel="stylesheet" href="/css/registerStore.css">' %>
 
 <div class="register-container">
