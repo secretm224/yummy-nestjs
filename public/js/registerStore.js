@@ -73,3 +73,33 @@ async function addStore(store)
     }
 }
 
+
+
+async function selectMajorType()
+{
+
+    alert('test');
+
+    // const response = await fetch(`/search/allData`, {
+    //     method: 'GET',
+    //     headers: {
+    //         'yummy-key': 'zkflsk123',
+    //         'Content-Type': 'application/json'
+    //     }
+    // });
+
+    try {
+
+        const response = await fetch("/storeTypeMajor/test", {
+                            method: 'GET',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            }
+                        });
+
+
+    } catch (error) {
+        console.error('Error selectMajorType:', error);
+    }
+
+}

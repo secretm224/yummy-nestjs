@@ -20,7 +20,7 @@ body {
     padding: 30px; 
     border-radius: 15px;
     background: white;
-    box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.15);
+    box-shadow: 2px 4px 10px rgba(173, 155, 155, 0.15);
     max-width: 380px;
     padding: 25px;
     text-align: left;
@@ -144,7 +144,6 @@ body {
     appearance: none;
     -webkit-appearance: none;
     -moz-appearance: none;
-    font-weight: bold;
     color: #999;
 }
 
@@ -162,12 +161,12 @@ body {
 
 /* hover 효과 */
 .custom-select select:hover {
-    border-color: #0056b3;
+    border-color:  #FF8C00;
 }
 
 /* focus 효과 */
 .custom-select select:focus {
     outline: none;
-    border-color: #0056b3;
+    border-color: #FF8C00;
     box-shadow: 0 0 5px rgba(0, 91, 187, 0.5);
 }

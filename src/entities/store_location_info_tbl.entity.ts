@@ -28,7 +28,7 @@ export class StoreLocationInfoTbl {
     @ApiProperty({ description: '등록한 사용자 ID', example: 'admin123' })
     @Column({ type: 'varchar', length: 25, nullable: false })
     reg_id: string;
-
+    
     @ApiProperty({ description: '마지막 수정 날짜', example: '2024-03-08T14:30:00Z', nullable: true })
     @Column({ type: 'timestamp', nullable: true })
     chg_dt: Date;

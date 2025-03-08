@@ -1,7 +1,8 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn, BeforeInsert } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToOne, OneToMany, JoinColumn, BeforeInsert } from 'typeorm';
 import { ZeroPossibleMarket } from '../entities/zero_possible_market.entity';
 import { StoreLocationInfoTbl } from './store_location_info_tbl.entity';
 import { ApiProperty } from '@nestjs/swagger';
+import { StoreTypeLinkTbl } from './store_type_link_tbl.entity';
 
 
 @Entity('store')
@@ -54,4 +55,7 @@ export class Store {
     @OneToOne(() => StoreLocationInfoTbl, { createForeignKeyConstraints: false })
     @JoinColumn({name: 'seq', referencedColumnName: 'seq'})
     store_location_info_tbl: StoreLocationInfoTbl;
+
+    @OneToMany(() => StoreTypeLinkTbl, (storeTypeLinkTbl) => storeTypeLinkTbl.store)
+    storeTypeLinkTbl: StoreTypeLinkTbl[];
 }

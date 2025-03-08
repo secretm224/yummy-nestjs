@@ -2,10 +2,14 @@ import { Controller, Get, Res ,Render ,Req} from '@nestjs/common';
 import { AppService } from './app.service';
 import { Response , Request } from 'express';
 import { join } from 'path';
+import { StoreTypeMajorService } from './store_type_major/storeTypeMajor.service';
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  constructor(
+    private readonly appService: AppService,
+    private readonly storeTypeMajorService: StoreTypeMajorService
+  ) {}
 
   // @Get('/')
   // getYummyMap(@Res() res: Response) {
@@ -25,15 +29,23 @@ export class AppController {
 
   @Get('/registerStore')
   @Render('registerStore') 
-  registerStore(@Req() req: Request) {
-      return {
-        title: '상점 등록하기',
-        //css: '<link rel="stylesheet" href="/css/yummy.css" type="text/css">',
-        error: req.query.error || null // page에 error가 있으면 error를 넘겨줌
-    };
-  }
+  async registerStore(@Req() req: Request) {
+    
+    try {
 
-//
+        const storeTypes = await this.storeTypeMajorService.findAll();
+        
+        return {
+            title: '상점 등록하기',
+            storeTypes, /* 조회한 데이터를 템플릿에 전달 */ 
+            error: req.query.error || null
+        };
+
+    } catch(err) {
+        console.error('Error fetching store types:', err);
+        return { title: '상점 등록하기', storeTypes: [], error: '데이터를 불러올 수 없습니다.:' };
+    }
+  }
 
 
   @Get('login')

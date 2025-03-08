@@ -18,6 +18,9 @@ import { RedisModule } from './redis/redis.module'; /* redis module */
 import { RequestIpMiddleware } from './middlware/request-ip.middleware';
 import { KafkaProvider } from './kafka_producer/kafka.provider';
 import { AdminModule } from './admin/admin.module';
+import { StoreTypeMajor } from './entities/store_type_major.entity';
+import { StoreTypeMajorModule } from './store_type_major/storeTypeMajor.module';
+import { StoreTypeMajorService } from './store_type_major/storeTypeMajor.service';
 
 @Module({
 	imports: [
@@ -47,10 +50,11 @@ import { AdminModule } from './admin/admin.module';
 		SearchModule,
 		AuthModule,
 		RedisModule,
-		AdminModule
+		AdminModule,
+		StoreTypeMajorModule
 	],
 	controllers: [AppController, AuthController],
-	providers: [AppService, KafkaService, KafkaProvider],
+	providers: [AppService, StoreTypeMajorService, KafkaProvider],
 })
 
 /* Ip 추적을 위함 */
