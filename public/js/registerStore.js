@@ -75,29 +75,25 @@ async function addStore(store)
 
 
 
-async function selectMajorType()
+async function selectMajorType(majorType)
 {
-
-    alert('test');
-
-    // const response = await fetch(`/search/allData`, {
-    //     method: 'GET',
-    //     headers: {
-    //         'yummy-key': 'zkflsk123',
-    //         'Content-Type': 'application/json'
-    //     }
-    // });
 
     try {
 
-        const response = await fetch("/storeTypeMajor/test", {
+        const response = await fetch(`/storeTypeSub/findSubTypes?majorType=${majorType}`, {
                             method: 'GET',
                             headers: {
                                 'Content-Type': 'application/json'
                             }
                         });
 
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
 
+        const subTypes = await response.json();
+        console.log(subTypes);
+    
     } catch (error) {
         console.error('Error selectMajorType:', error);
     }

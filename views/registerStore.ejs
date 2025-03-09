@@ -18,7 +18,7 @@
 
         <label for="storeAddress">⚙️ 음식점 대분류</label>
         <div class="custom-select">
-            <select id="majorTypeSelect" onchange="selectMajorType(this)">
+            <select id="majorTypeSelect" onchange="selectMajorType(this.value)">
                 <option value="0" disabled selected>분류를 선택하세요.</option>
                 <% storeTypes.forEach(function(store) { %>
                     <option value="<%= store.major_type %>"><%= store.type_name %></option>
