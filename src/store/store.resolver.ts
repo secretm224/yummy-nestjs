@@ -24,11 +24,9 @@ export class StoreResolver {
   // url : http://localhost:3000/graphql
   // mutation {
   //   createStore(createStoreInput: {
-  //     name: "Sample Store",
+  //     name: "GraphQL Store",
   //     type: "restaurant",
   //     use_yn: "Y",
-  //     reg_dt: "2024-03-07T12:00:00Z",
-  //     reg_id: "admin123",
   //     is_beefulpay: true,
   //     address: "123 Main Street",
   //     lat: 37.5665,
@@ -42,8 +40,6 @@ export class StoreResolver {
   //     name
   //     type
   //     use_yn
-  //     reg_dt
-  //     reg_id
   //     is_beefulpay
   //     address
   //     lat
@@ -52,8 +48,11 @@ export class StoreResolver {
   //     location_county
   //     location_district
   //     sub_type
+  //     reg_dt
+  //     reg_id
   //   }
   // }
+  
 
   @Mutation(() => Store)
   async  createStore(@Args('createStoreInput') createStoreInput: CreateStoreInput) {
