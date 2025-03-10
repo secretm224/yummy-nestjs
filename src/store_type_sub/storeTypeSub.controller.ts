@@ -14,12 +14,13 @@ export class StroeTypeSubController {
     ) {}
 
 
-
+    /**
+     * 대분류 코드에 매칭되는 소분류 정보를 반환해주기 위한 컨트롤러
+     * @param majorType - 대분류 코드 번호
+     * @returns 
+     */
     @Get('findSubTypes')
     async getStoreSubTypeByMajor(@Query('majorType') majorType: string): Promise<StoreTypeSub[] | null> {
-        
-        console.log('test!!!');
-
         return this.storeTypeSubService.findSubTypes(majorType);
     } 
 }

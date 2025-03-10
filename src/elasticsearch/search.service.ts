@@ -158,8 +158,7 @@ export class SearchService {
         
         const searchData = searchDto.searchData;
         const searchTrnansData = searchDto.searchDataTrans;
-        
-        console.log("searchTrnansData: " + searchTrnansData);
+    
 
         /* 기본 Should 쿼리 */
         const shouldQueries = [

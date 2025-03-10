@@ -47,6 +47,7 @@ export class Store {
     location_city: string;
     location_county: string;
     location_district: string;
+    sub_type: number;
     
     @OneToOne(() => ZeroPossibleMarket, { createForeignKeyConstraints: false })
     @JoinColumn({name: 'seq', referencedColumnName: 'seq'})

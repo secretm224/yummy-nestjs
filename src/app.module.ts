@@ -22,6 +22,7 @@ import { StoreTypeMajor } from './entities/store_type_major.entity';
 import { StoreTypeMajorModule } from './store_type_major/storeTypeMajor.module';
 import { StoreTypeMajorService } from './store_type_major/storeTypeMajor.service';
 import { StoreTypeSubModule } from './store_type_sub/storeTypeSub.module';
+import { StoreTypeLinkModule } from './store_type_link_tbl/storeTypeLink.module';
 
 @Module({
 	imports: [
@@ -53,7 +54,8 @@ import { StoreTypeSubModule } from './store_type_sub/storeTypeSub.module';
 		RedisModule,
 		AdminModule,
 		StoreTypeMajorModule,
-		StoreTypeSubModule
+		StoreTypeSubModule,
+		StoreTypeLinkModule
 	],
 	controllers: [AppController, AuthController],
 	providers: [AppService, StoreTypeMajorService, KafkaProvider],

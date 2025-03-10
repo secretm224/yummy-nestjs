@@ -1,13 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository  } from '@nestjs/typeorm';
 import { Store } from 'src/entities/store.entity';
-import { StoreLocationInfoTbl } from 'src/entities/store_location_info_tbl.entity';
-import { ZeroPossibleMarket } from 'src/entities/zero_possible_market.entity';
-import { Repository, DataSource } from 'typeorm';
+import { Repository, DataSource, QueryRunner } from 'typeorm';
 import { KafkaService } from 'src/kafka_producer/kafka.service';
-import {Util} from '../util/datautil';
-import * as fs from 'fs';
-import * as path from 'path';
+import { Util } from '../util/datautil';
 
 @Injectable()
 export class StoreService {
@@ -57,10 +53,17 @@ export class StoreService {
 	}
 	
 	async findByName(name: string): Promise<Store | null> {
-		return await this.storeRepository.findOneBy({ name }) || null; // 에러 나서 await 붙여둠 나중에는 빼도 됨.
+		return await this.storeRepository.findOneBy({ name }) || null;
 	}
 	
-	async create(store: Partial<Store>): Promise<Store | null> {
+	/**
+	 * Store 테이블에 데이터를 저장해주는 함수
+	 * 
+	 * @param store 
+	 * @param queryRunner 
+	 * @returns 
+	 */
+	async create(store: Partial<Store>, queryRunner: QueryRunner): Promise<Store | null> {
 
 		if (!store.name) {
 			throw new Error('store name is required for create');
@@ -71,9 +74,9 @@ export class StoreService {
 		}
 
 		store.use_yn = 'Y';
-		const newStore = this.storeRepository.create(store);
+		const newStore = queryRunner.manager.create(Store, store);
 
-		return this.storeRepository.save(newStore);
+		return queryRunner.manager.save(Store, newStore);
 	}
 
 	async update(store: Partial<Store>): Promise<Store | null> {

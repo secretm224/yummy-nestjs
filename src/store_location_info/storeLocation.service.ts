@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository  } from '@nestjs/typeorm';
 import { Store } from 'src/entities/store.entity';
 import { StoreLocationInfoTbl } from 'src/entities/store_location_info_tbl.entity';
-import { Repository } from 'typeorm';
+import { QueryRunner, Repository } from 'typeorm';
 
 @Injectable()
 export class StoreLocationInfoService {
@@ -11,12 +11,20 @@ export class StoreLocationInfoService {
 		private storeLocationRepository: Repository<StoreLocationInfoTbl>,
     ) {}
 
-    // ZeroPossibleMarket 객체를 DB 에 저장해주기 위함.
-    async create(store_db: Partial<Store>, store: Partial<Store>): Promise<StoreLocationInfoTbl> {
+    /**
+     * ZeroPossibleMarket 객체를 DB 에 저장해주는 함수
+     * 
+     * @param store_db 
+     * @param store 
+     * @param queryRunner 
+     * @returns 
+     */
+    async create(storeDb: Partial<Store>, store: Partial<Store>, queryRunner: QueryRunner): Promise<StoreLocationInfoTbl> {
         
-        const storeLocationInfo = this.storeLocationRepository.create(
+        const storeLocationInfo = queryRunner.manager.create(
+            StoreLocationInfoTbl,
             {
-                seq: store_db.seq,
+                seq: storeDb.seq,
                 address: store.address,
                 lat: store.lat,
                 lng: store.lng,
@@ -30,6 +38,6 @@ export class StoreLocationInfoService {
             }
         );
         
-        return this.storeLocationRepository.save(storeLocationInfo);
+        return queryRunner.manager.save(StoreLocationInfoTbl, storeLocationInfo);
     }
 }

@@ -16,7 +16,7 @@
         <label for="storeAddress">📍 주소 입력</label>
         <input type="text" id="storeAddress" placeholder="주소를 입력하세요" required>
 
-        <label for="storeAddress">⚙️ 음식점 대분류</label>
+        <label for="storeType">⚙️ 음식점 대분류</label>
         <div class="custom-select">
             <select id="majorTypeSelect" onchange="selectMajorType(this.value)">
                 <option value="0" disabled selected>분류를 선택하세요.</option>
@@ -26,17 +26,8 @@
             </select>
         </div>
 
-        <!-- <label for="storeAddress">⚙️ 음식점 소분류</label>
-        <div class="custom-select">
-            <select>
-                <option value="0" disabled selected>분류를 선택하세요.</option>
-                <option value="1">옵션1</option>
-                <option value="2">옵션2</option>
-                <option value="3">옵션3</option>
-                <option value="4">옵션4</option>
-            </select>
-        </div> -->
-
+        <div id="subTypeContainer"></div>
+        
 
         <div class="checkbox-container">
             <input type="checkbox" id="isBeefulPay">

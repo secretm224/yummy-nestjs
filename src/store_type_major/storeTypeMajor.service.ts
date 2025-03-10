@@ -25,8 +25,6 @@ export class StoreTypeMajorService{
                 ]
             )
             .getMany();
-
-        console.log(entities);
         
         const storeTypeMajorData = entities.map((storeType) => ({
             ...storeType

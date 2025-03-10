@@ -5,7 +5,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { StoreTypeSub } from 'src/entities/store_type_sub.entity';
 import { DataSource, Repository } from 'typeorm';
 import { KafkaService } from 'src/kafka_producer/kafka.service';
-import { isNumber } from 'class-validator';
 
 
 @Injectable()
@@ -17,15 +16,17 @@ export class StoreTypeSubService{
         private readonly loggerService: KafkaService
     ) {}
     
+    /**
+     * 대분류 코드에 매칭되는 소분류 정보를 반환해주는 함수
+     *  
+     * @param major_num - 대분류 코드 번호
+     * @returns 
+     */
     async findSubTypes(major_num: string): Promise<StoreTypeSub[] | null> {
-
-        console.log(major_num);
     
         if ( !(/^\d+$/.test(major_num)) ) {
             return null;
         }
-
-        console.log('??');
 
         const entities = await this.storeTypeSubRepository.createQueryBuilder('store_type_sub')
             .innerJoinAndSelect(
@@ -40,8 +41,6 @@ export class StoreTypeSubService{
             )
             .where('store_type_major.major_type = :major_type', {major_type : major_num})
             .getMany();
-        
-        console.log(entities);
         
         const sotreTypeSubData = entities.map((storeSub) => ({
             ...storeSub
