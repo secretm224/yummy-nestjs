@@ -29,3 +29,41 @@ scalar DateTime
 type Query {
   getAllStores: [Store!]!
 }
+
+type Mutation {
+  createStore(createStoreInput: CreateStoreInput!): Store!
+  updateStore(updateStoreInput: UpdateStoreInput!): Store!
+}
+
+input CreateStoreInput {
+  name: String!
+  type: String!
+  use_yn: String
+  reg_dt: DateTime
+  reg_id: String
+  is_beefulpay: Boolean
+  address: String
+  lat: Float
+  lng: Float
+  location_city: String
+  location_county: String
+  location_district: String
+  sub_type: Int
+}
+
+input UpdateStoreInput {
+  name: String
+  type: String
+  use_yn: String
+  reg_dt: DateTime
+  reg_id: String
+  is_beefulpay: Boolean
+  address: String
+  lat: Float
+  lng: Float
+  location_city: String
+  location_county: String
+  location_district: String
+  sub_type: Int
+  seq: Int!
+}

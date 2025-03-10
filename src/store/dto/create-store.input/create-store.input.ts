@@ -1,4 +1,5 @@
 import { InputType, Field, Int, Float } from '@nestjs/graphql';
+import { Timestamp } from 'typeorm';
 
 @InputType()
 export class CreateStoreInput {
@@ -11,10 +12,10 @@ export class CreateStoreInput {
   @Field(() => String, { nullable: true })
   use_yn?: string;
 
-  @Field(() => Date)
+  @Field(() => Date, { nullable: true })
   reg_dt: Date;
 
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   reg_id: string;
 
   @Field(() => Boolean, { nullable: true })
