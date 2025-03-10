@@ -20,11 +20,14 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
+    "@apollo/server": "^4.11.3",
+    "@nestjs/apollo": "^13.0.3",
     "@nestjs/axios": "^4.0.0",
     "@nestjs/common": "^11.0.1",
     "@nestjs/config": "^4.0.0",
     "@nestjs/core": "^11.0.1",
     "@nestjs/elasticsearch": "^11.0.0",
+    "@nestjs/graphql": "^13.0.3",
     "@nestjs/microservices": "^11.0.7",
     "@nestjs/passport": "^11.0.5",
     "@nestjs/platform-express": "^11.0.8",
@@ -40,6 +43,7 @@
     "elasticsearch": "^16.7.3",
     "express-ejs-layouts": "^2.5.1",
     "express-session": "^1.18.1",
+    "graphql": "^16.10.0",
     "ioredis": "^5.5.0",
     "jsonwebtoken": "^9.0.2",
     "kafkajs": "^2.2.4",

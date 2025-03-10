@@ -70,6 +70,12 @@ $npm install --save-dev @types/express-session
 #swagger
 $npm install --save @nestjs/swagger swagger-ui-express
 
+
+#graphql
+$npm install @nestjs/graphql @nestjs/apollo graphql apollo-server-express
+$npm uninstall apollo-server-express
+$npm install @apollo/server graphql @nestjs/apollo @nestjs/graphql
+
 ```
 
 ## Compile and run the project

@@ -63,7 +63,7 @@ export class StoreService {
 	 * @param queryRunner 
 	 * @returns 
 	 */
-	async create(store: Partial<Store>, queryRunner: QueryRunner): Promise<Store | null> {
+	async create(store: Partial<Store>, queryRunner?: QueryRunner): Promise<Store | null> {
 
 		if (!store.name) {
 			throw new Error('store name is required for create');
@@ -74,9 +74,16 @@ export class StoreService {
 		}
 
 		store.use_yn = 'Y';
-		const newStore = queryRunner.manager.create(Store, store);
+		// const newStore = queryRunner?.manager.create(Store, store):this.storeRepository.create(store);
+		// return queryRunner?.manager.save(Store, newStore):this.storeRepository.save;
+		
+		const newStore = queryRunner
+						? queryRunner.manager.create(Store, store)
+						: this.storeRepository.create(store);
 
-		return queryRunner.manager.save(Store, newStore);
+					return queryRunner
+						? queryRunner.manager.save(Store, newStore)
+						: this.storeRepository.save(newStore);
 	}
 
 	async update(store: Partial<Store>): Promise<Store | null> {

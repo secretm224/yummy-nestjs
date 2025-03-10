@@ -7,6 +7,10 @@ import * as expressLayouts from 'express-ejs-layouts';
 import * as session from 'express-session';
 import * as passport from 'passport';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { expressMiddleware } from '@apollo/server/express4';
+import express from 'express';
+
+
 
 
 // import RedisStore from 'connect-redis';
@@ -61,6 +65,7 @@ async function bootstrap() {
 
   app.use(passport.initialize());
   app.use(passport.session());
+  app.useBodyParser('json'); // express.json() 대신 사용
 
   //전체 페이지에서 사용할 수 있는 변수 설정
   app.use((req, res, next) => {

@@ -23,6 +23,7 @@ import { StoreTypeMajorModule } from './store_type_major/storeTypeMajor.module';
 import { StoreTypeMajorService } from './store_type_major/storeTypeMajor.service';
 import { StoreTypeSubModule } from './store_type_sub/storeTypeSub.module';
 import { StoreTypeLinkModule } from './store_type_link_tbl/storeTypeLink.module';
+import { GraphQlModule } from './graph-ql/graph-ql.module';
 
 @Module({
 	imports: [
@@ -55,7 +56,8 @@ import { StoreTypeLinkModule } from './store_type_link_tbl/storeTypeLink.module'
 		AdminModule,
 		StoreTypeMajorModule,
 		StoreTypeSubModule,
-		StoreTypeLinkModule
+		StoreTypeLinkModule,
+		GraphQlModule
 	],
 	controllers: [AppController, AuthController],
 	providers: [AppService, StoreTypeMajorService, KafkaProvider],
