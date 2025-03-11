@@ -61,8 +61,7 @@ export class StoreController {
 				const storeTypeLink = await this.storeTypeLinkService.create(saveStore, queryRunner);
 				if (storeTypeLink == null || saveStore.sub_type == -1) throw new Error("Failed to create 'storeTypeLink' object");
 				
-				/* store와 storeLocation, zeroPossible 생성 성공시 로그 전송 */
-				await this.SendLog(store); 
+				
 
 			} else {
 				throw new Error("Failed to create 'saveStore' object")
@@ -70,6 +69,8 @@ export class StoreController {
 			
 			/* 트랜잭션 커밋 */
 			await queryRunner.commitTransaction();
+			/* store와 storeLocation, zeroPossible 생성 성공시 로그 전송 */
+			await this.SendLog(store); 
 
 			return saveStore;
 		} catch(err) {
