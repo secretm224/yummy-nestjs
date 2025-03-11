@@ -29,6 +29,7 @@ scalar DateTime
 type Query {
   getAllStores: [Store!]!
   getStoreByName(store_name: String!): Store
+  SetAddressDetailByStoreName(store_name: String!): Store
 }
 
 type Mutation {

@@ -4,7 +4,7 @@ import { StoreService } from './store.service';
 import { StoreLocationInfoService } from '../store_location_info/storeLocation.service';
 import { ZeroPossibleService } from '../zero_possible_market/zeroPossible.service';
 import { KafkaService } from '../kafka_producer/kafka.service';
-
+import { StoreLocationInfoTbl } from 'src/entities/store_location_info_tbl.entity';
 import { Store } from '../entities/store.entity';
 import { DataSource } from 'typeorm';
 // import { Util } from '../util/datautil';
@@ -19,6 +19,7 @@ export class StoreResolver {
     private readonly zeroPossibleService: ZeroPossibleService,
     private readonly kafkaService: KafkaService,
     private readonly dataSource: DataSource,
+    private readonly storelocationinfo:StoreLocationInfoTbl
   ) {}
 
   // url : http://localhost:3000/graphql
@@ -135,18 +136,20 @@ export class StoreResolver {
   }
 
 // url : http://localhost:3000/graphql
-//   query {
-//     getStoreByName(store_name: "GraphQL Store test4") {
+//   mutation {
+//     updateStore(updateStoreInput: {
+//       name: "GraphQL Store test4",
+//       lat: 37.1234,
+//       lng: 126.5678
+//     }) {
 //       seq
 //       name
-//       type
-//       use_yn
-//       address
 //       lat
 //       lng
+//       chg_dt
+//       chg_id
 //     }
 //   }
-
   @Mutation(() => Store, { nullable: true })
   updateStore(@Args('updateStoreInput') updateStoreInput: UpdateStoreInput) {
 
@@ -158,4 +161,24 @@ export class StoreResolver {
 //     return this.storeService.remove(id);
 //   }
 // 
+
+ @Query(() => Store, { name: 'SetAddressDetailByStoreName', nullable: true })
+ async SetAddressDetailByStoreName(@Args('store_name', { type: () => String }) store_name: string) {
+    
+    const store_info = await this.storeService.findByName(store_name);
+    console.log('store_info= '+store_info);
+    if(store_info){
+        const address = store_info.address;
+        console.log('address= '+address);
+        if(address){
+            const addr_detail = await this.storeLocationInfoService.GetAddressDetailByAddress(address);
+            console.log('addr_detail= '+addr_detail);
+            // if(addr_detail){
+            //     const location_obj = await this.storeLocationInfoService.SetLocationDetailInfo(store_info?.seq);
+            // }
+        }
+    }
+
+    //return this.storeService.SetAddressDetailByStoreName(store_name);
+  }
 }
