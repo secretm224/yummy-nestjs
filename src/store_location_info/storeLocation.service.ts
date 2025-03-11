@@ -105,8 +105,9 @@ export class StoreLocationInfoService {
                                                         chg_dt: e_location.chg_dt,
                                                       },
                                                     );
-
-          return await this.storeLocationRepository.findOneBy({ seq: locationInfo.seq });
+          const obj = await this.storeLocationRepository.findOneBy({ seq: e_location.seq });
+          console.log(obj);
+          return await this.storeLocationRepository.findOneBy({ seq: e_location.seq });
         }
       }
 

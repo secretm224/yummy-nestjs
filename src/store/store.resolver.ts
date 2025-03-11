@@ -19,7 +19,6 @@ export class StoreResolver {
     private readonly zeroPossibleService: ZeroPossibleService,
     private readonly kafkaService: KafkaService,
     private readonly dataSource: DataSource,
-    private readonly storelocationinfo:StoreLocationInfoTbl
   ) {}
 
   // url : http://localhost:3000/graphql
@@ -95,21 +94,21 @@ export class StoreResolver {
   }
    
   // url : http://localhost:3000/graphql
-//   query {
-//     getAllStores {
-//       name
-//       type
-//       use_yn
-//       is_beefulpay
-//       address
-//       lat
-//       lng
-//       location_city
-//       location_county
-//       location_district
-//       sub_type
-//     }
-//   }
+  // query {
+  //   getAllStores {
+  //     name
+  //     type
+  //     use_yn
+  //     is_beefulpay
+  //     address
+  //     lat
+  //     lng
+  //     location_city
+  //     location_county
+  //     location_district
+  //     sub_type
+  //   }
+  // }
   
   @Query(() => [Store], { name: 'getAllStores' })
   findAll() {
@@ -117,17 +116,17 @@ export class StoreResolver {
   }
 
 // url : http://localhost:3000/graphql
-//   query {
-//     getStoreByName(store_name: "선릉돈까스") {
-//       seq
-//       name
-//       type
-//       use_yn
-//       address
-//       lat
-//       lng
-//     }
-//   }
+  // query {
+  //   getStoreByName(store_name: "선릉돈까스") {
+  //     seq
+  //     name
+  //     type
+  //     use_yn
+  //     address
+  //     lat
+  //     lng
+  //   }
+  // }
 
   @Query(() => Store, { name: 'getStoreByName', nullable: true })
   findOne(@Args('store_name', { type: () => String }) store_name: string) {
@@ -162,6 +161,20 @@ export class StoreResolver {
 //   }
 // 
 
+// query {
+//   SetAddressDetailByStoreName(store_name: "나이스샤워") {
+//     seq
+//     name
+//     type
+//     use_yn
+//     address
+//     lat
+//     lng
+//     location_city
+//     location_county
+//     location_district
+//   }
+// }
  @Query(() => Store, { name: 'SetAddressDetailByStoreName', nullable: true })
  async SetAddressDetailByStoreName(@Args('store_name', { type: () => String }) store_name: string) {
     
@@ -173,12 +186,23 @@ export class StoreResolver {
         if(address){
             const addr_detail = await this.storeLocationInfoService.GetAddressDetailByAddress(address);
             console.log('addr_detail= '+addr_detail);
-            // if(addr_detail){
-            //     const location_obj = await this.storeLocationInfoService.SetLocationDetailInfo(store_info?.seq);
-            // }
+            if(addr_detail){
+                const location_obj = await this.storeLocationInfoService.GetLocationInfo(store_info?.seq);
+                if(location_obj){
+                  location_obj.location_county = addr_detail.country ?? location_obj.location_county;
+                  location_obj.location_city = addr_detail.city ?? location_obj.location_city;
+                  location_obj.location_district = addr_detail.dong ?? location_obj.location_district;
+                  
+                  const update_location = await this.storeLocationInfoService.SetLocationDetailInfo(location_obj);
+                  if(update_location){
+                     return await this.storeService.findByName(store_name);
+                  }
+                  return store_info;
+                }
+            }
         }
     }
-
+    return null;
     //return this.storeService.SetAddressDetailByStoreName(store_name);
   }
 }

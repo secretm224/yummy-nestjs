@@ -41,6 +41,9 @@ export class StoreService {
 					'store_location_info_tbl.address',
 					'store_location_info_tbl.lat',
 					'store_location_info_tbl.lng',
+					'store_location_info_tbl.location_county',
+					'store_location_info_tbl.location_city',
+					'store_location_info_tbl.location_district',
 				]
 			)
 			.where('store.use_yn = :use_yn', {use_yn: 'Y'})
@@ -52,9 +55,12 @@ export class StoreService {
 			is_beefulpay: store.zero_possible_market ? true : false,
 			address: store.store_location_info_tbl.address,
 			lat: store.store_location_info_tbl.lat,
-			lng: store.store_location_info_tbl.lng
+			lng: store.store_location_info_tbl.lng,
+			location_county:store.store_location_info_tbl.location_county,
+			location_city:store.store_location_info_tbl.location_city,
+			location_district:store.store_location_info_tbl.location_district
 		}));
-		
+	
 		return storeData;
 	}
 	
@@ -74,7 +80,10 @@ export class StoreService {
 			is_beefulpay: store.zero_possible_market ? true : false,
 			address: store.store_location_info_tbl.address,
 			lat: store.store_location_info_tbl.lat,
-			lng: store.store_location_info_tbl.lng
+			lng: store.store_location_info_tbl.lng,
+			location_county:store.store_location_info_tbl.location_county,
+			location_city:store.store_location_info_tbl.location_city,
+			location_district:store.store_location_info_tbl.location_district,
 		};
 		return storeData;
 	}

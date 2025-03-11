@@ -20,6 +20,6 @@ import { StoreResolver } from './store.resolver';
   ],
   providers: [StoreService, ZeroPossibleService, StoreLocationInfoService, StoreTypeLinkService, StoreResolver], /* 사용할 서비스 등록 */
   controllers: [StoreController], /* Controller 등록 */ 
-  exports: [StoreService], /* 다른모듈에서 사용하기 위한 Export */
+  exports: [StoreService,StoreLocationInfoService], /* 다른모듈에서 사용하기 위한 Export */
 })
 export class StoreModule {}
