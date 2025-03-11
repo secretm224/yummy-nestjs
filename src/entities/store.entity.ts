@@ -3,8 +3,7 @@ import { ZeroPossibleMarket } from '../entities/zero_possible_market.entity';
 import { StoreLocationInfoTbl } from './store_location_info_tbl.entity';
 import { ApiProperty } from '@nestjs/swagger';
 import { StoreTypeLinkTbl } from './store_type_link_tbl.entity';
-import { ObjectType, Field, Int ,Float} from '@nestjs/graphql';
-import { timestamp } from 'rxjs';
+import { ObjectType, Field, Int ,Float,GraphQLISODateTime} from '@nestjs/graphql';
 
 
 @ObjectType()
@@ -31,7 +30,7 @@ export class Store {
     use_yn: string;
 
     @ApiProperty({ description: '등록 날짜', example: '2024-03-07T12:00:00Z' })
-    @Field(() => Date, { nullable: false })  
+    @Field(() => GraphQLISODateTime, { nullable: false })  
     @Column({ type: 'timestamp', nullable: false })
     reg_dt: Date;
 
@@ -41,7 +40,7 @@ export class Store {
     reg_id: string;
 
     @ApiProperty({ description: '마지막 수정 날짜', example: '2024-03-08T14:30:00Z', nullable: true })
-    @Field(() => Date, { nullable: true })
+    @Field(() => GraphQLISODateTime, { nullable: true })
     @Column({ type: 'timestamp', nullable: true })
     chg_dt: Date;
 
@@ -54,24 +53,31 @@ export class Store {
     @ApiProperty({ description: '비플페이 가맹점 여부', example: true })
     @Field(() => Boolean, { nullable: true })
     is_beefulpay: boolean;
+
     @ApiProperty({ description: '주소', example: '서울시 강남구' })
     @Field(() => String, { nullable: true })
     address: string;
+
     @ApiProperty({ description: '위도', example: 37.5665 })
     @Field(() => Float, { nullable: true })
     lat: number;
+
     @ApiProperty({ description: '경도', example: 126.9780 })
     @Field(() => Float, { nullable: true })
     lng: number;
+
     @ApiProperty({ description: '도시', example: '서울' })
     @Field(() => String, { nullable: true })
     location_city: string;
+
     @ApiProperty({ description: '군/구', example: '강남구' })
     @Field(() => String, { nullable: true })
     location_county: string;
+
     @ApiProperty({ description: '구/동', example: '역삼동' })
     @Field(() => String, { nullable: true })
     location_district: string;
+
     @ApiProperty({ description: '하위 유형', example: 1 })
     @Field(() => Int, { nullable: true })
     sub_type: number;

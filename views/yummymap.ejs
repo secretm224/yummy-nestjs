@@ -26,7 +26,7 @@
             <button class="register-button" onclick="location.href='/registerStore'">✨ 장소 등록 </button>
             <% if (user.is_admin) { %>
                 <label class="toggle-draggable">
-                    <input type="checkbox" onchange="toggleMarkerDraggable()"> 🔧 마커 이동 설정
+                    <input id="toggleDraggable" type="checkbox" onchange="toggleMarkerDraggable()"> 🔧 마커 이동 설정
                 </label>
             <% } %>
          <% } %>

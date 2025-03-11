@@ -7,7 +7,7 @@ import { KafkaService } from '../kafka_producer/kafka.service';
 
 import { Store } from '../entities/store.entity';
 import { DataSource } from 'typeorm';
-import { Util } from '../util/datautil';
+// import { Util } from '../util/datautil';
 import { CreateStoreInput } from './dto/create-store.input/create-store.input';
 import { UpdateStoreInput } from './dto/update-store.input/update-store.input';
 
@@ -22,36 +22,36 @@ export class StoreResolver {
   ) {}
 
   // url : http://localhost:3000/graphql
-  // mutation {
-  //   createStore(createStoreInput: {
-  //     name: "GraphQL Store",
-  //     type: "restaurant",
-  //     use_yn: "Y",
-  //     is_beefulpay: true,
-  //     address: "123 Main Street",
-  //     lat: 37.5665,
-  //     lng: 126.9780,
-  //     location_city: "Seoul",
-  //     location_county: "Gangnam-gu",
-  //     location_district: "Yeoksam-dong",
-  //     sub_type: 1
-  //   }) {
-  //     seq
-  //     name
-  //     type
-  //     use_yn
-  //     is_beefulpay
-  //     address
-  //     lat
-  //     lng
-  //     location_city
-  //     location_county
-  //     location_district
-  //     sub_type
-  //     reg_dt
-  //     reg_id
-  //   }
-  // }
+//   mutation {
+//     createStore(createStoreInput: {
+//       name: "GraphQL Store",
+//       type: "restaurant",
+//       use_yn: "Y",
+//       is_beefulpay: true,
+//       address: "123 Main Street",
+//       lat: 37.5665,
+//       lng: 126.9780,
+//       location_city: "Seoul",
+//       location_county: "Gangnam-gu",
+//       location_district: "Yeoksam-dong",
+//       sub_type: 1
+//     }) {
+//       seq
+//       name
+//       type
+//       use_yn
+//       is_beefulpay
+//       address
+//       lat
+//       lng
+//       location_city
+//       location_county
+//       location_district
+//       sub_type
+//       reg_dt
+//       reg_id
+//     }
+//   }
   
 
   @Mutation(() => Store)
@@ -63,7 +63,7 @@ export class StoreResolver {
 
     try {
       // ✅ Step 1: Store 생성
-      createStoreInput.reg_dt =  createStoreInput.reg_dt ?? Util.GetUtcDate();
+      createStoreInput.reg_dt =  createStoreInput.reg_dt ?? new Date(new Date().toISOString());
       createStoreInput.reg_id = createStoreInput.reg_id ?? 'system';
 
       const saveStore = await this.storeService.create(createStoreInput, queryRunner);
@@ -94,34 +94,62 @@ export class StoreResolver {
   }
    
   // url : http://localhost:3000/graphql
-  // query {
-  //   getAllStores {
-  //     name
-  //     type
-  //     use_yn
-  //     is_beefulpay
-  //     address
-  //     lat
-  //     lng
-  //     location_city
-  //     location_county
-  //     location_district
-  //     sub_type
-  //   }
-  // }
+//   query {
+//     getAllStores {
+//       name
+//       type
+//       use_yn
+//       is_beefulpay
+//       address
+//       lat
+//       lng
+//       location_city
+//       location_county
+//       location_district
+//       sub_type
+//     }
+//   }
   
   @Query(() => [Store], { name: 'getAllStores' })
   findAll() {
     return this.storeService.findAll();
   }
 
-//   @Query(() => Store, { name: 'getStoreById', nullable: true })
-//   findOne(@Args('id', { type: () => Int }) id: number) {
-//     return this.storeService.findOne(id);
+// url : http://localhost:3000/graphql
+//   query {
+//     getStoreByName(store_name: "선릉돈까스") {
+//       seq
+//       name
+//       type
+//       use_yn
+//       address
+//       lat
+//       lng
+//     }
 //   }
 
-  @Mutation(() => Store)
+  @Query(() => Store, { name: 'getStoreByName', nullable: true })
+  findOne(@Args('store_name', { type: () => String }) store_name: string) {
+
+    return this.storeService.findByName(store_name);
+  }
+
+// url : http://localhost:3000/graphql
+//   query {
+//     getStoreByName(store_name: "GraphQL Store test4") {
+//       seq
+//       name
+//       type
+//       use_yn
+//       address
+//       lat
+//       lng
+//     }
+//   }
+
+  @Mutation(() => Store, { nullable: true })
   updateStore(@Args('updateStoreInput') updateStoreInput: UpdateStoreInput) {
+
     return this.storeService.update(updateStoreInput);
   }
 

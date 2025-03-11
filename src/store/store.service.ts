@@ -4,6 +4,8 @@ import { Store } from 'src/entities/store.entity';
 import { Repository, DataSource, QueryRunner } from 'typeorm';
 import { KafkaService } from 'src/kafka_producer/kafka.service';
 import { Util } from '../util/datautil';
+import { StoreLocationInfoService } from 'src/store_location_info/storeLocation.service';
+
 
 @Injectable()
 export class StoreService {
@@ -11,7 +13,9 @@ export class StoreService {
 		private readonly dataSource: DataSource,
 		@InjectRepository(Store)
 		private storeRepository: Repository<Store>,
-		private readonly loggerService: KafkaService
+		private readonly loggerService: KafkaService,
+		private readonly storelocationservice:StoreLocationInfoService
+
 	) {}
 
 	/* Deprecated */
@@ -32,6 +36,7 @@ export class StoreService {
 				[
 					'store.name',
 					'store.type',
+					'store.use_yn',
 					'zero_possible_market.seq',
 					'store_location_info_tbl.address',
 					'store_location_info_tbl.lat',
@@ -43,6 +48,7 @@ export class StoreService {
 		
 		const storeData = entities.map((store) => ({
 			...store,
+			use_yn: store.use_yn,
 			is_beefulpay: store.zero_possible_market ? true : false,
 			address: store.store_location_info_tbl.address,
 			lat: store.store_location_info_tbl.lat,
@@ -53,7 +59,24 @@ export class StoreService {
 	}
 	
 	async findByName(name: string): Promise<Store | null> {
-		return await this.storeRepository.findOneBy({ name }) || null;
+		const store = await this.storeRepository.findOne({
+			where: { name },
+			relations: ['store_location_info_tbl', 'zero_possible_market'],
+		});
+
+		if(!store){
+			return null;
+		}
+
+		const storeData = {
+			...store,
+			use_yn: store.use_yn,
+			is_beefulpay: store.zero_possible_market ? true : false,
+			address: store.store_location_info_tbl.address,
+			lat: store.store_location_info_tbl.lat,
+			lng: store.store_location_info_tbl.lng
+		};
+		return storeData;
 	}
 	
 	/**
@@ -74,9 +97,6 @@ export class StoreService {
 		}
 
 		store.use_yn = 'Y';
-		// const newStore = queryRunner?.manager.create(Store, store):this.storeRepository.create(store);
-		// return queryRunner?.manager.save(Store, newStore):this.storeRepository.save;
-		
 		const newStore = queryRunner
 						? queryRunner.manager.create(Store, store)
 						: this.storeRepository.create(store);
@@ -92,23 +112,17 @@ export class StoreService {
 		}
 
 		const existingStore = await this.findByName(store.name);
-		if (existingStore) {
-			existingStore.lat = store.lat ?? existingStore.lat; // 기본값으로 기존 lat 사용
-			existingStore.lng = store.lng ?? existingStore.lng; // 기본값으로 기존 lng 사용
-			existingStore.chg_dt = Util.GetUtcDate();
-			existingStore.chg_id = 'system';
-			
-			await this.storeRepository.update(
-			{ name: store.name },
-			{
-				lat: existingStore.lat,
-				lng: existingStore.lng,
-				chg_dt: existingStore.chg_dt,
-				chg_id: existingStore.chg_id,
-			},
-			);
+		if(existingStore){
+			existingStore.lat = store.lat ?? existingStore.lat;
+			existingStore.lng = store.lng ?? existingStore.lng;
+			existingStore.address = store.address ?? existingStore.address;
 
-			return this.storeRepository.findOneBy({ name: store.name });
+			const update_addr = await this.storelocationservice.update(existingStore);
+			if(update_addr){
+				return  await this.findByName(store.name);
+			}else{
+				return null;
+			}
 		}
 
 		return null;

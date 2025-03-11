@@ -28,11 +28,12 @@ scalar DateTime
 
 type Query {
   getAllStores: [Store!]!
+  getStoreByName(store_name: String!): Store
 }
 
 type Mutation {
   createStore(createStoreInput: CreateStoreInput!): Store!
-  updateStore(updateStoreInput: UpdateStoreInput!): Store!
+  updateStore(updateStoreInput: UpdateStoreInput!): Store
 }
 
 input CreateStoreInput {
@@ -65,5 +66,5 @@ input UpdateStoreInput {
   location_county: String
   location_district: String
   sub_type: Int
-  seq: Int!
+  seq: Int
 }
