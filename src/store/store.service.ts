@@ -34,6 +34,7 @@ export class StoreService {
 			)
 			.select(
 				[
+					'store.seq',
 					'store.name',
 					'store.type',
 					'store.use_yn',
@@ -51,6 +52,7 @@ export class StoreService {
 		
 		const storeData = entities.map((store) => ({
 			...store,
+			seq:store.seq,
 			use_yn: store.use_yn,
 			is_beefulpay: store.zero_possible_market ? true : false,
 			address: store.store_location_info_tbl.address,

@@ -179,13 +179,10 @@ export class StoreResolver {
  async SetAddressDetailByStoreName(@Args('store_name', { type: () => String }) store_name: string) {
     
     const store_info = await this.storeService.findByName(store_name);
-    console.log('store_info= '+store_info);
     if(store_info){
         const address = store_info.address;
-        console.log('address= '+address);
         if(address){
             const addr_detail = await this.storeLocationInfoService.GetAddressDetailByAddress(address);
-            console.log('addr_detail= '+addr_detail);
             if(addr_detail){
                 const location_obj = await this.storeLocationInfoService.GetLocationInfo(store_info?.seq);
                 if(location_obj){
@@ -205,4 +202,30 @@ export class StoreResolver {
     return null;
     //return this.storeService.SetAddressDetailByStoreName(store_name);
   }
+
+  @Query(() => [Store], { name: 'SetAddressDetailForAllStores', nullable: true })
+  async SetAddressDetailForAllStores(){
+      const all_stores = await this.storeService.findAll();
+      if(!all_stores || all_stores.length <=0){
+        return [];// array return
+      }
+
+      const target_stores = all_stores.filter(((s) =>
+        !s?.store_location_info_tbl?.location_city ||
+        !s?.store_location_info_tbl?.location_county ||
+        !s?.store_location_info_tbl?.location_district ||
+        s?.store_location_info_tbl?.location_city.trim() ===  '' ||
+        s?.store_location_info_tbl?.location_county.trim() ===  '' ||
+        s?.store_location_info_tbl?.location_district.trim() ===  '' 
+      ));
+
+      for(const target of target_stores){
+        if(target.address && target.name){
+          this.SetAddressDetailByStoreName(target.name);
+        }
+      }
+
+      return await this.storeService.findAll();
+  }
+
 }
