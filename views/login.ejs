@@ -30,19 +30,15 @@
             </div>
         </div>
 
-        <div id="search_addr_area" style="display:none;border:1px solid;width:350px;height:300px;margin:5px 0;position:relative">
-            <img src="//t1.daumcdn.net/postcode/resource/images/close.png" 
-                 id="btnFoldWrap" 
-                 style="cursor:pointer;position:absolute;right:0px;top:-1px;z-index:1" 
-                 onclick="SearchAreaToggle()" 
-                 alt="접기 버튼">
+        <div id="layer" style="display:none;position:fixed;overflow:hidden;z-index:1;-webkit-overflow-scrolling:touch;">
+            <img src="//t1.daumcdn.net/postcode/resource/images/close.png" id="btnCloseLayer" style="cursor:pointer;position:absolute;right:-3px;top:-3px;z-index:1" onclick="SearchLayerToggle()" alt="닫기 버튼">
         </div>
-
+            
         <!-- 주소 등록 입력 필드 -->
         <div class="address-container">
             <div class="address-input">
-                <input type="text" id="address" placeholder="주소를 입력하세요" onfocus="SearchAddress();"/>
-                <button class="search-address-button" onclick="SearchAddress();">검색</button>
+                <input type="text" id="address" placeholder="주소를 입력하세요" onfocus="SearchAddressLayer();"/>
+                <button class="search-address-button" onclick="SearchAddressLayer();">검색</button>
             </div>
             <button class="register-address-button" onclick="RegisterAddress();">주소 등록</button>
         </div>
