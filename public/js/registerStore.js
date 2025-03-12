@@ -38,10 +38,12 @@ async function registerStore()
             let lat = firstItem.point.y;
             let lng = firstItem.point.x;
             let address = firstItem.address;
-            let location_county = firstItem.addrdetail.country;
-            let location_city = firstItem.addrdetail.sido; 
-            let location_district = firstItem.addrdetail.sigugun;
-    
+            let location_county = firstItem.addrdetail.sido;
+            let location_city = firstItem.addrdetail.sigugun; 
+            let location_district = firstItem.addrdetail.dongmyun;
+
+            console.log(firstItem);
+
             if (!!lat && !!lng && !!address) {
                 let addjson = { 
                     name: name,

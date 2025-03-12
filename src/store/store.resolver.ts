@@ -10,6 +10,9 @@ import { DataSource } from 'typeorm';
 // import { Util } from '../util/datautil';
 import { CreateStoreInput } from './dto/create-store.input/create-store.input';
 import { UpdateStoreInput } from './dto/update-store.input/update-store.input';
+import { json } from 'stream/consumers';
+import GraphQLJSON from 'graphql-type-json';
+
 
 @Resolver(() => Store)
 export class StoreResolver {
@@ -224,7 +227,7 @@ export class StoreResolver {
       //     this.SetAddressDetailByStoreName(target.name);
       //   }
       // }
-      
+
       //비동기 방식으로 변경 
       await Promise.allSettled(
         target_stores.map(async(s) =>{
@@ -234,5 +237,10 @@ export class StoreResolver {
 
       return await this.storeService.findAll();
   }
+
+  // @Query(() => GraphQLJSON, { name: 'SearchLocation', nullable: true })
+  // async SearchLocation(@Args('keyword', { type: () => String }) keyword: string) {
+  //   return await this.storeLocationInfoService.SearchLocation(keyword);
+  // }
 
 }
