@@ -11,7 +11,7 @@ import { DataSource } from 'typeorm';
 import { CreateStoreInput } from './dto/create-store.input/create-store.input';
 import { UpdateStoreInput } from './dto/update-store.input/update-store.input';
 import { json } from 'stream/consumers';
-import GraphQLJSON from 'graphql-type-json';
+// import GraphQLJSON from 'graphql-type-json';
 
 
 @Resolver(() => Store)
