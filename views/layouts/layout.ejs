@@ -23,8 +23,10 @@
         });
 
         window.env = {
-            kakao_redirect_uri: "<%= kakao_redirect_uri %>"
+            kakao_redirect_uri: "<%= kakao_redirect_uri %>",
+            login_user:JSON.parse('<%- JSON.stringify(user) %>')
         };
+
     </script>
 
     <%- typeof css !== "undefined" ? css : "" %>

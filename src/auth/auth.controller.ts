@@ -135,7 +135,7 @@ export class AuthController {
                         login_channel: 'kakao',
                     };
                     
-                    console.log('세션에 저장된 유저 정보:', req.session.user);
+                    //console.log('세션에 저장된 유저 정보:', req.session.user);
                     req.session.save(err => {
                         if (err) console.error('세션 저장 실패:', err);
                     });
@@ -204,7 +204,7 @@ export class AuthController {
                             login_channel: 'kakao',
                         };
 
-                        console.log('세션에 저장된 유저 정보:', req.session.user);
+                        //console.log('세션에 저장된 유저 정보:', req.session.user);
                         req.session.save(err => {
                             if (err) console.error('세션 저장 실패:', err);
                         });        
@@ -225,7 +225,7 @@ export class AuthController {
 
     @Get('session')
     async getUserInfoBySession(@Req() req: Request) {
-        return req.session.user ? req.session.user : { message: 'yummy No session found' };
+        return req.session.user ? req.session.user :{error_code :"999",error_msg:"session data empty"};
     }
 
     @Post('logout')

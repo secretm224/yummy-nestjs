@@ -106,3 +106,120 @@ footer {
     text-align: center;
     font-weight: bold;
 } */
+
+.address-alias {
+    margin-top: 20px;
+    font-size: 16px;
+}
+
+.address-type-buttons {
+    display: flex;
+    gap: 20px;
+    margin-top: 10px;
+}
+
+.type-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 80px;
+    height: 80px;
+    border: 2px solid #ddd;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 14px;
+    background-color: #fff;
+}
+
+.type-btn span {
+    font-size: 28px;
+}
+
+.type-btn:hover {
+    border-color: #ffcc00;
+    background-color: #fffae6;
+}
+
+input[type="radio"]:checked + .type-btn {
+    border-color: #ffcc00;
+    background-color: #ffecb3;
+    font-weight: bold;
+}
+
+.address-input {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.address-input input {
+    width: 250px;
+    padding: 8px;
+    font-size: 14px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.register-address-button {
+    padding: 8px 15px;
+    font-size: 14px;
+    background-color: #ffcc00;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.register-address-button:hover {
+    background-color: #ffdd44;
+}
+
+.address-container {
+    width: 100%;
+    max-width: 400px;
+    margin: 20px auto;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.address-input {
+    display: flex;
+    gap: 10px;
+}
+
+.address-input input {
+    flex: 1;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.search-address-button {
+    padding: 10px 15px;
+    font-size: 14px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #ddd;
+}
+
+.search-address-button:hover {
+    background-color: #bbb;
+}
+
+.register-address-button {
+    padding: 12px;
+    font-size: 14px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #ffcc00;
+    width: 100%;
+}
+
+.register-address-button:hover {
+    background-color: #ffdd44;
+}

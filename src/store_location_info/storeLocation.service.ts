@@ -162,14 +162,14 @@ export class StoreLocationInfoService {
     //   if(keyworld){
     //     const enc_keyworld = encodeURI(keyworld);
     //     try{
-    //       const api_key_id = '87ni0cgqze'; //env 파일 등록 필요
-    //       const api_key = 'HTCVvQAFfYGRgtp1T4gN8aQUkfrbAcszWr95VuOj';//env 파일 등록 필요
-    //       const url = `https://openapi.naver.com/v1/search/local.json?query=${keyworld}`;
+    //       const api_key_id = 'tauXWDsgXRDltxPz2xGh'; //env 파일 등록 필요
+    //       const api_key = '0f4XWjCEXL';//env 파일 등록 필요
+    //       const url = `https://openapi.naver.com/v1/search/local.json?query=${keyworld}&display=5&sort=comment`;
     //       const header = {headers:{'x-ncp-apigw-api-key-id': `${api_key_id}`,
     //                                'x-ncp-apigw-api-key':`${api_key}`,
     //                                'Accept': '*/*'
     //                               },
-    //                               httpsAgent: new https.Agent({
+    //                                 httpsAgent: new https.Agent({
     //                                 rejectUnauthorized: false, // ✅ SSL 인증서 검증 비활성화 http -> https 요청이 발생해서 장애
     //                               }),
     //               };
