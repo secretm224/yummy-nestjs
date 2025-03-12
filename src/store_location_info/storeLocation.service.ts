@@ -58,7 +58,7 @@ export class StoreLocationInfoService {
           exists_addr.lng = store.lng ?? exists_addr?.lng;
           exists_addr.address = store.address ?? exists_addr?.address;
           exists_addr.chg_dt = Util.GetUtcDate();
-          //exists_addr.chg_id = "storelocaton>update"; 컬럼 X
+          exists_addr.chg_id = "storelocaton>update";
 
           await this.storeLocationRepository.update(
                                                     { seq: store.seq },
@@ -66,7 +66,7 @@ export class StoreLocationInfoService {
                                                       lat: exists_addr.lat,
                                                       lng: exists_addr.lng,
                                                       chg_dt: exists_addr.chg_dt,
-                                                      //chg_id: exists_addr.chg_id,
+                                                      chg_id: exists_addr.chg_id,
                                                     },
                                                   );
 
@@ -95,6 +95,7 @@ export class StoreLocationInfoService {
           e_location.location_city = locationInfo.location_city ?? e_location.location_city;
           e_location.location_district = locationInfo.location_district ?? e_location.location_district;
           e_location.chg_dt = Util.GetUtcDate();
+          e_location.chg_id = "storelocaton>SetLocationDetailInfo";
 
           await this.storeLocationRepository.update(
                                                       { seq: e_location.seq },
@@ -103,6 +104,7 @@ export class StoreLocationInfoService {
                                                         location_city: e_location.location_city,
                                                         location_district: e_location.location_district,
                                                         chg_dt: e_location.chg_dt,
+                                                        chg_id:e_location.chg_id
                                                       },
                                                     );
           const obj = await this.storeLocationRepository.findOneBy({ seq: e_location.seq });
