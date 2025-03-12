@@ -95,7 +95,7 @@ export class StoreLocationInfoService {
           e_location.location_city = locationInfo.location_city ?? e_location.location_city;
           e_location.location_district = locationInfo.location_district ?? e_location.location_district;
           e_location.chg_dt = Util.GetUtcDate();
-          e_location.chg_id = "storelocaton>SetLocationDetailInfo";
+          e_location.chg_id = "SetLocationDetailInfo";
 
           await this.storeLocationRepository.update(
                                                       { seq: e_location.seq },
@@ -107,7 +107,7 @@ export class StoreLocationInfoService {
                                                         chg_id:e_location.chg_id
                                                       },
                                                     );
-          const obj = await this.storeLocationRepository.findOneBy({ seq: e_location.seq });
+          
           return await this.storeLocationRepository.findOneBy({ seq: e_location.seq });
         }
       }
