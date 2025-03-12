@@ -219,11 +219,18 @@ export class StoreResolver {
         s?.store_location_info_tbl?.location_district.trim() ===  '' 
       ));
 
-      for(const target of target_stores){
-        if(target.address && target.name){
-          this.SetAddressDetailByStoreName(target.name);
-        }
-      }
+      // for(const target of target_stores){
+      //   if(target.address && target.name){
+      //     this.SetAddressDetailByStoreName(target.name);
+      //   }
+      // }
+      
+      //비동기 방식으로 변경 
+      await Promise.allSettled(
+        target_stores.map(async(s) =>{
+           await this.SetAddressDetailByStoreName(s.name);
+        })
+      );
 
       return await this.storeService.findAll();
   }

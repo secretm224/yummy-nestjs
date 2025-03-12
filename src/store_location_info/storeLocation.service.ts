@@ -106,7 +106,6 @@ export class StoreLocationInfoService {
                                                       },
                                                     );
           const obj = await this.storeLocationRepository.findOneBy({ seq: e_location.seq });
-          console.log(obj);
           return await this.storeLocationRepository.findOneBy({ seq: e_location.seq });
         }
       }
@@ -114,7 +113,7 @@ export class StoreLocationInfoService {
       return null;
     }
 
-    // 	curl --location --request GET 'https://naveropenapi.apigw.ntruss.com/map-geocode/v2/geocode?query=분당구 불정로 6' \
+// 	curl --location --request GET 'https://naveropenapi.apigw.ntruss.com/map-geocode/v2/geocode?query=분당구 불정로 6' \
 // --header 'x-ncp-apigw-api-key-id: {API Key ID}' \
 // --header 'x-ncp-apigw-api-key: {API Key}' \
 // --header 'Accept: application/json'
@@ -122,16 +121,16 @@ export class StoreLocationInfoService {
 	async GetAddressDetailByAddress(store_address:String){
       if(store_address){
         try{
-          const api_key_id = '87ni0cgqze';
-          const api_key = 'HTCVvQAFfYGRgtp1T4gN8aQUkfrbAcszWr95VuOj';
+          const api_key_id = '87ni0cgqze'; //env 파일 등록 필요
+          const api_key = 'HTCVvQAFfYGRgtp1T4gN8aQUkfrbAcszWr95VuOj';//env 파일 등록 필요
           const url = 'https://naveropenapi.apigw.ntruss.com/map-geocode/v2/geocode?query='+store_address
           const header = {headers:{'x-ncp-apigw-api-key-id': `${api_key_id}`,
-                      'x-ncp-apigw-api-key':`${api_key}`,
-                      'Accept': 'application/json'
-                      },
-                      httpsAgent: new https.Agent({
-                        rejectUnauthorized: false, // ✅ SSL 인증서 검증 비활성화
-                      }),
+                                   'x-ncp-apigw-api-key':`${api_key}`,
+                                   'Accept': 'application/json'
+                                  },
+                                  httpsAgent: new https.Agent({
+                                    rejectUnauthorized: false, // ✅ SSL 인증서 검증 비활성화 http -> https 요청이 발생해서 장애
+                                  }),
                   };
 
           const addr_detail = await axios.get(url,header);
@@ -158,5 +157,4 @@ export class StoreLocationInfoService {
         }
       }
     }
-
 }
