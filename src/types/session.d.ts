@@ -7,6 +7,7 @@ declare module 'express-session' {
       picture: string;
       is_admin: boolean;
       login_channel: string;
+      token_id:string;
     };
   }
 }

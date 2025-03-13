@@ -75,6 +75,7 @@ export class AuthController {
                 picture: userinfo?.picture || '',
                 is_admin: is_admin,
                 login_channel: 'kakao',
+                token_id:userinfo?.sub?.toString() ?? "0"
             };
             
             console.log('세션에 저장된 유저 정보:', req.session.user);
@@ -133,6 +134,7 @@ export class AuthController {
                         picture: userinfo?.picture || '',
                         is_admin: is_admin,
                         login_channel: 'kakao',
+                        token_id:userinfo?.token_id
                     };
                     
                     //console.log('세션에 저장된 유저 정보:', req.session.user);
@@ -202,6 +204,7 @@ export class AuthController {
                             picture: userinfo?.picture || '',
                             is_admin: is_admin,
                             login_channel: 'kakao',
+                            token_id:userinfo?.sub?.toString() ?? "0"
                         };
 
                         //console.log('세션에 저장된 유저 정보:', req.session.user);
@@ -239,4 +242,17 @@ export class AuthController {
         });
     }
 
+
+    @Post('AddUserDetail')
+    AddUserDetail(@Res() res:Response, @Req() req:Request){
+        const { addr_type, addr } = req.body;
+
+        const user_detail = {
+            user_nm:req.session.user?.name,
+            login_channel:req.session.user?.login_channel,
+            token_id:req.session.user?.token_id,
+            addr_type:addr_type,
+            addr:addr
+        }
+    }
 }

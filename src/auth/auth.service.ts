@@ -111,9 +111,10 @@ export class AuthService {
             const userinfo = await axios.post(url, data, header);
             const nickname = userinfo.data.kakao_account.profile.nickname;
             const image = userinfo.data.kakao_account.profile.thumbnail_image_url;
+            const token_id = userinfo.data.id;
 
             if(!!nickname && !!image){
-                return {nickname:nickname,picture:image};
+                return {nickname:nickname,picture:image,token_id:token_id};
             }
 
         }catch(error){
