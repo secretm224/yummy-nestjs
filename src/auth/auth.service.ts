@@ -1,13 +1,33 @@
 import { HttpException, HttpStatus, Injectable, Res } from '@nestjs/common';
 import axios from 'axios';
+import { UserRepository } from './user.repository';
 import e from 'express';
 import * as path from 'path';
-import { UserRepository } from './user.repository';
+import { Repository } from 'typeorm';
 // import { access } from 'fs';
+
+import {RegisterUserDto} from './dto/register.user.dto';
+import {UserProfileDto} from './dto/select.user.dto';
+
+import {User} from '../entities/user/user.entity';
+import {UserAuth} from '../entities/user/user_auth.entity';
+import {UserDetail} from '../entities/user/user_detail.entity';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Util } from '../util/datautil';
+import * as jwt from 'jsonwebtoken';
 
 @Injectable()
 export class AuthService {
-    constructor(private readonly userrepository:UserRepository){}
+    constructor(
+               // private readonly userrepository:UserRepository , 
+                  @InjectRepository(User)
+                  private readonly user_repository:Repository<User> ,
+                  @InjectRepository(UserAuth)
+                  private readonly auth_repository:Repository<UserAuth> ,
+                  @InjectRepository(UserDetail)
+                  private readonly detail_repository:Repository<UserDetail>,
+               ){}
+
     private readonly api_key = process?.env?.KAKAO_CLIENT_ID ?? "";
 
     // https://kauth.kakao.com/oauth/token" \
@@ -39,7 +59,29 @@ export class AuthService {
            // console.log("kakao token2="+ JSON.stringify(kakao_token));
 
             if(!!kakao_token){
-                this.userrepository.SaveUser(kakao_token);
+                //this.userrepository.SaveUser(kakao_token);
+                // name: userinfo?.nickname || 'GUEST',
+                // picture: userinfo?.picture || '',
+                // is_admin: is_admin,
+                // login_channel: 'kakao',
+                 //const kaKao_info = jwt.decode(kakao_token.data.id_token);
+                
+                //  if(kaKao_info) {
+                //     //RegisterUserWithCoordinate(RegisterDto:RegisterUserDto):Promise<UserProfileDto | null>
+                //     //token.data.id_token
+                //     const register_user_dto:RegisterUserDto={
+                //         //  user_nm:kakao_token.data.,
+                //         // login_channel:save_auth.login_channel,
+                //         // token_id:save_auth.token_id,
+                //         // addr_type:detail.addr_type,
+                //         // addr:detail.addr,
+                //         // lngx:detail.lngx,
+                //         // laty:detail.laty,
+                //         // reg_dt:save_user.reg_dt,
+                //     };
+
+                // }
+
                 return kakao_token.data;
             }else{
                 throw new HttpException("kakao token data is empty",HttpStatus.BAD_REQUEST);
@@ -148,4 +190,79 @@ export class AuthService {
         }
             
     }
+
+
+    async RegisterUserWithCoordinate(RegisterDto:RegisterUserDto):Promise<UserProfileDto | null>{
+
+        const regist_user = await this.RegisterUser(RegisterDto);
+
+        return regist_user;
+    }
+
+
+    async RegisterUser(RegisterDto:RegisterUserDto):Promise<UserProfileDto | null>{
+        if(RegisterDto){
+            const user = this.user_repository.create({
+                user_nm : RegisterDto?.user_nm,
+                reg_dt:Util.GetUtcDate(),
+                reg_id:"auth>RegisterUser"
+            });
+
+            const save_user = await this.user_repository.save(user);
+
+            if(save_user){
+                const auth = this.auth_repository.create({
+                    user:save_user,
+                    user_no:save_user.user_no,
+                    login_channel:RegisterDto.login_channel,
+                    token_id:RegisterDto.token_id,
+                    reg_dt :Util.GetUtcDate(),
+                    reg_id:"auth>RegisterUser"
+                });
+
+                const save_auth = await this.auth_repository.save(auth);
+
+                if(save_auth){
+                    const detail = this.detail_repository.create({
+                        user:save_user,
+                        user_no:save_user.user_no,
+                        addr_type:RegisterDto.addr_type,
+                        addr:RegisterDto.addr,
+                        lngx:RegisterDto.lngx,
+                        laty:RegisterDto.laty,
+                        reg_dt:Util.GetUtcDate(),
+                        reg_id:"auth>RegisterUser"
+                    });
+
+                    const save_detail = await this.detail_repository.save(detail);
+
+                    if(save_detail){
+                        const userProfiledto:UserProfileDto={
+                          user_no:save_user.user_no,
+                          user_nm:save_user.user_nm,
+                          login_channel:save_auth.login_channel,
+                          token_id:save_auth.token_id,
+                          addr_type:detail.addr_type,
+                          addr:detail.addr,
+                          lngx:detail.lngx,
+                          laty:detail.laty,
+                          reg_dt:save_user.reg_dt,
+                        };
+
+                        return userProfiledto;
+                    }
+                }
+            }
+        }
+
+        return null;
+    }
+
+
+
+
+
+
+
+
 }
