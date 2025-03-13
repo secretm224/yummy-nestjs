@@ -192,4 +192,7 @@ export class SearchService {
             timestamp: hit._source.timestamp ? new Date(hit._source.timestamp) : undefined
         }));
     }
+
+
+    //async totalSearchData()
 }

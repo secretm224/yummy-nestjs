@@ -1,0 +1,49 @@
+<% //검색 테스트 페이지 %>
+<%- css = '<link rel="stylesheet" href="/css/searchTest.css">' %>
+
+<div class="admin-container">
+    <h2>검색 테스트 페이지</h2>
+    
+    <div class="search-container">
+        <input type="text" id="searchInput" class="search-input" placeholder="검색어 입력">
+        <button class="search-button" onclick="search()">검색</button>
+    </div>
+    
+    <div class="custom-select">
+        <label for="storeType">⚙️ 음식점 대분류</label>
+        <select id="select-major">
+            <option value="0" selected>전체</option>
+            <% storeTypes.forEach(function(store) { %>
+                <option value="<%= store.major_type %>"><%= store.type_name %></option>
+            <% }); %>
+        </select>
+        <label for="storeType">⚙️ 음식점 소분류</label>
+        <select id="select-sub">
+            <option value="0" disabled selected>전체</option>
+        </select>
+    </div>
+
+    <div class="result-container">
+        <span class="arrow" onclick="prevPage()">&#60;</span>
+        <div class="result-list-wrapper">
+            <div class="result-list" id="resultListWrapper">
+                <div class="result-list-img" style="border: 1px solid red;"></div>
+                <div class="result-list-contents" style="border: 1px solid red;">
+                    <div class="result-list-contents-addr" style="border: 1px solid green;">test</div>
+                    <div class="result-list-contents-subject" style="border: 1px solid green;">test</div>
+                </div>
+                <div class="result-list-star" style="border: 1px solid red;"></div>
+            </div>
+            <!-- <div class="result-list" id="resultListWrapper">test</div>
+            <div class="result-list" id="resultListWrapper">test</div>
+            <div class="result-list" id="resultListWrapper">test</div>
+            <div class="result-list" id="resultListWrapper">test</div> -->
+        </div>
+        <span class="arrow" onclick="nextPage()">&#62;</span>
+    </div>
+    
+    <div class="pagination" id="paginationInfo">1/1</div>
+</div>
+
+<!-- ✅ 관리자 페이지 전용 스크립트 추가 -->
+<%- script = '<script src="../public/js/searchTest.js"></script>' %>

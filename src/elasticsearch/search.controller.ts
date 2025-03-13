@@ -1,50 +1,39 @@
-import { Controller, Get, Post, Body, Query, Param ,Headers} from '@nestjs/common';
+import { Controller, Get, Post, Body, Query, Param ,Headers, Render, Req, Res} from '@nestjs/common';
 import { SearchService } from './search.service';
 import { KafkaService } from 'src/kafka_producer/kafka.service';
 import { StoreSearch } from 'src/entities/store_search.entity';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { StoreTypeMajorService } from 'src/store_type_major/storeTypeMajor.service';
 
 @ApiTags('search') 
 @Controller('search')
 export class SearchController {
 	constructor(
 		private readonly searchService: SearchService,
+		private readonly storeTypeMajorService: StoreTypeMajorService,
 		private readonly loggerService: KafkaService,
 	) {}
-
-	// @Post('index/:index')
-	// async createIndex(@Param('index') index: string) {
-	// 	return this.searchService.createIndex(index);
-	// }
-
-	// @Post('document/:index/:id')
-	// async addDocument(
-	// 	@Param('index') index: string,
-	// 	@Param('id') id: string,
-	// 	@Body() body: any,
-	// ) {
-	// 	return this.searchService.addDocument(index, id, body);
-	// }
 	
-	// Test code
-	// @Get(':index')
-	// async search(
-	// 	@Param('index') index: string, 
-	// 	@Query('keyword') keyword: string
-	// ): Promise<SearchResultDto> {
+	/* 검색 테스트 페이지 */
+	@Get('searchTest')
+	@Render('searchTest')
+	async searchTestPage(@Req() req: Request) {	
 		
-	// 	const searchDto: SearchDto = {
-	// 		query: {
-	// 			match: {
-	// 				consume_keyword: keyword
-	// 			}
-	// 		}
-	// 	};
-		
-	// 	return this.searchService.search(index, searchDto);
-	// }
+		try {
 
-	// async findAll(@Headers('yummy-key') apikey: string): Promise<Store[]> {
+			const storeTypes = await this.storeTypeMajorService.findAll();
+
+			return {
+				title: 'search 테스트 페이지',
+				storeTypes,
+				css: '<link rel="stylesheet" href="/css/searchTest.css">',
+			}
+			
+		} catch(err) {
+			console.error('Error fetching store types:', err);
+			return { title: '검색 테스트 페이지지', storeTypes: [], error: '데이터를 불러올 수 없습니다.:' };
+		}
+	}
 
 	@ApiOperation({ summary: 'search data inquery', description: 'inquery to search data' })
 	@ApiResponse({ status: 200, description: 'inquery store data by search' })
@@ -71,6 +60,20 @@ export class SearchController {
 			return null;
 		}	
 	}
+
+	// @Get('totalSearch')
+	// async getTotalSearchData(
+	// 	@Query('searchData') searchData:
+	// ): Promise<StoreSearch[] | null> {
+	// 	try {
+
+	// 		const searchDTO = this.
+
+	// 	} catch(err) {
+	// 		await this.SendLog(err);
+	// 		return null;
+	// 	}
+	// }
 
 	
 	// /* 테스트 코드 -> 검색결과 API*/
