@@ -229,8 +229,8 @@ export class AuthService {
                         user_no:save_user.user_no,
                         addr_type:RegisterDto.addr_type,
                         addr:RegisterDto.addr,
-                        lngx:RegisterDto.lngx,
-                        laty:RegisterDto.laty,
+                        lng_x:0,
+                        lat_y:0,
                         reg_dt:Util.GetUtcDate(),
                         reg_id:"auth>RegisterUser"
                     });
@@ -245,8 +245,8 @@ export class AuthService {
                           token_id:save_auth.token_id,
                           addr_type:detail.addr_type,
                           addr:detail.addr,
-                          lngx:detail.lngx,
-                          laty:detail.laty,
+                          lngx:detail.lng_x,
+                          laty:detail.lat_y,
                           reg_dt:save_user.reg_dt,
                         };
 

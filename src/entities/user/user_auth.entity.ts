@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne} from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne,JoinColumn} from 'typeorm';
 import{User} from './user.entity';
 
 @Entity('user_auth_tbl')
@@ -7,6 +7,7 @@ export class UserAuth {
     auth_no: number;
 
     @ManyToOne(()=>User,(user) =>user.auths,{onDelete:'CASCADE'})
+    @JoinColumn({ name: 'user_no' }) 
     user:User;
 
     @Column({type:'int',nullable:false})

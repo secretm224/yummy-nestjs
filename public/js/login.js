@@ -209,7 +209,7 @@ function loginWithKakao() {
 //     document.getElementById('search_addr_area').style.display = 'block';
 // }
 
-function RegisterAddress(){
+  async function RegisterAddress(){
 
     const address_type = document.querySelector("input[name='address-type']:checked");
     const address_type_value = address_type ? address_type.value : null
@@ -232,12 +232,21 @@ function RegisterAddress(){
     }
 
     const address_json = {
-                            user_name:user_name,
                             address_type:address_type_value,
                             address:address
                          }
+    const url ='/auth/AddUserDetail';
+    const response = await fetch(url,
+                                {
+                                    method:'POST',
+                                    headers:{'Content-Type':'application/json'},
+                                    body:JSON.stringify(address_json),
+                                    credentials: 'include'
+                                });
 
-    console.log(address_json);                         
+    const detail = await response.json();  
+
+    console.log(detail);                         
 }
 
 function SearchLayerToggle() {

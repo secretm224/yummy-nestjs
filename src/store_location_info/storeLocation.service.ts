@@ -58,7 +58,7 @@ export class StoreLocationInfoService {
           exists_addr.lng = store.lng ?? exists_addr?.lng;
           exists_addr.address = store.address ?? exists_addr?.address;
           exists_addr.chg_dt = Util.GetUtcDate();
-          exists_addr.chg_id = "storelocaton>update";
+          //exists_addr.chg_id = "storelocaton>update"; 컬럼 X
 
           await this.storeLocationRepository.update(
                                                     { seq: store.seq },
@@ -66,7 +66,7 @@ export class StoreLocationInfoService {
                                                       lat: exists_addr.lat,
                                                       lng: exists_addr.lng,
                                                       chg_dt: exists_addr.chg_dt,
-                                                      chg_id: exists_addr.chg_id,
+                                                      //chg_id: exists_addr.chg_id,
                                                     },
                                                   );
 
@@ -95,7 +95,6 @@ export class StoreLocationInfoService {
           e_location.location_city = locationInfo.location_city ?? e_location.location_city;
           e_location.location_district = locationInfo.location_district ?? e_location.location_district;
           e_location.chg_dt = Util.GetUtcDate();
-          e_location.chg_id = "SetLocationDetailInfo";
 
           await this.storeLocationRepository.update(
                                                       { seq: e_location.seq },
@@ -104,10 +103,10 @@ export class StoreLocationInfoService {
                                                         location_city: e_location.location_city,
                                                         location_district: e_location.location_district,
                                                         chg_dt: e_location.chg_dt,
-                                                        chg_id:e_location.chg_id
                                                       },
                                                     );
-          
+          // const obj = await this.storeLocationRepository.findOneBy({ seq: e_location.seq });
+          // console.log(obj);
           return await this.storeLocationRepository.findOneBy({ seq: e_location.seq });
         }
       }
@@ -115,7 +114,7 @@ export class StoreLocationInfoService {
       return null;
     }
 
-// 	curl --location --request GET 'https://naveropenapi.apigw.ntruss.com/map-geocode/v2/geocode?query=분당구 불정로 6' \
+    // 	curl --location --request GET 'https://naveropenapi.apigw.ntruss.com/map-geocode/v2/geocode?query=분당구 불정로 6' \
 // --header 'x-ncp-apigw-api-key-id: {API Key ID}' \
 // --header 'x-ncp-apigw-api-key: {API Key}' \
 // --header 'Accept: application/json'
@@ -123,16 +122,16 @@ export class StoreLocationInfoService {
 	async GetAddressDetailByAddress(store_address:String){
       if(store_address){
         try{
-          const api_key_id = '87ni0cgqze'; //env 파일 등록 필요
-          const api_key = 'HTCVvQAFfYGRgtp1T4gN8aQUkfrbAcszWr95VuOj';//env 파일 등록 필요
+          const api_key_id = '87ni0cgqze';
+          const api_key = 'HTCVvQAFfYGRgtp1T4gN8aQUkfrbAcszWr95VuOj';
           const url = 'https://naveropenapi.apigw.ntruss.com/map-geocode/v2/geocode?query='+store_address
           const header = {headers:{'x-ncp-apigw-api-key-id': `${api_key_id}`,
-                                   'x-ncp-apigw-api-key':`${api_key}`,
-                                   'Accept': 'application/json'
-                                  },
-                                  httpsAgent: new https.Agent({
-                                    rejectUnauthorized: false, // ✅ SSL 인증서 검증 비활성화 http -> https 요청이 발생해서 장애
-                                  }),
+                                    'x-ncp-apigw-api-key':`${api_key}`,
+                                    'Accept': 'application/json'
+                                    },
+                      httpsAgent: new https.Agent({
+                        rejectUnauthorized: false, // ✅ SSL 인증서 검증 비활성화
+                      }),
                   };
 
           const addr_detail = await axios.get(url,header);
@@ -160,27 +159,4 @@ export class StoreLocationInfoService {
       }
     }
 
-    // async SearchLocation(keyworld:string){
-    //   if(keyworld){
-    //     const enc_keyworld = encodeURI(keyworld);
-    //     try{
-    //       const api_key_id = 'tauXWDsgXRDltxPz2xGh'; //env 파일 등록 필요
-    //       const api_key = '0f4XWjCEXL';//env 파일 등록 필요
-    //       const url = `https://openapi.naver.com/v1/search/local.json?query=${keyworld}&display=5&sort=comment`;
-    //       const header = {headers:{'x-ncp-apigw-api-key-id': `${api_key_id}`,
-    //                                'x-ncp-apigw-api-key':`${api_key}`,
-    //                                'Accept': '*/*'
-    //                               },
-    //                                 httpsAgent: new https.Agent({
-    //                                 rejectUnauthorized: false, // ✅ SSL 인증서 검증 비활성화 http -> https 요청이 발생해서 장애
-    //                               }),
-    //               };
-    //       const search_data = await axios.get(url,header);
-    //       console.log(search_data);
-
-    //     }catch(error){
-    //       console.log(error);
-    //     }
-    //   }
-    // }
 }

@@ -6,6 +6,8 @@ import {AuthService} from './auth.service';
 import * as jwt from 'jsonwebtoken'
 import {Response,Request} from 'express'
 import * as session from 'express-session';
+import {RegisterUserDto} from './dto/register.user.dto';
+
 
 @Controller('auth')
 export class AuthController {
@@ -244,15 +246,18 @@ export class AuthController {
 
 
     @Post('AddUserDetail')
-    AddUserDetail(@Res() res:Response, @Req() req:Request){
-        const { addr_type, addr } = req.body;
-
-        const user_detail = {
-            user_nm:req.session.user?.name,
-            login_channel:req.session.user?.login_channel,
-            token_id:req.session.user?.token_id,
-            addr_type:addr_type,
-            addr:addr
+    async AddUserDetail(@Res() res:Response, @Req() req:Request){
+        const userProfiledto:RegisterUserDto={
+            user_nm:req.session.user?.name ?? "",
+            login_channel:req.session.user?.login_channel ?? "",
+            token_id:req.session.user?.token_id ?? "",
+            addr_type:req.body.address_type,
+            addr:req.body.address,
+            lngx:0,
+            laty:0
         }
+
+        const addr_detail = await this.auth_service.RegisterUserWithCoordinate(userProfiledto);
+        return addr_detail;
     }
 }

@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column,ManyToOne } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column,ManyToOne ,JoinColumn } from 'typeorm';
 import{User} from './user.entity';
 
 
@@ -8,6 +8,7 @@ export class UserDetail {
     detail_no: number;
 
     @ManyToOne(() => User, (user) => user.details, { onDelete: 'CASCADE' })
+    @JoinColumn({ name: 'user_no' }) 
     user: User;
 
     @Column({type:'int',nullable:false})
@@ -20,10 +21,10 @@ export class UserDetail {
     addr : string;
 
     @Column({ type: 'decimal', precision: 10, scale: 7, nullable: false })
-    lngx: number;
+    lng_x: number;
 
     @Column({ type: 'decimal', precision: 10, scale: 7, nullable: false })
-    laty: number;
+    lat_y: number;
 
     @Column({ type: 'timestamp', nullable: true })
     reg_dt: Date;
