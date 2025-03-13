@@ -12,8 +12,7 @@ export class StoreTypeMajorController {
         private readonly storeTypeMajorService: StoreTypeMajorService,
         private readonly loggerService: KafkaService
     ) {}
-
-
+    
     @Get('/test')
     async storeManageTest(): Promise<StoreTypeMajor[]> {
         return this.storeTypeMajorService.findAll();

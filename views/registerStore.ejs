@@ -21,7 +21,7 @@
             <select id="majorTypeSelect" onchange="selectMajorType(this.value)">
                 <option value="0" disabled selected>분류를 선택하세요.</option>
                 <% storeTypes.forEach(function(store) { %>
-                    <option value="<%= store.major_type %>"><%= store.type_name %></option>
+                    <option value="<%= store.majorType %>"><%= store.typeName %></option>
                 <% }); %>
             </select>
         </div>

@@ -2,13 +2,13 @@ import { Controller, Get, Res ,Render ,Req} from '@nestjs/common';
 import { AppService } from './app.service';
 import { Response , Request } from 'express';
 import { join } from 'path';
-import { StoreTypeMajorService } from './store_type_major/storeTypeMajor.service';
+import { RedisService } from './redis/redis.service';
 
 @Controller()
 export class AppController {
   constructor(
     private readonly appService: AppService,
-    private readonly storeTypeMajorService: StoreTypeMajorService
+    private readonly RedisService: RedisService
   ) {}
 
   // @Get('/')
@@ -33,7 +33,7 @@ export class AppController {
     
     try {
 
-        const storeTypes = await this.storeTypeMajorService.findAll();
+        const storeTypes = await this.RedisService.getMajorCategories();
         
         return {
             title: '상점 등록하기',

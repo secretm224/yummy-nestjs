@@ -2,7 +2,6 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Store } from 'src/entities/store.entity';
 import { StoreTypeMajor } from 'src/entities/store_type_major.entity';
-import { StoreTypeSub } from 'src/entities/store_type_sub.entity';
 import { KafkaModule } from 'src/kafka_producer/kafka.module';
 import { StoreTypeMajorService } from './storeTypeMajor.service';
 import { StoreTypeMajorController } from './storeTypeMajor.controller';
