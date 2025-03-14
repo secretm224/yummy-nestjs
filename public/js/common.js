@@ -52,7 +52,7 @@ async function CallKaKaoLogout() {
 
         alert("로그아웃 완료");
         setTimeout(() => {
-            window.location.href = "/";
+            window.location.href = "/login";
         }, 500);
     } catch (err) {
         console.error("카카오 로그아웃 실패:", err);

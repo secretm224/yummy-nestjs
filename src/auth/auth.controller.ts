@@ -7,6 +7,7 @@ import * as jwt from 'jsonwebtoken'
 import {Response,Request} from 'express'
 import * as session from 'express-session';
 import {RegisterUserDto} from './dto/register.user.dto';
+import { RedisService } from '../redis/redis.service';
 
 
 @Controller('auth')
@@ -14,7 +15,8 @@ export class AuthController {
 
     constructor(
         private readonly kafka_service:KafkaService,
-        private readonly auth_service:AuthService
+        private readonly auth_service:AuthService,
+        private readonly redisService:RedisService
     ){}
 
     
@@ -54,6 +56,7 @@ export class AuthController {
                                                          });
             }
 
+            //await this.redisService.setValue("",access_token);
 
             if(!!refresh_token){
                 res.cookie('refrech_token',refresh_token,
@@ -81,6 +84,15 @@ export class AuthController {
                 detail:[]
             };
             
+            const token_id = userinfo?.sub?.toString()??"";
+            const user_detail = await this.auth_service.GetUserDetailInfo('kakao',token_id);
+            req.session.user?.detail?.push({
+                addr_type: user_detail?.addr_type ?? "",
+                addr: user_detail?.addr ?? "",
+                lngx: user_detail?.lngx ?? 0,
+                laty: user_detail?.laty ?? 0,
+            });
+
             console.log('세션에 저장된 유저 정보:', req.session.user);
             
             req.session.save(err => {
@@ -140,6 +152,15 @@ export class AuthController {
                         token_id:userinfo?.token_id,
                         detail:[]
                     };
+
+                    const token_id = userinfo?.token_id??"";
+                    const user_detail = await this.auth_service.GetUserDetailInfo('kakao',token_id);
+                    req.session.user?.detail?.push({
+                        addr_type: user_detail?.addr_type ?? "",
+                        addr: user_detail?.addr ?? "",
+                        lngx: user_detail?.lngx ?? 0,
+                        laty: user_detail?.laty ?? 0,
+                    });
                     
                     //console.log('세션에 저장된 유저 정보:', req.session.user);
                     req.session.save(err => {
@@ -212,6 +233,15 @@ export class AuthController {
                             detail:[]
                         };
 
+                        const token_id = userinfo?.sub?.toString()??"";
+                        const user_detail = await this.auth_service.GetUserDetailInfo('kakao',token_id);
+                        req.session.user?.detail?.push({
+                            addr_type: user_detail?.addr_type ?? "",
+                            addr: user_detail?.addr ?? "",
+                            lngx: user_detail?.lngx ?? 0,
+                            laty: user_detail?.laty ?? 0,
+                        });
+
                         //console.log('세션에 저장된 유저 정보:', req.session.user);
                         req.session.save(err => {
                             if (err) console.error('세션 저장 실패:', err);
@@ -243,7 +273,7 @@ export class AuthController {
         req.session.destroy(() => {
             res.clearCookie('access_token');
             res.clearCookie('refresh_token');
-            res.redirect('/');
+            res.redirect('/login');
         });
     }
 
@@ -262,12 +292,19 @@ export class AuthController {
 
         const addr_detail = await this.auth_service.RegisterUserWithCoordinate(userProfiledto);
 
-
         if(addr_detail){
-            const detail = [{}]
-            //req.session.user?.detail
+            req.session.user?.detail?.push({
+                addr_type: addr_detail.addr_type ?? "",
+                addr: addr_detail.addr ?? "",
+                lngx: addr_detail.lngx ?? 0,
+                laty: addr_detail.laty ?? 0,
+              });
+
+            req.session.save(err => {
+                if (err) console.error('세션 저장 실패:', err);
+            });    
         }
 
-        return addr_detail;
+     return res.json(addr_detail);
     }
 }

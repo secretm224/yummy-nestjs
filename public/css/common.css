@@ -9,6 +9,8 @@ body {
     align-items: center;
     height: 100vh;
     margin: 0;
+    /* padding-top: 60px;   
+    padding-bottom: 80px; */
 }
 
 footer {
@@ -162,7 +164,7 @@ header h1::after {
 
 /* 푸터 위치 고정 */
 footer {
-    position: absolute;
+    position: fixed;
     bottom: 0px;
     font-size: 14px;
     color: #666;

@@ -8,15 +8,15 @@ declare module 'express-session' {
       is_admin: boolean;
       login_channel: string;
       token_id:string;
-      detail:Detail[];
+      detail?:Detail[];
     };
   }
 
   interface Detail {
-    addr_type:string,
-    addr:string,
-    lngx:number,
-    laty:number
+    addr_type?:string,
+    addr?:string,
+    lngx?:number,
+    laty?:number
   }
 
 }

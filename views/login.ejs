@@ -13,37 +13,71 @@
             <p><strong id="nickname"><%= user.name %>님 안녕하세요</strong></p>
         </div>
 
-        <!-- 주소 별칭 선택 영역 -->
-        <div class="address-alias">
+        <% if (user && user.detail && user.detail.length > 0) { %>
+          <!-- 등록된 주소 데이터가 있을 때 -->
+          <div class="registered-address-container">
+            <h1>내 주소 정보</h1>
+            <% user.detail.forEach(function(detail) { %>
+              <div class="registered-address">
+                <p class="address-type">
+                  <%= detail.addr_type === 'H' ? '🏠 집' : (detail.addr_type === 'W' ? '🏢 회사' : '') %>
+                </p>
+                <p class="address-text"><%= detail.addr %></p>
+              </div>
+            <% }); %>
+            <!-- 추가하기 버튼: 클릭 시 등록 영역을 토글하도록 JS 이벤트 추가 -->
+            <button id="toggleRegistrationArea" class="btn" onclick="toggleAddressAdd();">추가하기</button>
+          </div>
+          
+          <!-- 추가 주소 등록 입력 영역 (초기엔 숨김) -->
+          <div class="address-alias" id="registration-area" style="display: none;">
             <div class="address-type-buttons">
-                <input type="radio" id="home" name="address-type" value="H" hidden >
-                <label for="home" class="type-btn">
-                    <span>🏠</span>
-                    <p>집</p>
-                </label>
-
-                <input type="radio" id="work" name="address-type" value="W" hidden >
-                <label for="work" class="type-btn">
-                    <span>🏢</span>
-                    <p>회사</p>
-                </label>
+              <input type="radio" id="home" name="address-type" value="H" hidden>
+              <label for="home" class="type-btn">
+                <span>🏠</span>
+                <p>집</p>
+              </label>
+              <input type="radio" id="work" name="address-type" value="W" hidden>
+              <label for="work" class="type-btn">
+                <span>🏢</span>
+                <p>회사</p>
+              </label>
             </div>
-        </div>
+            <div class="address-container">
+              <div class="address-input">
+                <input type="text" id="address" placeholder="주소를 입력하세요" onfocus="SearchAddressLayer();"/>
+              </div>
+              <button class="btn" onclick="RegisterAddress();">주소 등록</button>
+            </div>
+          </div>
+        <% } else { %>
+          <!-- 등록된 주소 데이터가 없으면 주소 등록 UI 노출 -->
+          <div class="address-alias">
+            <h1>주소를 등록해봐!</h1>
+            <div class="address-type-buttons">
+              <input type="radio" id="home" name="address-type" value="H" hidden>
+              <label for="home" class="type-btn">
+                <span>🏠</span>
+                <p>집</p>
+              </label>
+              <input type="radio" id="work" name="address-type" value="W" hidden>
+              <label for="work" class="type-btn">
+                <span>🏢</span>
+                <p>회사</p>
+              </label>
+            </div>
+            <div class="address-container">
+              <div class="address-input">
+                <input type="text" id="address" placeholder="주소를 입력하세요" onfocus="SearchAddressLayer();"/>
+             </div>
+              <button class="btn" onclick="RegisterAddress();">주소 등록</button>
+            </div>
+          </div>
+        <% } %>
 
         <div id="layer" style="display:none;position:fixed;overflow:hidden;z-index:1;-webkit-overflow-scrolling:touch;">
-            <img src="//t1.daumcdn.net/postcode/resource/images/close.png" id="btnCloseLayer" style="cursor:pointer;position:absolute;right:-3px;top:-3px;z-index:1" onclick="SearchLayerToggle()" alt="닫기 버튼">
-        </div>
-            
-        <!-- 주소 등록 입력 필드 -->
-        <div class="address-container">
-            <div class="address-input">
-                <input type="text" id="address" placeholder="주소를 입력하세요" onfocus="SearchAddressLayer();"/>
-                <button class="search-address-button" onclick="SearchAddressLayer();">검색</button>
-            </div>
-            <button class="register-address-button" onclick="RegisterAddress();">주소 등록</button>
-        </div>
-
-        <!-- <button class="logout-button" onclick="logout()">로그아웃</button> -->
+          <img src="//t1.daumcdn.net/postcode/resource/images/close.png" id="btnCloseLayer" style="cursor:pointer;position:absolute;right:-3px;top:-3px;z-index:1" onclick="SearchLayerToggle()" alt="닫기 버튼">
+      </div>
     </div>
 <% } else { %>
     <div class="login-container" id="login-container" >
