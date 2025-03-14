@@ -14,7 +14,10 @@ import {UserAuth} from '../entities/user/user_auth.entity';
 import {UserDetail} from '../entities/user/user_detail.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Util } from '../util/datautil';
-import * as jwt from 'jsonwebtoken';
+//import * as jwt from 'jsonwebtoken';
+import { StoreLocationInfoService } from 'src/store_location_info/storeLocation.service';
+
+
 
 @Injectable()
 export class AuthService {
@@ -26,6 +29,8 @@ export class AuthService {
                   private readonly auth_repository:Repository<UserAuth> ,
                   @InjectRepository(UserDetail)
                   private readonly detail_repository:Repository<UserDetail>,
+                  
+                  private readonly storeLocationInfoService:StoreLocationInfoService,
                ){}
 
     private readonly api_key = process?.env?.KAKAO_CLIENT_ID ?? "";
@@ -195,9 +200,25 @@ export class AuthService {
 
     async RegisterUserWithCoordinate(RegisterDto:RegisterUserDto):Promise<UserProfileDto | null>{
 
-        const regist_user = await this.RegisterUser(RegisterDto);
+        if(RegisterDto.addr){
+            // 좌표 발급 로직 추가 location service에서 호출해서 조회 해 온다
 
-        return regist_user;
+           const coordinate = await this.storeLocationInfoService.GetCoordinateByAddress(RegisterDto.addr);
+           if(coordinate){
+               const updateRegisterDto:RegisterUserDto ={
+                 ...RegisterDto,
+                 lngx:coordinate.lngx,
+                 laty:coordinate.laty
+               }
+
+               const regist_user = await this.RegisterUser(updateRegisterDto);
+               return regist_user;
+           }else{
+             return null;
+           }
+        }
+
+        return null;
     }
 
 
@@ -229,8 +250,8 @@ export class AuthService {
                         user_no:save_user.user_no,
                         addr_type:RegisterDto.addr_type,
                         addr:RegisterDto.addr,
-                        lng_x:0,
-                        lat_y:0,
+                        lng_x:RegisterDto.lngx,
+                        lat_y:RegisterDto.laty,
                         reg_dt:Util.GetUtcDate(),
                         reg_id:"auth>RegisterUser"
                     });
@@ -258,12 +279,4 @@ export class AuthService {
 
         return null;
     }
-
-
-
-
-
-
-
-
 }

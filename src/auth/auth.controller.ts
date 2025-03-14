@@ -77,7 +77,8 @@ export class AuthController {
                 picture: userinfo?.picture || '',
                 is_admin: is_admin,
                 login_channel: 'kakao',
-                token_id:userinfo?.sub?.toString() ?? "0"
+                token_id:userinfo?.sub?.toString() ?? "0",
+                detail:[]
             };
             
             console.log('세션에 저장된 유저 정보:', req.session.user);
@@ -136,7 +137,8 @@ export class AuthController {
                         picture: userinfo?.picture || '',
                         is_admin: is_admin,
                         login_channel: 'kakao',
-                        token_id:userinfo?.token_id
+                        token_id:userinfo?.token_id,
+                        detail:[]
                     };
                     
                     //console.log('세션에 저장된 유저 정보:', req.session.user);
@@ -206,7 +208,8 @@ export class AuthController {
                             picture: userinfo?.picture || '',
                             is_admin: is_admin,
                             login_channel: 'kakao',
-                            token_id:userinfo?.sub?.toString() ?? "0"
+                            token_id:userinfo?.sub?.toString() ?? "0",
+                            detail:[]
                         };
 
                         //console.log('세션에 저장된 유저 정보:', req.session.user);
@@ -258,6 +261,13 @@ export class AuthController {
         }
 
         const addr_detail = await this.auth_service.RegisterUserWithCoordinate(userProfiledto);
+
+
+        if(addr_detail){
+            const detail = [{}]
+            //req.session.user?.detail
+        }
+
         return addr_detail;
     }
 }

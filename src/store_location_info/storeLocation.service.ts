@@ -159,4 +159,50 @@ export class StoreLocationInfoService {
       }
     }
 
+
+    
+	async GetCoordinateByAddress(address:String){
+    if(address){
+      try{
+        const api_key_id = '87ni0cgqze';
+        const api_key = 'HTCVvQAFfYGRgtp1T4gN8aQUkfrbAcszWr95VuOj';
+        const url = 'https://naveropenapi.apigw.ntruss.com/map-geocode/v2/geocode?query='+address
+        const header = {headers:{'x-ncp-apigw-api-key-id': `${api_key_id}`,
+                                  'x-ncp-apigw-api-key':`${api_key}`,
+                                  'Accept': 'application/json'
+                                  },
+                    httpsAgent: new https.Agent({
+                      rejectUnauthorized: false, // ✅ SSL 인증서 검증 비활성화
+                    }),
+                };
+
+        const addr_detail = await axios.get(url,header);
+          if(addr_detail){
+          const addressElements = addr_detail.data.addresses[0].addressElements;
+          const country = addressElements[0].shortName;
+          const city = addressElements[1].shortName;
+          const dong = addressElements[2].shortName;
+          const lngx = addr_detail.data.addresses[0].x;
+          const laty = addr_detail.data.addresses[0].y;
+
+          return {
+            country :country,
+            city:city,
+            dong:dong,
+            lngx:lngx,
+            laty:laty
+          }
+        }
+
+      }catch(error){
+        console.log(error);
+      }
+    }else{
+      return {
+        error:-999,
+        message:"address empty"
+      }
+    }
+  }
+
 }
