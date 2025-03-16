@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body } from '@nestjs/common';
 import { ApiTags } from "@nestjs/swagger";
 import { StoreTypeMajorService } from "./storeTypeMajor.service";
 import { KafkaService } from "src/kafka_producer/kafka.service";
-import { StoreTypeMajor } from "src/entities/store_type_major.entity";
+import { StoreTypeMajorDTO } from './dto/StoreTypeMajorDTO';
 
 
 @ApiTags('storeTypeMajor')
@@ -13,8 +13,8 @@ export class StoreTypeMajorController {
         private readonly loggerService: KafkaService
     ) {}
     
-    @Get('/test')
-    async storeManageTest(): Promise<StoreTypeMajor[]> {
+    @Get('/getStoreTypeMajors')
+    async storeManageTest(): Promise<StoreTypeMajorDTO[]> {
         return this.storeTypeMajorService.findAll();
     }
 }

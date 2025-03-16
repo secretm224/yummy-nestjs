@@ -3,12 +3,14 @@ import { AppService } from './app.service';
 import { Response , Request } from 'express';
 import { join } from 'path';
 import { RedisService } from './redis/redis.service';
+import { StoreTypeMajorService } from './store_type_major/storeTypeMajor.service';
 
 @Controller()
 export class AppController {
   constructor(
     private readonly appService: AppService,
-    private readonly RedisService: RedisService
+    private readonly RedisService: RedisService,
+    private readonly storeTypeMajorService: StoreTypeMajorService
   ) {}
 
   // @Get('/')
@@ -33,8 +35,11 @@ export class AppController {
     
     try {
 
-        const storeTypes = await this.RedisService.getMajorCategories();
-        
+        //const storeTypes = await this.RedisService.getMajorCategories();
+        const storeTypes = await this.storeTypeMajorService.findAll();
+
+        console.log(storeTypes);
+
         return {
             title: '상점 등록하기',
             storeTypes, /* 조회한 데이터를 템플릿에 전달 */ 

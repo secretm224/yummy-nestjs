@@ -5,13 +5,14 @@ import { StoreTypeMajor } from 'src/entities/store_type_major.entity';
 import { KafkaModule } from 'src/kafka_producer/kafka.module';
 import { StoreTypeMajorService } from './storeTypeMajor.service';
 import { StoreTypeMajorController } from './storeTypeMajor.controller';
+import { RedisModule } from 'src/redis/redis.module';
 
 
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Store, StoreTypeMajor]), // orm 엔티티 등록
-    KafkaModule,
+    KafkaModule, RedisModule
   ],
   providers: [StoreTypeMajorService], // 등록
   controllers: [StoreTypeMajorController], // Controller 등록

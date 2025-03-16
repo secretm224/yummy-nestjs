@@ -1,5 +1,4 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { StoreTypeMajorDTO } from './dto/StoreTypeMajorDTO';
 import * as Redis from 'ioredis';
 import { KafkaService } from 'src/kafka_producer/kafka.service';
 
@@ -30,28 +29,5 @@ export class RedisService {
 
     async deleteValue(key: string): Promise<void> {
         await this.redis.del(key);
-    }
-
-    async getMajorCategories(): Promise<StoreTypeMajorDTO[]> {
-
-        const data = await this.redis.get('categories')
-
-        console.log(data);
-
-        if (!data) {
-            return [];
-        }
-
-        try {
-            const parsedData = JSON.parse(data as string);
-            const test = parsedData.categories.map(StoreTypeMajorDTO.fromJSON);
-
-            console.log(test);
-
-            return test;
-        } catch(err) {
-            this.SendLog(err);
-            return [];
-        }
     }
 }

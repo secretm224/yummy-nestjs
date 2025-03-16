@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Delete, Query, Body } from '@nestjs/common';
 import { RedisService } from './redis.service';
-import { StoreTypeMajorDTO } from './dto/StoreTypeMajorDTO';
+import { StoreTypeMajorDTO } from '../store_type_major/dto/StoreTypeMajorDTO';
 
 @Controller('redis')
 export class RedisController {
@@ -34,15 +34,15 @@ export class RedisController {
 		return { message: 'Key deleted successfully', key };
 	}
 
-	/**
-	 * Redis 에서 상점 대분류 데이터를 가져와주는 컨트롤러
-	 * 
-	 * @returns 상점 대분류 코드 데이터
-	 */
-	@Get('getMajorCategories')
-	async getMajorCategories(): Promise<StoreTypeMajorDTO[]> {
+	// /**
+	//  * Redis 에서 상점 대분류 데이터를 가져와주는 컨트롤러
+	//  * 
+	//  * @returns 상점 대분류 코드 데이터
+	//  */
+	// @Get('getMajorCategories')
+	// async getMajorCategories(): Promise<StoreTypeMajorDTO[]> {
 
-		return await this.redisService.getMajorCategories();
+	// 	return await this.redisService.getMajorCategories();
 
-	}
+	// }
 }

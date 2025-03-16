@@ -8,12 +8,14 @@ import { KafkaModule } from 'src/kafka_producer/kafka.module';
 import { StoreTypeMajorService } from 'src/store_type_major/storeTypeMajor.service';
 import { StoreTypeMajor } from 'src/entities/store_type_major.entity';
 import { Store } from 'src/entities/store.entity';
+import { RedisModule } from 'src/redis/redis.module';
 
 
 @Module({
     imports: [
         TypeOrmModule.forFeature([StoreTypeMajor]),
         KafkaModule,
+        RedisModule,
         ConfigModule.forRoot({ 
             isGlobal: true,
             envFilePath:process.env.NODE_ENV === 'development' ? '.env' : '.env.production',

@@ -9,7 +9,7 @@ import { StoreTypeSub } from 'src/entities/store_type_sub.entity';
 @Module({
   imports: [
     TypeOrmModule.forFeature([StoreTypeSub]), /*  orm 엔티티 등록 */
-    KafkaModule,
+    KafkaModule
   ],
   providers: [StoreTypeSubService], /* 서비스 등록 */ 
   controllers: [StroeTypeSubController], /* Controller 등록 */ 
