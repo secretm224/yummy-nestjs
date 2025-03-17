@@ -98,12 +98,14 @@ export class AuthController {
             
             const token_id = userinfo?.sub?.toString()??"";
             const user_detail = await this.auth_service.GetUserDetailInfo('kakao',token_id);
-            req.session.user?.detail?.push({
-                addr_type: user_detail?.addr_type ?? "",
-                addr: user_detail?.addr ?? "",
-                lngx: user_detail?.lngx ?? 0,
-                laty: user_detail?.laty ?? 0,
-            });
+            if(user_detail){
+                req.session.user?.detail?.push({
+                    addr_type: user_detail?.addr_type ?? "",
+                    addr: user_detail?.addr ?? "",
+                    lngx: user_detail?.lngx ?? 0,
+                    laty: user_detail?.laty ?? 0,
+                });
+            }
 
             console.log('세션에 저장된 유저 정보:', req.session.user);
             
@@ -169,12 +171,16 @@ export class AuthController {
 
                     const token_id = userinfo?.token_id??"";
                     const user_detail = await this.auth_service.GetUserDetailInfo('kakao',token_id);
-                    req.session.user?.detail?.push({
-                        addr_type: user_detail?.addr_type ?? "",
-                        addr: user_detail?.addr ?? "",
-                        lngx: user_detail?.lngx ?? 0,
-                        laty: user_detail?.laty ?? 0,
-                    });
+
+                    if(user_detail){
+                        req.session.user?.detail?.push({
+                            addr_type: user_detail?.addr_type ?? "",
+                            addr: user_detail?.addr ?? "",
+                            lngx: user_detail?.lngx ?? 0,
+                            laty: user_detail?.laty ?? 0,
+                        });
+                    }
+                        
                     
                     //console.log('세션에 저장된 유저 정보:', req.session.user);
                     req.session.save(err => {
@@ -262,12 +268,15 @@ export class AuthController {
 
                         const token_id = userinfo?.sub?.toString()??"";
                         const user_detail = await this.auth_service.GetUserDetailInfo('kakao',token_id);
-                        req.session.user?.detail?.push({
-                            addr_type: user_detail?.addr_type ?? "",
-                            addr: user_detail?.addr ?? "",
-                            lngx: user_detail?.lngx ?? 0,
-                            laty: user_detail?.laty ?? 0,
-                        });
+                        if(user_detail){
+                            req.session.user?.detail?.push({
+                                addr_type: user_detail?.addr_type ?? "",
+                                addr: user_detail?.addr ?? "",
+                                lngx: user_detail?.lngx ?? 0,
+                                laty: user_detail?.laty ?? 0,
+                            });
+                        }
+                          
 
                         //console.log('세션에 저장된 유저 정보:', req.session.user);
                         req.session.save(err => {
@@ -325,7 +334,6 @@ export class AuthController {
         }
 
         const addr_detail = await this.auth_service.RegisterUserWithCoordinate(userProfiledto);
-
         if(addr_detail){
             req.session.user?.detail?.push({
                 addr_type: addr_detail.addr_type ?? "",

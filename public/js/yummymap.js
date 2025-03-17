@@ -11,9 +11,6 @@ var zeroPayStores = [{ name: "알바천국", lat: 37.5032355765545, lng: 127.046
         var lngx = 127.048942471228;
         var laty = 37.5045028775835;
 
-        console.log(window.env.login_user);
-        console.log(window.env.login_user.detail[0]);
-
         if(!!window.env && !!window.env.login_user){
            lngx = window.env.login_user.detail[0].lngx;
            laty = window.env.login_user.detail[0].laty
@@ -319,7 +316,7 @@ var zeroPayStores = [{ name: "알바천국", lat: 37.5032355765545, lng: 127.046
                 alert("등록된 가게가 없습니다.");
             }
             
-            StoreList(zeroPayStores);
+            //StoreList(zeroPayStores);
             SetMap();
 
         } catch (error) {
@@ -405,18 +402,18 @@ var zeroPayStores = [{ name: "알바천국", lat: 37.5032355765545, lng: 127.046
     }
 
     // 토글 기능
-    function toggleStoreList() {
-        // const storeList = document.getElementById('store-list');
-        // storeList.classList.toggle('active');
-        const storeListContainer = document.getElementById('store-list-container');
-        const storeList = document.getElementById('store-list');
+    // function toggleStoreList() {
+    //     // const storeList = document.getElementById('store-list');
+    //     // storeList.classList.toggle('active');
+    //     const storeListContainer = document.getElementById('store-list-container');
+    //     const storeList = document.getElementById('store-list');
     
-        if (storeList.style.display === "block") {
-            storeList.style.display = "none";
-        } else {
-            storeList.style.display = "block";
-        }
-    }
+    //     if (storeList.style.display === "block") {
+    //         storeList.style.display = "none";
+    //     } else {
+    //         storeList.style.display = "block";
+    //     }
+    // }
 
    function recommendRandomStore() {
         let storeNames = zeroPayStores.filter(store => store.type !== 'company');
@@ -469,7 +466,7 @@ var zeroPayStores = [{ name: "알바천국", lat: 37.5032355765545, lng: 127.046
             // 지도 이동 함수 (네이버 지도 API 사용)
             const location = new naver.maps.LatLng(laty, lngx);
             map.setCenter(location);
-            map.setZoom(15);
+            map.setZoom(17);
         }
     }
 

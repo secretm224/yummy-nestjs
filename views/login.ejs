@@ -13,14 +13,14 @@
             <p><strong id="nickname"><%= user.name %>님 안녕하세요</strong></p>
         </div>
 
-        <% if (user && user.detail && user.detail.length > 0 && !!user.detail[0].addr) { %>
+        <% if (user && user.detail && user.detail.length > 0) { %>
           <!-- 등록된 주소 데이터가 있을 때 -->
           <div class="registered-address-container">
             <h1>내 주소 정보</h1>
             <% user.detail.forEach(function(detail) { %>
                 <div class="registered-address">
                   <p class="address-type">
-                    <%= detail.addr_type === 'H' ? '🏠 집' : (detail.addr_type === 'W' ? '🏢 회사' : '') %>
+                    <%= detail.addr_type === 'H' ? '🏠 ' : (detail.addr_type === 'W' ? '🏢 ' : '') %>
                   </p>
                   <p class="address-text"><%= detail.addr %></p>
                 </div>
