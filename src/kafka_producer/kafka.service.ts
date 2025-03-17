@@ -10,20 +10,35 @@ import * as path from 'path';
 export class KafkaService implements OnModuleDestroy {
     constructor(@Inject('KAFKA_PRODUCER') private readonly producer: Producer) {}
     
+    /**
+     * Kafka cluster 에 메시지를 로깅해주는 함수
+     * 
+     * @param topic 
+     * @param message 
+     */
     async sendMessage(topic: string, message: any) {
         
-        const data = JSON.stringify(message);
-        
-        await this.producer.send({
-            topic,
-            messages: [{ value: data }],
-        });
+        try {
+            
+            const data = JSON.stringify(message);
 
-        console.log(`Kafka 메시지 전송 완료:`, message);
+            await this.producer.send({
+                topic,
+                messages: [{ value: data }],
+            });
 
-        this.logToFile(data);
+            this.logToFile(data);
+
+        } catch(err) {
+            this.logToFile(`Logging to Kafka failed.: ${err}`);
+        }
     }
-
+    
+    /**
+     * 서버 로컬 파일에 로깅을 해주는 함수
+     * 
+     * @param message 
+     */
     private logToFile(message: string): void 
     {
         const logFilePath = path.join(__dirname, `../../logs/${new Date().toDateString()}.log`);

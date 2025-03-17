@@ -26,13 +26,9 @@ export class StoreTypeMajorService{
      * @param message 
      */
     async SendLog(message: any) {
-		try {
-			await this.loggerService.sendMessage('yummy-store', message);
-		} catch (error) {
-			console.log('faile to log to kafka', error);
-		}
+        await this.loggerService.sendMessage('yummy-store', message);
 	}
-
+    
     /**
      * 상품 대분류 데이터를 반환해주는 함수
      * Redis 에서 먼저 읽어주고, 문제가 발생한 경우에 rdb에서 데이터를 읽어준다.
