@@ -24,13 +24,9 @@ export class StoreTypeSubService{
     }
 
     async SendLog(message: any) {
-		try {
-			await this.loggerService.sendMessage('yummy-store', message);
-		} catch (error) {
-			console.log('faile to log to kafka', error);
-		}
+		await this.loggerService.sendMessage('yummy-store', message);
 	}
-
+    
     /**
      * 대분류 코드에 매칭되는 소분류 정보를 반환해주는 함수
      *  
@@ -60,7 +56,7 @@ export class StoreTypeSubService{
                 await this.SendLog(err);
                 return storeTypeSubDTOs;
             }
-
+            
         } else {
 
             /* 레디스에 데이터가 없는 경우 -> DB 에서 데이터를 찾아와준다. */

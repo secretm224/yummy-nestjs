@@ -10,11 +10,7 @@ export class RedisService {
     ) {}
 
     async SendLog(message: any) {
-		try {
-			await this.loggerService.sendMessage('yummy-store', message);
-		} catch (error) {
-			console.log('faile to log to kafka', error);
-		}
+        await this.loggerService.sendMessage('yummy-store', message);
 	}
 
     async setValue(key: string, value: string): Promise<void> {
@@ -25,9 +21,11 @@ export class RedisService {
         
         try {
             const value = await this.redis.get(key);
+            
             return value;
         } catch(err) {
-            this.SendLog(`[Error][RedisService->SendLog] ${err}`);
+            this.SendLog(`[Error][RedisService][getValue] ${err}`);
+            
             return null;
         }
     }
