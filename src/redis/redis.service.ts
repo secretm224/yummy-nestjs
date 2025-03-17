@@ -20,11 +20,16 @@ export class RedisService {
     async setValue(key: string, value: string): Promise<void> {
         await this.redis.set(key, value);
     }
-
+    
     async getValue(key: string): Promise<string | null> {
-        const test = await this.redis.get(key);
-
-        return test;
+        
+        try {
+            const value = await this.redis.get(key);
+            return value;
+        } catch(err) {
+            this.SendLog(`[Error][RedisService->SendLog] ${err}`);
+            return null;
+        }
     }
 
     async deleteValue(key: string): Promise<void> {

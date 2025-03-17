@@ -4,12 +4,14 @@ import { KafkaModule } from 'src/kafka_producer/kafka.module';
 import { StoreTypeSubService } from './storeTypeSub.service';
 import { StroeTypeSubController } from './storeTypeSub.controller';
 import { StoreTypeSub } from 'src/entities/store_type_sub.entity';
+import { RedisModule } from 'src/redis/redis.module';
 
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([StoreTypeSub]), /*  orm 엔티티 등록 */
-    KafkaModule
+    KafkaModule,
+    RedisModule
   ],
   providers: [StoreTypeSubService], /* 서비스 등록 */ 
   controllers: [StroeTypeSubController], /* Controller 등록 */ 

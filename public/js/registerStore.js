@@ -119,7 +119,6 @@ async function selectMajorType(majorType)
 
         const subTypes = await response.json();
         updateSubTypeSelect(subTypes);
-        //console.log(subTypes);
     
     } catch (error) {
         console.error('Error selectMajorType:', error);
@@ -133,6 +132,9 @@ async function selectMajorType(majorType)
  * @param {*} subTypes 
  */
 function updateSubTypeSelect(subTypes) {
+
+    console.log(subTypes);
+
     /* 기존 소분류 선택 영역이 있으면 삭제 */ 
     let subTypeContainer = document.getElementById("subTypeContainer");
     if (subTypeContainer) {
@@ -164,8 +166,8 @@ function updateSubTypeSelect(subTypes) {
     /* 서버에서 받은 소분류 데이터를 기반으로 옵션 추가 */
     subTypes.forEach(subType => {
         const option = document.createElement("option");
-        option.value = subType.sub_type;
-        option.innerText = subType.type_name;
+        option.value = subType.subType;
+        option.innerText = subType.typeName;
         select.appendChild(option);
     });
 

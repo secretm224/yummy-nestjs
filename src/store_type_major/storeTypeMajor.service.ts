@@ -10,7 +10,7 @@ import { StoreTypeMajorDTO } from './dto/StoreTypeMajorDTO';
 @Injectable()
 export class StoreTypeMajorService{
     private readonly storeTypeMajorRepository: GenericRepository<StoreTypeMajor>;
-    private readonly cacheKey = 'categories';
+    private readonly cacheKey = 'categories:main';
 
     constructor(
         @InjectDataSource() private readonly dataSource: DataSource,
@@ -47,8 +47,8 @@ export class StoreTypeMajorService{
         if (data && data.length != 0) {
             /* 레디스에 데이터가 있는 경우 */
             try {
-                const parsedDatas = JSON.parse(data) as { categories: StoreTypeMajorDTO[] };
-                storeTypesDTOs = parsedDatas.categories.map((item) => StoreTypeMajorDTO.fromJSON(item));
+                const parsedDatas = JSON.parse(data) as StoreTypeMajorDTO[];
+                storeTypesDTOs = parsedDatas.map((item) => StoreTypeMajorDTO.fromJSON(item));
 
                 return storeTypesDTOs;
             } catch(err) {
@@ -68,7 +68,7 @@ export class StoreTypeMajorService{
                 .getMany();
                 
             storeTypesDTOs = entities.map(entity => new StoreTypeMajorDTO(entity.major_type, entity.type_name)); 
-
+            
             return storeTypesDTOs;
         }
     }

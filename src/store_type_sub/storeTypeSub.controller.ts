@@ -2,7 +2,7 @@ import { KafkaService } from "src/kafka_producer/kafka.service";
 import { StoreTypeSubService } from "./storeTypeSub.service";
 import { Controller, Get, Post, Body, Query, Param ,Headers} from '@nestjs/common';
 import { ApiTags } from "@nestjs/swagger";
-import { StoreTypeSub } from "src/entities/store_type_sub.entity";
+import { StoreTypeSubDTO } from "./dto/StoreTypeSubDTO";
 
 
 @ApiTags('storeTypeSub')
@@ -17,10 +17,11 @@ export class StroeTypeSubController {
     /**
      * 대분류 코드에 매칭되는 소분류 정보를 반환해주기 위한 컨트롤러
      * @param majorType - 대분류 코드 번호
+     * 
      * @returns 
      */
     @Get('findSubTypes')
-    async getStoreSubTypeByMajor(@Query('majorType') majorType: string): Promise<StoreTypeSub[] | null> {
+    async getStoreSubTypeByMajor(@Query('majorType') majorType: string): Promise<StoreTypeSubDTO[] | null> {
         return this.storeTypeSubService.findSubTypes(majorType);
     } 
 }
