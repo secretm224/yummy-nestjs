@@ -18,12 +18,12 @@
           <div class="registered-address-container">
             <h1>내 주소 정보</h1>
             <% user.detail.forEach(function(detail) { %>
-              <div class="registered-address">
-                <p class="address-type">
-                  <%= detail.addr_type === 'H' ? '🏠 집' : (detail.addr_type === 'W' ? '🏢 회사' : '') %>
-                </p>
-                <p class="address-text"><%= detail.addr %></p>
-              </div>
+                <div class="registered-address">
+                  <p class="address-type">
+                    <%= detail.addr_type === 'H' ? '🏠 집' : (detail.addr_type === 'W' ? '🏢 회사' : '') %>
+                  </p>
+                  <p class="address-text"><%= detail.addr %></p>
+                </div>
             <% }); %>
             <!-- 추가하기 버튼: 클릭 시 등록 영역을 토글하도록 JS 이벤트 추가 -->
             <button id="toggleRegistrationArea" class="btn" onclick="toggleAddressAdd();">추가하기</button>
