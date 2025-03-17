@@ -8,8 +8,19 @@ var zeroPayStores = [{ name: "알바천국", lat: 37.5032355765545, lng: 127.046
    window.onload = SetStores;
 
     function SetMap() {
+        var lngx = 127.048942471228;
+        var laty = 37.5045028775835;
+
+        console.log(window.env.login_user);
+        console.log(window.env.login_user.detail[0]);
+
+        if(!!window.env && !!window.env.login_user){
+           lngx = window.env.login_user.detail[0].lngx;
+           laty = window.env.login_user.detail[0].laty
+        }
+
         map = new naver.maps.Map('map', {
-            center: new naver.maps.LatLng(37.5045028775835, 127.048942471228),
+            center: new naver.maps.LatLng(laty, lngx),
             zoom: 17
         });
 
@@ -21,8 +32,7 @@ var zeroPayStores = [{ name: "알바천국", lat: 37.5032355765545, lng: 127.046
        var referenceStore = zeroPayStores.find(store => store.name === "알바천국");
 
       zeroPayStores.forEach(function(store) {
-             var iconUrl = store.isBeefulPay ? beefulPayIcon : (store.type === "company" ? companyIcon : storeIcon);
-
+            var iconUrl = store.isBeefulPay ? beefulPayIcon : (store.type === "company" ? companyIcon : storeIcon);
             var marker = new naver.maps.Marker({
                 position: new naver.maps.LatLng(store.lat, store.lng),
                 map: map,
@@ -268,7 +278,15 @@ var zeroPayStores = [{ name: "알바천국", lat: 37.5032355765545, lng: 127.046
 
     async function SetStores() 
     {
-        zeroPayStores = [{ name: "알바천국", lat: 37.5032355765545, lng: 127.046582379785, type: "company" }];
+        let lngx = 127.046582379785;
+        let laty = 37.5032355765545;
+
+        if(!!window.env &&!!window.env.login_user){
+            lngx = window.env.login_user.detail[0].lngx;
+            laty = window.env.login_user.detail[0].laty
+         }
+
+        zeroPayStores = [{ name: "알바천국", lat: laty, lng: lngx, type: "company" }];
 
         try {
             
@@ -427,9 +445,32 @@ var zeroPayStores = [{ name: "알바천국", lat: 37.5032355765545, lng: 127.046
     }
 
     function resetMap() {
-        map.setCenter(new naver.maps.LatLng(37.5045, 127.0489));
+        
+        let lngx = 127.0489;
+        let laty = 37.5045;
+
+        if(!!window.env && !!window.env.login_user){
+            lngx = window.env.login_user.detail[0].lngx;
+            laty = window.env.login_user.detail[0].laty
+         }
+ 
+
+        map.setCenter(new naver.maps.LatLng(laty, lngx));
         map.setZoom(17);
         map.closeInfoWindow();
+    }
+
+    function selectAddress(selectElement) {
+        const selectedOption = selectElement.options[selectElement.selectedIndex];
+        const lngx = parseFloat(selectedOption.getAttribute('data-lngx'));
+        const laty = parseFloat(selectedOption.getAttribute('data-laty'));
+
+        if (!isNaN(lngx) && !isNaN(laty)) {
+            // 지도 이동 함수 (네이버 지도 API 사용)
+            const location = new naver.maps.LatLng(laty, lngx);
+            map.setCenter(location);
+            map.setZoom(15);
+        }
     }
 
     

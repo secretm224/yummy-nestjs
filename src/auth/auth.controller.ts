@@ -296,7 +296,7 @@ export class AuthController {
     @Post('logout')
     logout(@Req() req: Request, @Res() res: Response) {
         req.session.user = undefined;
-        //moon
+       
         const accessTokenKey = req.cookies.accessTokenKey;
         this.redisService.deleteValue(accessTokenKey);
 

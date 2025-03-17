@@ -24,6 +24,25 @@
         <button class="reset-button" onclick="resetMap()">🔄 맵 초기화</button>
         <% if (typeof user !== 'undefined' && user) { %>
             <button class="register-button" onclick="location.href='/registerStore'">✨ 장소 등록 </button>
+
+            <% if (user.detail && user.detail.length > 0) { %>
+                <!-- ✅ 주소 선택 박스 -->
+                <div class="address-select-container">
+                    <label for="addressSelect">📍 주소 선택:</label>
+                    <select id="addressSelect" onchange="selectAddress(this)">
+                        <% user.detail.forEach(function(detail) { %>
+                            <option 
+                                value="<%= detail.addr %>" 
+                                data-lngx="<%= detail.lngx %>" 
+                                data-laty="<%= detail.laty %>">
+                                <%= detail.addr_type === 'H' ? '집' : '회사' %> - <%= detail.addr %>
+                            </option>
+                        <% }); %>
+                    </select>
+                </div>
+            <% } %>
+
+
             <% if (user.is_admin) { %>
                 <label class="toggle-draggable">
                     <input id="toggleDraggable" type="checkbox" onchange="toggleMarkerDraggable()"> 🔧 마커 이동 설정
@@ -32,20 +51,6 @@
          <% } %>
     </div>
 </div>
-
-<!-- ✅ 음식점 등록 -->
-<!-- <div class="register-container">
-    <input type="text" id="storeName" placeholder="🍞 예: 파리바게트">
-    <input type="text" id="storeAddress" placeholder="📍 서울 강남구 테헤란로 326 I-TOWER">
-
-    <label class="beefulpay-container">
-        <img src="../public/pay.png" alt="비플페이">
-        <input type="checkbox" id="isBeefulPay">
-        <span class="beefulpay-text">비플페이 가맹점</span>
-    </label>
-
-    <button class="submit-button" onclick="GetGeocode()">🥳 음식점 등록</button>
-</div> -->
 
 <!-- JS 추가 -->
 <%- script = '<script src="../public/js/yummymap.js"></script>' %>

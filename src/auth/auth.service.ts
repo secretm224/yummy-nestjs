@@ -211,7 +211,8 @@ export class AuthService {
                  laty:coordinate.laty
                }
 
-               const regist_user = await this.RegisterUser(updateRegisterDto);
+               //const regist_user = await this.RegisterUser(updateRegisterDto);
+               const regist_user = await this.RegisterUserVersion2(updateRegisterDto);
                return regist_user;
            }else{
              return null;
@@ -275,6 +276,104 @@ export class AuthService {
                     }
                 }
             }
+        }
+
+        return null;
+    }
+
+    async RegisterUserVersion2(RegisterDto:RegisterUserDto):Promise<UserProfileDto | null>{
+
+        if(RegisterDto){
+            const auth_info = await this.auth_repository.findOneBy({login_channel:RegisterDto.login_channel,
+                                                                    token_id:RegisterDto.token_id});
+
+           console.log(`user info = ${auth_info}`);
+           
+           if(auth_info){
+             const user_info = await this.user_repository.findOneBy({user_no:auth_info.user_no});
+             if(user_info){
+                const detail = this.detail_repository.create({
+                    user:user_info,
+                    user_no:user_info.user_no,
+                    addr_type:RegisterDto.addr_type,
+                    addr:RegisterDto.addr,
+                    lng_x:RegisterDto.lngx,
+                    lat_y:RegisterDto.laty,
+                    reg_dt:Util.GetUtcDate(),
+                    reg_id:"auth>RegisterUser"
+                });
+
+                const save_detail = await this.detail_repository.save(detail);
+                if(save_detail){
+                    const userProfiledto:UserProfileDto={
+                      user_no:user_info.user_no,
+                      user_nm:user_info.user_nm,
+                      login_channel:auth_info.login_channel,
+                      token_id:auth_info.token_id,
+                      addr_type:detail.addr_type,
+                      addr:detail.addr,
+                      lngx:detail.lng_x,
+                      laty:detail.lat_y,
+                      reg_dt:user_info.reg_dt,
+                    };
+
+                    return userProfiledto;
+                }
+             }
+           }else{
+
+            const user = this.user_repository.create({
+                user_nm : RegisterDto?.user_nm,
+                reg_dt:Util.GetUtcDate(),
+                reg_id:"auth>RegisterUser"
+            });
+
+            const save_user = await this.user_repository.save(user);
+
+            if(save_user){
+                const auth = this.auth_repository.create({
+                    user:save_user,
+                    user_no:save_user.user_no,
+                    login_channel:RegisterDto.login_channel,
+                    token_id:RegisterDto.token_id,
+                    reg_dt :Util.GetUtcDate(),
+                    reg_id:"auth>RegisterUser"
+                });
+
+                const save_auth = await this.auth_repository.save(auth);
+
+                if(save_auth){
+                    const detail = this.detail_repository.create({
+                        user:save_user,
+                        user_no:save_user.user_no,
+                        addr_type:RegisterDto.addr_type,
+                        addr:RegisterDto.addr,
+                        lng_x:RegisterDto.lngx,
+                        lat_y:RegisterDto.laty,
+                        reg_dt:Util.GetUtcDate(),
+                        reg_id:"auth>RegisterUser"
+                    });
+
+                    const save_detail = await this.detail_repository.save(detail);
+
+                    if(save_detail){
+                        const userProfiledto:UserProfileDto={
+                          user_no:save_user.user_no,
+                          user_nm:save_user.user_nm,
+                          login_channel:save_auth.login_channel,
+                          token_id:save_auth.token_id,
+                          addr_type:detail.addr_type,
+                          addr:detail.addr,
+                          lngx:detail.lng_x,
+                          laty:detail.lat_y,
+                          reg_dt:save_user.reg_dt,
+                        };
+
+                        return userProfiledto;
+                    }
+                }
+              }
+           }
         }
 
         return null;
