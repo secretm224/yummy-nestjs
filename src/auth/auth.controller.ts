@@ -8,6 +8,7 @@ import {Response,Request} from 'express'
 import * as session from 'express-session';
 import {RegisterUserDto} from './dto/register.user.dto';
 import { RedisService } from '../redis/redis.service';
+import { v4 as uuidv4 } from 'uuid';
 
 
 @Controller('auth')
@@ -46,9 +47,20 @@ export class AuthController {
             const access_token = kakao_token.access_token;
             const refresh_token = kakao_token.refresh_token;
             const payload = jwt.decode(kakao_token.id_token);
+            const accessTokenKey = `access_token:${uuidv4()}`;
+            const refreshTokenKey = `refresh_token:${uuidv4()}`;
+
+            if (accessTokenKey && access_token ) {
+                await this.redisService.setValue(accessTokenKey,access_token);
+            }
             
-            if(!!access_token){
-                res.cookie('access_token',access_token,
+            if (refreshTokenKey && refresh_token) {
+                await this.redisService.setValue(refreshTokenKey,refresh_token);
+            }
+
+
+            if(!!accessTokenKey){
+                res.cookie('accessTokenKey',accessTokenKey,
                                                         {
                                                             httpOnly:true,
                                                             secure:false,
@@ -58,8 +70,8 @@ export class AuthController {
 
             //await this.redisService.setValue("",access_token);
 
-            if(!!refresh_token){
-                res.cookie('refrech_token',refresh_token,
+            if(!!refreshTokenKey){
+                res.cookie('refreshTokenKey',refreshTokenKey,
                                                          {
                                                             httpOnly:true,
                                                             secure:false,
@@ -113,7 +125,9 @@ export class AuthController {
                                    @Res() res:Response){
 
        if(!access_token){
-            access_token = req.cookies['access_token'];
+            //access_token = req.cookies['access_token'];
+            const accessTokenKey = req.cookies.accessTokenKey;
+            access_token = await this.redisService.getValue(accessTokenKey)??"";
        }                                    
                                     
        if(!!access_token){
@@ -173,25 +187,38 @@ export class AuthController {
                     return new HttpException('get userinfo failed by access tokens',HttpStatus.BAD_REQUEST);
                 }
             }else{
-               const refrech_token = req.cookies['refrech_token'];
+               //const refrech_token = req.cookies['refrech_token'];
+               const refreshTokenKey = req.cookies.refreshTokenKey;
+               const refrech_token = await this.redisService.getValue(refreshTokenKey);
+
                if(refrech_token){
                    const new_token = await this.auth_service.GetAccessTokenByRefreshToken(refrech_token);
                    if(new_token){
                     const new_access_token = new_token.access_token;
                     const new_refresh_token = new_token.refresh_token;
                     const payload = jwt.decode(new_token.id_token);
+                    const accessTokenKey = `access_token:${uuidv4()}`;
+                    const refreshTokenKey = `refresh_token:${uuidv4()}`;
 
-                    if(!!new_access_token){
-                        res.cookie('access_token',new_access_token,
-                                                                {
-                                                                    httpOnly:true,
-                                                                    secure:false,
-                                                                    sameSite:true
-                                                                 });
+                    if (accessTokenKey && new_access_token) {
+                        await this.redisService.setValue(accessTokenKey,new_access_token);
+                    }
+                    
+                    if (refreshTokenKey && new_refresh_token) {
+                        await this.redisService.setValue(refreshTokenKey,new_refresh_token);
                     }
 
-                    if(!!new_refresh_token){
-                        res.cookie('refrech_token',new_refresh_token,
+                    if(!!accessTokenKey){
+                        res.cookie('accessTokenKey',accessTokenKey,
+                                                                    {
+                                                                        httpOnly:true,
+                                                                        secure:false,
+                                                                        sameSite:true
+                                                                    });
+                    }
+
+                    if(!!refreshTokenKey){
+                        res.cookie('refreshTokenKey',refreshTokenKey,
                                                                     {
                                                                         httpOnly:true,
                                                                         secure:false,
@@ -269,10 +296,17 @@ export class AuthController {
     @Post('logout')
     logout(@Req() req: Request, @Res() res: Response) {
         req.session.user = undefined;
+        //moon
+        const accessTokenKey = req.cookies.accessTokenKey;
+        this.redisService.deleteValue(accessTokenKey);
+
+        const refreshTokenKey = req.cookies.refreshTokenKey;
+        this.redisService.deleteValue(refreshTokenKey);
+        //await this.redisService.deleteValue()
         
         req.session.destroy(() => {
-            res.clearCookie('access_token');
-            res.clearCookie('refresh_token');
+            res.clearCookie('accessTokenKey');
+            res.clearCookie('refreshTokenKey');
             res.redirect('/login');
         });
     }
