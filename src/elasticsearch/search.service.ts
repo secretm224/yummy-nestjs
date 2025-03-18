@@ -2,6 +2,9 @@ import { Injectable } from '@nestjs/common';
 import { ElasticsearchService } from '@nestjs/elasticsearch';
 import { SearchResponse } from '@elastic/elasticsearch/lib/api/types';
 import { SearchTransformDTO } from './dto/SearchTransformDTO';
+import { TotalSearchDTO } from './dto/TotalSearchDTO';
+import { StoreSearch } from 'src/entities/store_search.entity';
+import { TotalSearchResultDTO } from './dto/TotalSearchResultDTO';
 
 @Injectable()
 export class SearchService {
@@ -194,5 +197,65 @@ export class SearchService {
     }
 
 
-    //async totalSearchData()
+    async totalSearchData(index: string, totalSearchDTO: TotalSearchDTO): Promise<TotalSearchResultDTO[]> {
+
+        /* ====== 기본 Should 쿼리 ====== */
+        let shouldQueries:  Array< { match: { name: { query: string, boost: 2.0 } } } | { match: { address: { query: string, boost: 1.5 } } }> = [];
+
+        if (totalSearchDTO.searchValue != "") {
+            shouldQueries.push({ match: { name: { query: totalSearchDTO.searchValue, boost: 2.0 } } });
+            shouldQueries.push({ match: { address: { query: totalSearchDTO.searchValue, boost: 1.5 } } });
+        }
+
+        /* ====== 기본 Must 쿼리 ====== */
+        let mustQueries: Array<{ terms: { major_type: number[] } } | { terms: { sub_type: number[] } }> = [];
+
+        if (totalSearchDTO.selectMajor != 0) {
+            const majorList = [ totalSearchDTO.selectMajor ];
+            mustQueries.push({ terms: { major_type: majorList } });
+        }
+
+        if (totalSearchDTO.selectSub != 0) {
+            const subList = [ totalSearchDTO.selectSub ];
+            mustQueries.push({ terms: { sub_type: subList } });
+        }
+
+
+        /* ====== 기본 필터 쿼리 ====== */
+        let filterQueries: Array<{ term: { zero_possible: boolean } }> = [];
+
+        if (totalSearchDTO.zeroPossible != null) {
+            filterQueries.push({ term: { zero_possible: totalSearchDTO.zeroPossible } });
+        }
+        
+
+        /* ====== 필터 조합 ====== */
+        let boolQuery: any = {};
+
+        if (filterQueries.length > 0) {
+            boolQuery.filter = filterQueries;
+        }
+        
+        if (mustQueries.length > 0) {
+            boolQuery.must = mustQueries;
+        }
+        
+        if (shouldQueries.length > 0) {
+            boolQuery.should = shouldQueries;
+            boolQuery.minimum_should_match = 1; // should가 있을 때만 추가
+        }
+
+
+        const result: SearchResponse<any> = await this.elasticService.search({
+            index: index,
+            body: {
+                query: {
+                    bool: boolQuery
+                },  
+                size: 10000
+            }
+        }); 
+
+        return result.hits.hits.map((hit) => Object.assign(new TotalSearchResultDTO(), hit._source))
+    }
 }

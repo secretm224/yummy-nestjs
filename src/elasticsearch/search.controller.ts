@@ -4,6 +4,8 @@ import { KafkaService } from 'src/kafka_producer/kafka.service';
 import { StoreSearch } from 'src/entities/store_search.entity';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { StoreTypeMajorService } from 'src/store_type_major/storeTypeMajor.service';
+import { TotalSearchDTO } from './dto/TotalSearchDTO';
+import { TotalSearchResultDTO } from './dto/TotalSearchResultDTO';
 
 @ApiTags('search') 
 @Controller('search')
@@ -22,7 +24,7 @@ export class SearchController {
 		try {
 
 			const storeTypes = await this.storeTypeMajorService.findAll();
-
+			
 			return {
 				title: 'search 테스트 페이지',
 				storeTypes,
@@ -34,6 +36,30 @@ export class SearchController {
 			return { title: '검색 테스트 페이지지', storeTypes: [], error: '데이터를 불러올 수 없습니다.:' };
 		}
 	}
+	
+	@Get('totalSearch')
+	async getTotalSearchData(
+		@Query('searchValue') searchValue: string,
+		@Query('selectMajor') selectMajor: number,
+		@Query('selectSub') selectSub: number,
+		@Query('zeroPossible') zeroPossible: boolean,
+	): Promise<TotalSearchResultDTO[] | null> {
+		
+		const totalSearchDTO = new TotalSearchDTO(searchValue, selectMajor, selectSub, zeroPossible);
+
+		try {
+
+			const searchDTO = await this.searchService.totalSearchData('dev-yummy-index', totalSearchDTO);
+
+			console.log(searchDTO);
+			return searchDTO;
+
+		} catch(err) {
+			await this.SendLog(err);
+			return null;
+		}
+	}
+
 
 	@ApiOperation({ summary: 'search data inquery', description: 'inquery to search data' })
 	@ApiResponse({ status: 200, description: 'inquery store data by search' })
@@ -44,9 +70,9 @@ export class SearchController {
 			throw new Error('yummy-key is invalid');
 		}
 
-		return this.searchService.searchAll<StoreSearch>('yummy-index', StoreSearch);
+		return this.searchService.searchAll<StoreSearch>('dev-yummy-index', StoreSearch);
 	}
-
+	
 	@Get('autoComplete')
 	async getAutoComplete(
 		@Query('searchData') searchData: string
@@ -60,7 +86,7 @@ export class SearchController {
 			return null;
 		}	
 	}
-
+	
 	// @Get('totalSearch')
 	// async getTotalSearchData(
 	// 	@Query('searchData') searchData:

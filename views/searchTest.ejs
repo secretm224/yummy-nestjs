@@ -6,34 +6,34 @@
     
     <div class="search-container">
         <input type="text" id="searchInput" class="search-input" placeholder="검색어 입력">
-        <button class="search-button" onclick="search()">검색</button>
+        <button class="search-button" onclick="toalSearch()">검색</button>
     </div>
     
     <div class="custom-select">
         <label for="storeType">⚙️ 음식점 대분류</label>
-        <select id="select-major">
+        <select id="select-major" onchange="selectMajorType(this.value)">
             <option value="0" selected>전체</option>
             <% storeTypes.forEach(function(store) { %>
-                <option value="<%= store.major_type %>"><%= store.type_name %></option>
+                <option value="<%= store.majorType %>"><%= store.typeName %></option>
             <% }); %>
         </select>
         <label for="storeType">⚙️ 음식점 소분류</label>
         <select id="select-sub">
-            <option value="0" disabled selected>전체</option>
+            <option value="0" selected>전체</option>
         </select>
     </div>
 
     <div class="result-container">
         <span class="arrow" onclick="prevPage()">&#60;</span>
-        <div class="result-list-wrapper">
-            <div class="result-list" id="resultListWrapper">
+        <div class="result-list-wrapper" id="total-search-datas">
+            <!-- <div class="result-list" id="resultListWrapper">
                 <div class="result-list-img" style="border: 1px solid red;"></div>
                 <div class="result-list-contents" style="border: 1px solid red;">
                     <div class="result-list-contents-addr" style="border: 1px solid green;">test</div>
                     <div class="result-list-contents-subject" style="border: 1px solid green;">test</div>
                 </div>
                 <div class="result-list-star" style="border: 1px solid red;"></div>
-            </div>
+            </div> -->
             <!-- <div class="result-list" id="resultListWrapper">test</div>
             <div class="result-list" id="resultListWrapper">test</div>
             <div class="result-list" id="resultListWrapper">test</div>
@@ -42,7 +42,7 @@
         <span class="arrow" onclick="nextPage()">&#62;</span>
     </div>
     
-    <div class="pagination" id="paginationInfo">1/1</div>
+    <div class="pagination" id="paginationInfo"><span id="cur-page" style="color: red;">1</span>/<span id="total-page">1</span></div>
 </div>
 
 <!-- ✅ 관리자 페이지 전용 스크립트 추가 -->

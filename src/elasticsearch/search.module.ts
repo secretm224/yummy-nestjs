@@ -7,8 +7,8 @@ import { SearchController } from './search.controller';
 import { KafkaModule } from 'src/kafka_producer/kafka.module';
 import { StoreTypeMajorService } from 'src/store_type_major/storeTypeMajor.service';
 import { StoreTypeMajor } from 'src/entities/store_type_major.entity';
-import { Store } from 'src/entities/store.entity';
 import { RedisModule } from 'src/redis/redis.module';
+
 
 
 @Module({
@@ -26,7 +26,7 @@ import { RedisModule } from 'src/redis/redis.module';
                 username: process.env.ELASTICSEARCH_USERNAME || '',
                 password: process.env.ELASTICSEARCH_PASSWORD || '',
             }
-        }),
+        })
     ],
     controllers: [SearchController], // ✅ 컨트롤러 추가
     providers: [SearchService, StoreTypeMajorService], // ✅ 서비스 추가
