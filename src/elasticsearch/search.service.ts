@@ -196,19 +196,25 @@ export class SearchService {
         }));
     }
 
-
+    /**
+     * 통합검색 함수
+     * 
+     * @param index 
+     * @param totalSearchDTO 
+     * @returns 
+     */
     async totalSearchData(index: string, totalSearchDTO: TotalSearchDTO): Promise<TotalSearchResultDTO[]> {
-
+        
         /* ====== 기본 Should 쿼리 ====== */
-        let shouldQueries:  Array< { match: { name: { query: string, boost: 2.0 } } } | { match: { address: { query: string, boost: 1.5 } } }> = [];
-
+        const shouldQueries:  Array< { match: { name: { query: string, boost: number } } } | { match: { address: { query: string, boost: number } } }> = [];
+        
         if (totalSearchDTO.searchValue != "") {
             shouldQueries.push({ match: { name: { query: totalSearchDTO.searchValue, boost: 2.0 } } });
             shouldQueries.push({ match: { address: { query: totalSearchDTO.searchValue, boost: 1.5 } } });
         }
 
         /* ====== 기본 Must 쿼리 ====== */
-        let mustQueries: Array<{ terms: { major_type: number[] } } | { terms: { sub_type: number[] } }> = [];
+        const mustQueries: Array<{ terms: { major_type: number[] } } | { terms: { sub_type: number[] } }> = [];
 
         if (totalSearchDTO.selectMajor != 0) {
             const majorList = [ totalSearchDTO.selectMajor ];
@@ -222,7 +228,7 @@ export class SearchService {
 
 
         /* ====== 기본 필터 쿼리 ====== */
-        let filterQueries: Array<{ term: { zero_possible: boolean } }> = [];
+        const filterQueries: Array<{ term: { zero_possible: boolean } }> = [];
 
         if (totalSearchDTO.zeroPossible != null) {
             filterQueries.push({ term: { zero_possible: totalSearchDTO.zeroPossible } });
@@ -230,8 +236,13 @@ export class SearchService {
         
 
         /* ====== 필터 조합 ====== */
-        let boolQuery: any = {};
-
+        const boolQuery: {
+            filter?: Array<{ term: { zero_possible: boolean } }>,
+            must?: Array<{ terms: { major_type: number[] } } | { terms: { sub_type: number[] } }>,
+            should?: Array<{ match: { name: { query: string, boost: number } } } | { match: { address: { query: string, boost: number } } }>,
+            minimum_should_match?: number
+        } = {};
+        
         if (filterQueries.length > 0) {
             boolQuery.filter = filterQueries;
         }
@@ -242,7 +253,7 @@ export class SearchService {
         
         if (shouldQueries.length > 0) {
             boolQuery.should = shouldQueries;
-            boolQuery.minimum_should_match = 1; // should가 있을 때만 추가
+            boolQuery.minimum_should_match = 1; /* should가 있을 때만 추가 */ 
         }
 
 
@@ -256,6 +267,10 @@ export class SearchService {
             }
         }); 
 
-        return result.hits.hits.map((hit) => Object.assign(new TotalSearchResultDTO(), hit._source))
+        //return result.hits.hits.map((hit) => Object.assign(new TotalSearchResultDTO(), hit._source))
+        return result.hits.hits.map((hit) => {
+            const source = hit._source as TotalSearchResultDTO;
+            return Object.assign(new TotalSearchResultDTO(), source);
+        });
     }
 }

@@ -6,7 +6,7 @@
     
     <div class="search-container">
         <input type="text" id="searchInput" class="search-input" placeholder="검색어 입력">
-        <button class="search-button" onclick="toalSearch()">검색</button>
+        <button class="search-button" onclick="SearchManager.toalSearch()">검색</button>
     </div>
     
     <div class="custom-select">
@@ -24,7 +24,7 @@
     </div>
 
     <div class="result-container">
-        <span class="arrow" onclick="prevPage()">&#60;</span>
+        <span class="arrow" onclick="SearchManager.prevPage()">&#60;</span>
         <div class="result-list-wrapper" id="total-search-datas">
             <!-- <div class="result-list" id="resultListWrapper">
                 <div class="result-list-img" style="border: 1px solid red;"></div>
@@ -39,7 +39,7 @@
             <div class="result-list" id="resultListWrapper">test</div>
             <div class="result-list" id="resultListWrapper">test</div> -->
         </div>
-        <span class="arrow" onclick="nextPage()">&#62;</span>
+        <span class="arrow" onclick="SearchManager.nextPage()">&#62;</span>
     </div>
     
     <div class="pagination" id="paginationInfo"><span id="cur-page" style="color: red;">1</span>/<span id="total-page">1</span></div>

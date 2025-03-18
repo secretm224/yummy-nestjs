@@ -29,6 +29,7 @@ export class SearchController {
 				title: 'search 테스트 페이지',
 				storeTypes,
 				css: '<link rel="stylesheet" href="/css/searchTest.css">',
+				js: '<script src="/js/searchTest.js" defer></script>'
 			}
 			
 		} catch(err) {

@@ -1,3 +1,5 @@
+//const { create } = require("domain");
+
 const data = ["사과", "바나나", "포도", "오렌지", "수박", "딸기", "참외", "복숭아", "자두", "망고", "키위", "레몬", "파인애플", "블루베리" ];
 let filteredData = [...data];
 let currentPage = 1;
@@ -21,21 +23,6 @@ function render() {
     
     document.getElementById("paginationInfo").innerText = `${currentPage}/${Math.max(1, Math.ceil(filteredData.length / itemsPerPage))}`;
 }
-
-function prevPage() {
-    if (currentPage > 1) {
-        currentPage--;
-        render();
-    }
-}
-
-function nextPage() {
-    if (currentPage < Math.ceil(filteredData.length / itemsPerPage)) {
-        currentPage++;
-        render();
-    }
-}
-
 
 /**
  * 대분류 select 박스를 선택했을 때, 동적으로 소분류 select 박스를 만들어주는 함수.
@@ -91,70 +78,90 @@ function updateSubTypeSelect(subTypes) {
 
 }
 
-let totalSearchData = [];
-let curPage = 1;
-let globalTotalPage = 1;
+const SearchManager = {
+    totalSearchData: [],
+    curPage: 1,
+    globalTotalPage: 1,
 
-async function toalSearch() {
-
-    const searchValue = document.getElementById("searchInput").value;
-    const selectMajor = document.getElementById("select-major").value;
-    const selectSub = document.getElementById("select-sub").value;
-
-
-    try {
-
-        const response = await fetch(`/search/totalSearch?searchValue=${searchValue}&selectMajor=${selectMajor}&selectSub=${selectSub}`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json'
+    async toalSearch() {
+        const searchValue = document.getElementById("searchInput").value;
+        const selectMajor = document.getElementById("select-major").value;
+        const selectSub = document.getElementById("select-sub").value;
+        
+        try {
+    
+            const response = await fetch(`/search/totalSearch?searchValue=${searchValue}&selectMajor=${selectMajor}&selectSub=${selectSub}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+    
+            if (!response.ok) {
+                throw new Error("서버 요청 실패");
             }
-        });
-
-        if (!response.ok) {
-            throw new Error("서버 요청 실패");
+    
+            this.totalSearchData = []; // 검색결과 초기화
+            const responseData = await response.json(); // 검색결과 json 파싱
+            responseData.forEach(item => this.totalSearchData.push(item)); // 검색결과 통합검색 데이터 배열에 추가
+    
+    
+            /* 페이징 처리 */
+            let totalPage = Math.floor(this.totalSearchData.length / 3);
+            const remainderPage = this.totalSearchData.length % 3;
+            
+            if (remainderPage > 0) {
+                totalPage++;
+            }
+            
+            this.globalTotalPage = totalPage; // 전체 페이지 초기화
+            document.getElementById("total-page").textContent = totalPage; // 전체 페이지 시각화
+            
+            /* 기존 검색 데이터들을 모두 지워준다. */
+            deleteData("total-search-datas");
+    
+            /* 검색데이터 불러옴 -> 초반 검색 데이터 */
+            responseData.slice(0, 3).forEach(item => createTotalSearchData(item));
+            //responseData.forEach(item => createTotalSearchData(item));
+    
+        } catch(error) {
+            console.error(`error: ${error}`);
         }
-
-        totalSearchData = [];
-        const responseData = await response.json();
-        responseData.forEach(item => totalSearchData.push(item));
-
-        const totalPage = Math.floor(totalSearchData.length / 3);
-        const remainderPage = totalSearchData.length % 3;
-
-        globalTotalPage = totalPage;
-        document.getElementById("total-page").textContent = totalPage;
-        //console.log("totalPage:" + totalPage);
-        //console.log("remainderPage:" + remainderPage);
-
+    },
+    nextPage() {
+        if (this.curPage + 1 > this.globalTotalPage) {
+            alert("마지막 페이지 입니다.");
+            return;
+        }
+        
+        this.curPage++;
         /* 기존 검색 데이터들을 모두 지워준다. */
         deleteData("total-search-datas");
 
-        /* 검색데이터 불러옴 */
-        //responseData.forEach(item => createTotalSearchData(item));
-        responseData.slice(0, 3).forEach(item => createTotalSearchData(item));
+        const startIdx = 3 * (this.curPage - 1);
+        const lastIdx = startIdx + 3;
 
-    } catch(error) {
-        console.error("error!");
+        document.getElementById('cur-page').innerHTML = this.curPage;
+
+        this.totalSearchData.slice(startIdx, lastIdx).forEach(item => createTotalSearchData(item));
+    },
+    prevPage() {
+        if (this.curPage - 1 < 1) {
+            alert("첫번째 페이지 입니다.");
+            return;
+        }
+
+        this.curPage--;
+        /* 기존 검색 데이터들을 모두 지워준다. */
+        deleteData("total-search-datas");
+
+        const startIdx = 3 * (this.curPage - 1);
+        const lastIdx = startIdx + 3;
+
+        document.getElementById('cur-page').innerHTML = this.curPage;
+
+        this.totalSearchData.slice(startIdx, lastIdx).forEach(item => createTotalSearchData(item));
     }
-    
-}
-
-function nextPage() {
-    if (curPage + 1 > globalTotalPage) {
-        alert("마지막 페이지 입니다.");
-    }
-    
-    curPage++;
-
-}
-
-function prevPage() {
-    if (curPage - 1 < 1) {
-        alert("첫번째 페이지 입니다.");
-    }
-
-    curPage--;
 }
 
 
@@ -182,6 +189,7 @@ function createTotalSearchData(response) {
     const resultListSubject = document.createElement("div");
     resultListSubject.classList.add("result-list-contents-subject");
     resultListSubject.textContent = response.name;
+    resultListSubject.style.color = "green";
 
     const resultListStar = document.createElement("div");
     resultListStar.classList.add("result-list-star");
