@@ -50,7 +50,7 @@ export class SearchController {
 
 		try {
 
-			const searchDTO = await this.searchService.totalSearchData('dev-yummy-index', totalSearchDTO);
+			const searchDTO = await this.searchService.totalSearchData('yummy-index', totalSearchDTO);
 
 			console.log(searchDTO);
 			return searchDTO;
@@ -71,7 +71,7 @@ export class SearchController {
 			throw new Error('yummy-key is invalid');
 		}
 
-		return this.searchService.searchAll<StoreSearch>('dev-yummy-index', StoreSearch);
+		return this.searchService.searchAll<StoreSearch>('yummy-index', StoreSearch);
 	}
 	
 	@Get('autoComplete')

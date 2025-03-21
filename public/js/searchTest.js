@@ -78,10 +78,18 @@ function updateSubTypeSelect(subTypes) {
 
 }
 
+document.getElementById("searchInput").addEventListener("keypress", (event) => {
+    if (event.key === "Enter") {
+        event.preventDefault(); // 기본 동작 방지
+        SearchManager.toalSearch(); // 검색 실행
+    }
+});
+
 const SearchManager = {
     totalSearchData: [],
     curPage: 1,
     globalTotalPage: 1,
+    paging: 5,
 
     async toalSearch() {
         const searchValue = document.getElementById("searchInput").value;
@@ -102,26 +110,36 @@ const SearchManager = {
             }
     
             this.totalSearchData = []; // 검색결과 초기화
+            this.curPage = 1;
             const responseData = await response.json(); // 검색결과 json 파싱
             responseData.forEach(item => this.totalSearchData.push(item)); // 검색결과 통합검색 데이터 배열에 추가
-    
-    
+            
+
+            document.getElementById("find-store-title-value").textContent = this.totalSearchData.length;
+            
             /* 페이징 처리 */
-            let totalPage = Math.floor(this.totalSearchData.length / 3);
-            const remainderPage = this.totalSearchData.length % 3;
+            let totalPage = Math.floor(this.totalSearchData.length / this.paging);
+            const remainderPage = this.totalSearchData.length % this.paging;
             
             if (remainderPage > 0) {
                 totalPage++;
             }
             
-            this.globalTotalPage = totalPage; // 전체 페이지 초기화
-            document.getElementById("total-page").textContent = totalPage; // 전체 페이지 시각화
+            console.log(this.totalSearchData.length);
+
+            if (this.totalSearchData.length == 0) {
+                this.globalTotalPage = 1;
+            } else {
+                this.globalTotalPage = totalPage; // 전체 페이지 초기화
+            }
+            
+            document.getElementById("total-page").textContent = this.globalTotalPage; // 전체 페이지 시각화
             
             /* 기존 검색 데이터들을 모두 지워준다. */
             deleteData("total-search-datas");
     
             /* 검색데이터 불러옴 -> 초반 검색 데이터 */
-            responseData.slice(0, 3).forEach(item => createTotalSearchData(item));
+            responseData.slice(0, this.paging).forEach(item => createTotalSearchData(item));
             //responseData.forEach(item => createTotalSearchData(item));
     
         } catch(error) {
@@ -138,8 +156,8 @@ const SearchManager = {
         /* 기존 검색 데이터들을 모두 지워준다. */
         deleteData("total-search-datas");
 
-        const startIdx = 3 * (this.curPage - 1);
-        const lastIdx = startIdx + 3;
+        const startIdx = this.paging * (this.curPage - 1);
+        const lastIdx = startIdx + this.paging;
 
         document.getElementById('cur-page').innerHTML = this.curPage;
 
@@ -155,8 +173,8 @@ const SearchManager = {
         /* 기존 검색 데이터들을 모두 지워준다. */
         deleteData("total-search-datas");
 
-        const startIdx = 3 * (this.curPage - 1);
-        const lastIdx = startIdx + 3;
+        const startIdx = this.paging * (this.curPage - 1);
+        const lastIdx = startIdx + this.paging;
 
         document.getElementById('cur-page').innerHTML = this.curPage;
 
@@ -184,12 +202,14 @@ function createTotalSearchData(response) {
 
     const resultListAddr = document.createElement("div");
     resultListAddr.classList.add("result-list-contents-addr");
-    resultListAddr.textContent = response.address;
+    const showAddr = `${response.location_county} ${response.location_city} ${response.location_district}`;
+    resultListAddr.textContent = showAddr;
 
     const resultListSubject = document.createElement("div");
     resultListSubject.classList.add("result-list-contents-subject");
     resultListSubject.textContent = response.name;
     resultListSubject.style.color = "green";
+    resultListSubject.style.fontSize = "20px";
 
     const resultListStar = document.createElement("div");
     resultListStar.classList.add("result-list-star");
