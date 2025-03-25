@@ -133,8 +133,6 @@ async function selectMajorType(majorType)
  */
 function updateSubTypeSelect(subTypes) {
 
-    console.log(subTypes);
-
     /* 기존 소분류 선택 영역이 있으면 삭제 */ 
     let subTypeContainer = document.getElementById("subTypeContainer");
     if (subTypeContainer) {

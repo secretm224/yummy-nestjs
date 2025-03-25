@@ -1,89 +1,44 @@
-//const { create } = require("domain");
 
-const data = ["사과", "바나나", "포도", "오렌지", "수박", "딸기", "참외", "복숭아", "자두", "망고", "키위", "레몬", "파인애플", "블루베리" ];
-let filteredData = [...data];
-let currentPage = 1;
-const itemsPerPage = 5;
-
-function search() {
-    const query = document.getElementById("searchInput").value.trim().toLowerCase();
-    filteredData = data.filter(item => item.includes(query));
-    currentPage = 1;
-    render();
-}
-
-function render() {
-    const start = (currentPage - 1) * itemsPerPage;
-    const end = start + itemsPerPage;
-    const visibleItems = filteredData.slice(start, end);
-    
-    document.getElementById("resultList").innerHTML = visibleItems.length > 0 
-        ? visibleItems.map(item => `<div>${item}</div>`).join("")
-        : "검색 결과 없음";
-    
-    document.getElementById("paginationInfo").innerText = `${currentPage}/${Math.max(1, Math.ceil(filteredData.length / itemsPerPage))}`;
-}
-
-/**
- * 대분류 select 박스를 선택했을 때, 동적으로 소분류 select 박스를 만들어주는 함수.
- * 
- * @param {*} majorType - 대분류 코드
- */
-async function selectMajorType(majorType)
-{
+document.addEventListener('DOMContentLoaded', async () => {
+    const selectElement = document.getElementById('select-county');
 
     try {
-
-        const response = await fetch(`/storeTypeSub/findSubTypes?majorType=${majorType}`, {
-                            method: 'GET',
-                            headers: {
-                                'Content-Type': 'application/json'
-                            }
-                        });
-
+        
+        /* Java 백엔드 API 호출 - 전체 시/도 가져옴 */
+        const response = await fetch('http://localhost:8089/location/county', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+        
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
 
-        const subTypes = await response.json();
-        updateSubTypeSelect(subTypes);
-    
+        /* API 응답 데이터를 JSON 형식으로 파싱 */ 
+        const counties = await response.json();
+
+        /* 응답 데이터를 <select> 옵션으로 추가 */ 
+        counties.forEach(data => {
+            const option = document.createElement('option');
+            option.value = data.locationCountyCode;
+            option.textContent = data.locationCounty;
+            selectElement.appendChild(option);
+        });
+        
     } catch (error) {
-        console.error('Error selectMajorType:', error);
+        console.error('데이터를 불러오는 중 오류 발생:', error);
     }
-
-}
-
-/**
- * 소분류 셀렉트 박스를 동적으로 만들어주는 함수.
- * 
- * @param {*} subTypes 
- */
-function updateSubTypeSelect(subTypes) {    
-
-    console.log(subTypes);
-
-    const selectBox = document.getElementById("select-sub");
-
-    while (selectBox.options.length > 1) {
-        selectBox.remove(1);
-    }
-
-    subTypes.forEach((data) => {
-        const option = document.createElement("option");
-        option.value = data.subType;
-        option.textContent = data.typeName;
-        selectBox.appendChild(option);
-    });
-
-}
+});
 
 document.getElementById("searchInput").addEventListener("keypress", (event) => {
     if (event.key === "Enter") {
-        event.preventDefault(); // 기본 동작 방지
-        SearchManager.toalSearch(); // 검색 실행
+        event.preventDefault();     /* 기본 동작 방지 */ 
+        SearchManager.toalSearch(); /* 검색 실행 */ 
     }
 });
+
 
 const SearchManager = {
     totalSearchData: [],
@@ -95,27 +50,34 @@ const SearchManager = {
         const searchValue = document.getElementById("searchInput").value;
         const selectMajor = document.getElementById("select-major").value;
         const selectSub = document.getElementById("select-sub").value;
-        
+        const zeroPayYn = document.getElementsByName("zero-pay-option")[0].checked;
+
         try {
-    
-            const response = await fetch(`/search/totalSearch?searchValue=${searchValue}&selectMajor=${selectMajor}&selectSub=${selectSub}`, {
+
+            /* JAVA REST-API */
+            const response = await fetch(`http://localhost:8089/search/totalSearch?searchText=${searchValue}&selectMajor=${selectMajor}&selectSub=${selectSub}&zeroPossible=${zeroPayYn}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json'
                 }
             });
     
+    
             if (!response.ok) {
                 throw new Error("서버 요청 실패");
             }
     
             this.totalSearchData = []; // 검색결과 초기화
+
+            /* 현재 페이지 숫자 초기화 */
             this.curPage = 1;
+            document.getElementById('cur-page').innerHTML = this.curPage;
+            
             const responseData = await response.json(); // 검색결과 json 파싱
             responseData.forEach(item => this.totalSearchData.push(item)); // 검색결과 통합검색 데이터 배열에 추가
             
 
-            document.getElementById("find-store-title-value").textContent = this.totalSearchData.length;
+            document.getElementsByClassName("find-store-title").textContent = '총 <span style="color: red;" id="find-store-title-value">' + this.totalSearchData.length + '</span>개의 음식점을 찾았습니다.';
             
             /* 페이징 처리 */
             let totalPage = Math.floor(this.totalSearchData.length / this.paging);
@@ -125,8 +87,6 @@ const SearchManager = {
                 totalPage++;
             }
             
-            console.log(this.totalSearchData.length);
-
             if (this.totalSearchData.length == 0) {
                 this.globalTotalPage = 1;
             } else {
@@ -214,15 +174,54 @@ function createTotalSearchData(response) {
     const resultListStar = document.createElement("div");
     resultListStar.classList.add("result-list-star");
 
-    // 콘텐츠 컨테이너에 주소 & 제목 추가
+    /* 콘텐츠 컨테이너에 주소 & 제목 추가 */ 
     resultListContents.appendChild(resultListAddr);
     resultListContents.appendChild(resultListSubject);
 
-    // 최상위 컨테이너에 요소 추가
+    /* 최상위 컨테이너에 요소 추가 */ 
     resultListWrapper.appendChild(resultListImg);
     resultListWrapper.appendChild(resultListContents);
     resultListWrapper.appendChild(resultListStar);
-
+    
     parentElement.appendChild(resultListWrapper);
+}
 
+/**
+ * 시,도 를 선택해줬을때 해당 구,군 을 가져오는 함수
+ * @param {*} county 
+ */
+async function selectCounty(county) {
+
+    try {
+
+        const response = await fetch(`http://localhost:8089/location/city?countySeq=${county}`, {
+                            method: 'GET',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            }
+                        });
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const subTypes = await response.json();
+        updateCityLocationSelect(subTypes);
+    
+    } catch (error) {
+        console.error('Error selectMajorType:', error);
+    }
+}
+
+function updateCityLocationSelect(updateData) {
+
+    const selectElement = document.getElementById('select-city');
+    selectElement.innerHTML = '<option value="0" selected>전체</option>';
+
+    updateData.forEach(data => {
+        const option = document.createElement('option');
+        option.value = data.locationCityCode;
+        option.textContent = data.locationCity;
+        selectElement.appendChild(option);
+    });
 }
