@@ -42,7 +42,7 @@ async function registerStore()
             let location_city = firstItem.addrdetail.sigugun; 
             let location_district = firstItem.addrdetail.dongmyun;
 
-            console.log(firstItem);
+            //console.log(firstItem);
 
             if (!!lat && !!lng && !!address) {
                 let addjson = { 
@@ -73,14 +73,26 @@ async function registerStore()
 async function addStore(store)
 {
     try {
-    
-        const response = await fetch("/store/add", {
-                                method: 'POST',
-                                headers: {
-                                    'Content-Type': 'application/json',
-                                },
-                                body: JSON.stringify(store),
-                            });
+        
+        // 
+        // const response = await fetch("/store/add", {
+        //                         method: 'POST',
+        //                         headers: {
+        //                             'Content-Type': 'application/json',
+        //                         },
+        //                         body: JSON.stringify(store),
+        //                     });
+        // 
+
+        console.log(JSON.stringify(store));
+
+        const response = await fetch("http://localhost:8089/stores/addStore", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(store),
+        });
 
         const result = await response.json();
 

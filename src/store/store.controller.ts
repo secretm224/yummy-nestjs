@@ -42,7 +42,7 @@ export class StoreController {
 		try {
 			/* 1. store 테이블에 데이터 저장 */
 			const saveStore = await this.storeService.create(store, queryRunner); /* store 생성 */ 			
-
+			
 			if (saveStore != null) {
 				
 				/* 2. store_location_info_tbl 테이블에 데이터 저장 */

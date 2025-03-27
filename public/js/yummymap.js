@@ -288,10 +288,19 @@ var zeroPayStores = [{ name: "알바천국", lat: 37.5032355765545, lng: 127.046
         try {
             
             /* Elasticsearch 에서 Store 데이터를 가져오는 방식 */
-            const response = await fetch(`/search/allData`, {
+            // const response = await fetch(`/search/allData`, {
+            //     method: 'GET',
+            //     headers: {
+            //         'yummy-key': 'zkflsk123',
+            //         'Content-Type': 'application/json'
+            //     }
+            // });
+            
+            /* Java API Call */
+            const response = await fetch(`http://localhost:8089/search/allData`, {
                 method: 'GET',
                 headers: {
-                    'yummy-key': 'zkflsk123',
+                    //'yummy-key': 'zkflsk123',
                     'Content-Type': 'application/json'
                 }
             });
