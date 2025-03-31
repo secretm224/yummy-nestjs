@@ -297,14 +297,15 @@ var zeroPayStores = [{ name: "알바천국", lat: 37.5032355765545, lng: 127.046
             // });
             
             /* Java API Call */
-            const response = await fetch(`http://192.168.0.2:8089/search/allData`, {
+            const response = await fetch(`http://www.seunghwan-dev.kro.kr:18089/search/allData`, {
                 method: 'GET',
                 headers: {
-                    //'yummy-key': 'zkflsk123',
+
                     'Content-Type': 'application/json'
                 }
             });
 
+            //'yummy-key': 'zkflsk123',
             //const response = await fetch('/store/all'); -> ORM 방식: DB 에서 가져오는 방식
             const stores = await response.json();
 
