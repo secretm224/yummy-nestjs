@@ -73,20 +73,8 @@ async function registerStore()
 async function addStore(store)
 {
     try {
-        
-        // 
-        // const response = await fetch("/store/add", {
-        //                         method: 'POST',
-        //                         headers: {
-        //                             'Content-Type': 'application/json',
-        //                         },
-        //                         body: JSON.stringify(store),
-        //                     });
-        // 
 
-        console.log(JSON.stringify(store));
-
-        const response = await fetch("http://localhost:8089/stores/addStore", {
+        const response = await fetch("http://192.168.0.2:8089/stores/addStore", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
