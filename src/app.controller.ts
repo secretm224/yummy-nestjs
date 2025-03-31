@@ -24,8 +24,7 @@ export class AppController {
   getYummyMap(@Req() req: Request) {
       return {
         title: '가야할 지도',
-        //css: '<link rel="stylesheet" href="/css/yummy.css" type="text/css">',
-        error: req.query.error || null // page에 error가 있으면 error를 넘겨줌
+        error: req.query.error || null /* page에 error가 있으면 error를 넘겨줌 */ 
     };
   }
 
@@ -34,8 +33,6 @@ export class AppController {
   async registerStore(@Req() req: Request) {
     
     try {
-
-        //const storeTypes = await this.RedisService.getMajorCategories();
         const storeTypes = await this.storeTypeMajorService.findAll();
 
         console.log(storeTypes);

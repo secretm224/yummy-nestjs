@@ -74,6 +74,14 @@ async function addStore(store)
 {
     try {
 
+        // const response = await fetch("http://www.seunghwan-dev.kro.kr:18089/stores/addStore", {
+        //     method: 'POST',
+        //     headers: {
+        //         'Content-Type': 'application/json',
+        //     },
+        //     body: JSON.stringify(store),
+        // });
+
         const response = await fetch("http://www.seunghwan-dev.kro.kr:18089/stores/addStore", {
             method: 'POST',
             headers: {
