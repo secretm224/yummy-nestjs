@@ -127,7 +127,6 @@ var zeroPayStores = [{ name: "알바천국", lat: 37.5032355765545, lng: 127.046
                 if(confirm("위치를 수정하시겠습니까?") == true){
                     var lat = e.coord.y;
                     var lng = e.coord.x;
-                    //document.getElementById("markerInfo").innerHTML = `📍 ${store.name} 이동됨:<br> 위도: ${lat}<br> 경도: ${lng}`;
                     var store_json = { name: store.name, lat: lat, lng: lng, type: "store" };
 
                     updatecoords(store_json);
@@ -182,8 +181,6 @@ var zeroPayStores = [{ name: "알바천국", lat: 37.5032355765545, lng: 127.046
             anchor: N.Point(20, 20)
         };
 
-//        console.log(htmlMarker5);
-
         var clusterer = new MarkerClustering({
             minClusterSize: 1,  // 클러스터 최소 크기 2에서 1로 변경
             maxZoom: 16,  
@@ -222,37 +219,7 @@ var zeroPayStores = [{ name: "알바천국", lat: 37.5032355765545, lng: 127.046
     function selectMarker(marker, storeName) {
         marker.setZIndex(200); // 선택된 마커를 맨 위로
     }
-    
-    // function GetGeocode() {
-    //     var address = document.getElementById("storeAddress").value;
-    //     var name = document.getElementById("storeName").value;
-    //     var isBeefulPay = document.getElementById("isBeefulPay").checked;
-        
-    //     if (!address || !name) {
-    //         alert("🍕 음식점명과 주소를 입력해주세요!");
-    //         return;
-    //     }
 
-    //     naver.maps.Service.geocode({ address: address }, function(status, response) {
-    //         if (status !== naver.maps.Service.Status.OK) {
-    //             alert("주소를 찾을 수 없습니다.");
-    //             return;
-    //         }
-
-    //         var firstItem = response.result.items[0];
-    //         var lat = firstItem.point.y;
-    //         var lng = firstItem.point.x;
-    //         var address = firstItem.address;
-
-    //         if(!!lat && !!lng && !!address){
-    //             var addjson = { name: name,address:address, lat: lat, lng: lng, type: "store" , is_beefulpay: isBeefulPay};
-    //             addStore(addjson);
-    //         }else{
-    //             alert('상점을 등록 할수 없습니다.');
-    //             return;
-    //         }
-    //     });
-    // }
 
     //📏 거리 계산 함수 (Haversine Formula)
     function getDistance(lat1, lon1, lat2, lon2) {
@@ -287,15 +254,6 @@ var zeroPayStores = [{ name: "알바천국", lat: 37.5032355765545, lng: 127.046
 
         try {
             
-            /* Elasticsearch 에서 Store 데이터를 가져오는 방식 */
-            // const response = await fetch(`/search/allData`, {
-            //     method: 'GET',
-            //     headers: {
-            //         'yummy-key': 'zkflsk123',
-            //         'Content-Type': 'application/json'
-            //     }
-            // });
-            
             /* Java API Call */
             const response = await fetch(`${window.API_BASE_URL}/search/allData`, {
                 method: 'GET',
@@ -304,14 +262,10 @@ var zeroPayStores = [{ name: "알바천국", lat: 37.5032355765545, lng: 127.046
                 }
             });
 
-
-            //'yummy-key': 'zkflsk123',
-            //const response = await fetch('/store/all'); -> ORM 방식: DB 에서 가져오는 방식
             const stores = await response.json();
 
             stores.forEach(store => {
-                //const is_beefulpay = store.name === "우리집 만두" ? false : true; -> TEST CODE
-                // 비플페이 가맹점과 아닌 가맹점을 나누기 위함.
+                /* 비플페이 가맹점과 아닌 가맹점을 나누기 위함. */ 
                 zeroPayStores.push({
                     name: store.name,
                     lat: store.lat,
@@ -321,7 +275,6 @@ var zeroPayStores = [{ name: "알바천국", lat: 37.5032355765545, lng: 127.046
                 });
             });
             
-            //console.log(zeroPayStores);
             if(zeroPayStores.length <=0){
                 alert("등록된 가게가 없습니다.");
             }
@@ -334,30 +287,6 @@ var zeroPayStores = [{ name: "알바천국", lat: 37.5032355765545, lng: 127.046
             alert('Error fetching store data:', error);
         }
     }
-
-    // async function addStore(store)
-    // {
-    //     try {
-        
-    //         const response = await fetch("/store/add", {
-    //                                 method: 'POST',
-    //                                 headers: {
-    //                                     'Content-Type': 'application/json',
-    //                                 },
-    //                                 body: JSON.stringify(store),
-    //                             });
-
-    //         const result = await response.json();
-
-    //         if(!!result){
-    //             alert("🍕 음식점이 등록되었습니다.");
-    //             SetStores();
-    //         }
-
-    //     } catch (error) {
-    //         console.error('Error adding store:', error);
-    //     }
-    // }
 
 
     async function updatecoords(store)
