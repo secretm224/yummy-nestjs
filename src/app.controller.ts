@@ -32,21 +32,26 @@ export class AppController {
   @Render('registerStore') 
   async registerStore(@Req() req: Request) {
     
-    try {
-        const storeTypes = await this.storeTypeMajorService.findAll();
+    return {
+      title: '상점 등록하기', 
+      error: req.query.error || null
+    };
+    
+    // try {
+    //     // const storeTypes = await this.storeTypeMajorService.findAll();
 
-        console.log(storeTypes);
+    //     // console.log(storeTypes);
+    //     // storeTypes, /* 조회한 데이터를 템플릿에 전달 */
 
-        return {
-            title: '상점 등록하기',
-            storeTypes, /* 조회한 데이터를 템플릿에 전달 */ 
-            error: req.query.error || null
-        };
+    //     return {
+    //         title: '상점 등록하기', 
+    //         error: req.query.error || null
+    //     };
 
-    } catch(err) {
-        console.error('Error fetching store types:', err);
-        return { title: '상점 등록하기', storeTypes: [], error: '데이터를 불러올 수 없습니다.:' };
-    }
+    // } catch(err) {
+    //     console.error('Error fetching store types:', err);
+    //     return { title: '상점 등록하기', storeTypes: [], error: '데이터를 불러올 수 없습니다.:' };
+    // }
   }
 
 

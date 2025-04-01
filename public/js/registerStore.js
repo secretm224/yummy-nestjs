@@ -1,5 +1,41 @@
-document.addEventListener("DOMContentLoaded", () => {
-    console.log("🍽️ 음식점 등록 페이지 로드 완료!");
+// document.addEventListener("DOMContentLoaded", () => {
+//     console.log("🍽️ 음식점 등록 페이지 로드 완료!");
+// });
+
+
+
+document.addEventListener('DOMContentLoaded', async () => {
+    const selectElement = document.getElementById('majorTypeSelect');
+
+    try {
+        
+        /* Java 백엔드 API 호출 - 음식점 대분류 데이터 가져옴 */
+        const response = await fetch(`${window.env.api_base_url}/stores/getTypeMajor`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        /* API 응답 데이터를 JSON 형식으로 파싱 */ 
+        const majorTypes = await response.json();
+
+        /* 응답 데이터를 <select> 옵션으로 추가 */ 
+        majorTypes.forEach(data => {
+            const option = document.createElement('option');
+            option.value = data.majorType;
+            option.textContent = data.typeName;
+            selectElement.appendChild(option);
+        });
+        
+
+    } catch(err) {
+        console.error('데이터를 불러오는 중 오류 발생:', error);
+    }
 });
 
 /**
@@ -106,7 +142,7 @@ async function selectMajorType(majorType)
 
     try {
 
-        const response = await fetch(`/storeTypeSub/findSubTypes?majorType=${majorType}`, {
+        const response = await fetch(`${window.env.api_base_url}/stores/getTypeSub?majorType=${majorType}`, {
                             method: 'GET',
                             headers: {
                                 'Content-Type': 'application/json'

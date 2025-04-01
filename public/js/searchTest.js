@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     try {
         
         /* Java 백엔드 API 호출 - 전체 시/도 가져옴 */
-        const response = await fetch('http://localhost:8089/location/county', {
+        const response = await fetch(`${window.env.api_base_url}/location/county`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
@@ -55,7 +55,7 @@ const SearchManager = {
         try {
 
             /* JAVA REST-API */
-            const response = await fetch(`http://localhost:8089/search/totalSearch?searchText=${searchValue}&selectMajor=${selectMajor}&selectSub=${selectSub}&zeroPossible=${zeroPayYn}`, {
+            const response = await fetch(`${window.env.api_base_url}/search/totalSearch?searchText=${searchValue}&selectMajor=${selectMajor}&selectSub=${selectSub}&zeroPossible=${zeroPayYn}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json'
@@ -194,7 +194,7 @@ async function selectCounty(county) {
 
     try {
 
-        const response = await fetch(`http://localhost:8089/location/city?countySeq=${county}`, {
+        const response = await fetch(`${window.env.api_base_url}/location/city?countySeq=${county}`, {
                             method: 'GET',
                             headers: {
                                 'Content-Type': 'application/json'
