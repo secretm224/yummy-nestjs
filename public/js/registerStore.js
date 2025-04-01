@@ -74,7 +74,7 @@ async function addStore(store)
 {
     try {
         
-        const response = await fetch("${window.API_BASE_URL}/stores/addStore", {
+        const response = await fetch(`${window.env.api_base_url}/stores/addStore`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

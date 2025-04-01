@@ -56,7 +56,7 @@ async function bootstrap() {
 
 		/* API url 을 전역적으로 사용하기 위함. */
 		res.locals.kakao_redirect_uri = process.env.KAKAO_REDIRECT_URL;
-		res.locals.apiBaseUrl = process.env.FRONT_API_BASE_URL;
+		res.locals.api_base_url = process.env.FRONT_API_BASE_URL;
 		next();
 	});
 
