@@ -1,9 +1,3 @@
-// document.addEventListener("DOMContentLoaded", () => {
-//     console.log("🍽️ 음식점 등록 페이지 로드 완료!");
-// });
-
-
-
 document.addEventListener('DOMContentLoaded', async () => {
     const selectElement = document.getElementById('majorTypeSelect');
 

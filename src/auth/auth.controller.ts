@@ -22,7 +22,7 @@ export class AuthController {
 
     
     @Post('kakao/callback')
-     async GetKaKaoAuthCode(@Body("code") code:string, @Res() res:Response, @Req() req:Request){
+    async GetKaKaoAuthCode(@Body("code") code:string, @Res() res:Response, @Req() req:Request){
         const logMessage: any = {
                                     log_type: "auth",
                                     log_channel: "kakao",
@@ -33,8 +33,10 @@ export class AuthController {
         await this.kafka_service.sendMessage('yummy-store',logMessage);
 
        if(!!code){
+            
+            /* 카카오 로그인을 통한 code 를 통해서 토큰을 가져와준다. */
             const kakao_token = await this.auth_service.GetKaKaoToken(code);
-           // console.log('kakao kakao_token = '+kakao_token);
+           
             const token_logMessage: any = {
                                         log_type: "auth",
                                         log_channel: "kakao",
@@ -50,6 +52,7 @@ export class AuthController {
             const accessTokenKey = `access_token:${uuidv4()}`;
             const refreshTokenKey = `refresh_token:${uuidv4()}`;
 
+            /* 코드를 통해서 토큰을 받아온다면 Redis에 저장해준다. */
             if (accessTokenKey && access_token ) {
                 await this.redisService.setValue(accessTokenKey,access_token);
             }
@@ -58,7 +61,7 @@ export class AuthController {
                 await this.redisService.setValue(refreshTokenKey,refresh_token);
             }
 
-
+            /* access token 을 쿠키에 저장해준다. */
             if(!!accessTokenKey){
                 res.cookie('accessTokenKey',accessTokenKey,
                                                         {
@@ -69,7 +72,7 @@ export class AuthController {
             }
 
             //await this.redisService.setValue("",access_token);
-
+            /* refresh token 을 쿠키에 저장해준다. */
             if(!!refreshTokenKey){
                 res.cookie('refreshTokenKey',refreshTokenKey,
                                                          {

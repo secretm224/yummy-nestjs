@@ -1,87 +1,99 @@
-
-
 function loginWithKakao() {
+    
+    /* 로그인 페이지로 리다이렉팅 해준다. */
     Kakao.Auth.authorize({
        prompt: 'select_account',
        redirectUri: window.env.kakao_redirect_uri,
     });
-  }
-
-  window.onload = function(){
     
-    //   Kakao.init('4a2a51c4104deceb54f805eb34bc4f3d'); // 사용하려는 앱의 JavaScript 키 입력
+}
+
+/* 바로 시작되는 함수 */ 
+window.onload = function(){
+
+    // Kakao.init('4a2a51c4104deceb54f805eb34bc4f3d'); // 사용하려는 앱의 JavaScript 키 입력
+    /* 화면 사이즈 조정 */
     updateBodyPadding();
-
-      const param_code = GetLoginCode();
-      if(!!param_code){
-          KaKaoLogin(param_code);
-      }else{
-          GetKakoUserInfoByAccessToken();
-      }
-  }
-
-  function updateBodyPadding() {
-        const body = document.body;
-        const width = window.innerWidth;
-
-        if (width <= 480) {
-            // 작은 모바일
-            body.style.paddingTop = '80px';
-            body.style.paddingBottom = '190px';
-        } 
-        // else if (width <= 768) {
-        //     // 작은 태블릿 및 큰 모바일
-        //     body.style.paddingTop = '60px';
-        //     body.style.paddingBottom = '100px';
-        // } else if (width <= 1024) {
-        //     // 태블릿
-        //     body.style.paddingTop = '80px';
-        //     body.style.paddingBottom = '120px';
-        // } else if (width <= 1440) {
-        //     // 데스크탑
-        //     body.style.paddingTop = '90px';
-        //     body.style.paddingBottom = '160px';
-        // } else {
-        //     // 큰 해상도 (기본값)
-        //     body.style.paddingTop = '100px';
-        //     body.style.paddingBottom = '200px';
-        // }
+    
+    /* 카카오 로그인을 한 후 uri 값 */
+    const param_code = GetLoginCode();
+    
+    if (!!param_code) {
+        /* param_code 의 값이 존재하는 경우 */
+        KaKaoLogin(param_code);
+    } else {
+        /* param_code 의 값이 존재하지 않는 경우 */
+        GetKakoUserInfoByAccessToken();
     }
+}
+
+function updateBodyPadding() {
+    const body = document.body;
+    const width = window.innerWidth;
+
+    if (width <= 480) {
+        // 작은 모바일
+        body.style.paddingTop = '80px';
+        body.style.paddingBottom = '190px';
+    } 
+    // else if (width <= 768) {
+    //     // 작은 태블릿 및 큰 모바일
+    //     body.style.paddingTop = '60px';
+    //     body.style.paddingBottom = '100px';
+    // } else if (width <= 1024) {
+    //     // 태블릿
+    //     body.style.paddingTop = '80px';
+    //     body.style.paddingBottom = '120px';
+    // } else if (width <= 1440) {
+    //     // 데스크탑
+    //     body.style.paddingTop = '90px';
+    //     body.style.paddingBottom = '160px';
+    // } else {
+    //     // 큰 해상도 (기본값)
+    //     body.style.paddingTop = '100px';
+    //     body.style.paddingBottom = '200px';
+    // }
+}
 
 
-  function GetLoginCode(){
-      const parm = new URLSearchParams(window.location.search);
-      const code = parm.get('code');
-      return code;
-  }
+function GetLoginCode(){
 
-  async function KaKaoLogin(code){
-      const response = await fetch('/auth/kakao/callback',
-                                  {
-                                      method:'POST',
-                                      headers:{'Content-Type':'application/json'},
-                                      body:JSON.stringify({code:code}),
-                                      credentials: 'include' // 쿠키 설정을 하기 위함
-                                  });
+    /* 
+        카카오 로그인 redirect uri 에서 code 값을 가져온다.
+        카카오측에서 로그인에 성공하면 code 가 포함된 uri 를 넘겨줌 
+        param: code=xxxxxxxxxxxx -> 이런형식 그래서 code 값만 가져와서 봐야한다.
+    */
+    const param = new URLSearchParams(window.location.search);
+    const code = param.get('code');
+    return code;
+}
 
-      const tokens = await response.json();
 
-      if(!!tokens){
-          const access_token = tokens.kakao_access_token;
-          //const userinfo = tokens.kakao_payload;
-//                
-          if(!!access_token){
-           Kakao.Auth.setAccessToken(access_token);
-            //   document.getElementById("login-container").style.display = 'none';
-            //   document.getElementById("profile-image").src = userinfo.picture;
-            //   document.getElementById("nickname").innerText = userinfo.nickname +"님 안녕하세요";
-            //   document.getElementById("success-container").style.display = 'block';
+async function KaKaoLogin(code){
+
+    /* JAVA API 호출 */
+    const response = await fetch(`${window.env.api_base_url}/login/kakao/callback`,
+                        {
+                            method:'POST',
+                            headers:{'Content-Type':'application/json'},
+                            body:JSON.stringify({code:code}),
+                            credentials: 'include' /* 쿠키 설정을 하기 위함 */ 
+                        });
+                        
+    const tokens = await response.json();
+
+    if(!!tokens){
+        const access_token = tokens.kakao_access_token;
+        
+        if(!!access_token){
+            Kakao.Auth.setAccessToken(access_token);            
+            /* /login 으로 리다이렉션 */
             window.location.href = "/login";
-          }
-      }else{
-          alert('로그인 실패 다시 시도해주세요');
-      }
-  }
+        }
+    }else{
+        alert('로그인 실패 다시 시도해주세요');
+    }
+}
 
   //error 확인
   //서비스 함수 호출해서 쿠키 날려줘야 한다.
@@ -131,37 +143,41 @@ function loginWithKakao() {
       else return false;
   }
 
-  async function GetKakoUserInfoByAccessToken()
-  {
-    const session_res = await fetch('/auth/session'); // 📌 현재 로그인한 사용자 정보 가져오기
+
+async function GetKakoUserInfoByAccessToken() {
+    
+    const session_res = await fetch('/auth/session'); /* 📌 현재 로그인한 사용자 정보 가져오기 */ 
     const user = await session_res.json();
 
     if (user && user.error_code === '999'){
+        /* === 로그인 상태가 아니라면 === */
         let access_token = Kakao.Auth.getAccessToken();
+
         //if(!!access_token){
-          const url ='/auth/kakao/userinfo';
-          const response = await fetch(url,
-                                      {
-                                          method:'POST',
-                                          headers:{'Content-Type':'application/json'},
-                                          body:JSON.stringify({access_token:access_token}),
-                                          credentials: 'include'
-                                      });
-  
-          const token_data = await response.json();     
-          const new_access_token = token_data.kakao_access_token;
-          //const userinfo = token_data.kakao_payload;    
-  
-          if(new_access_token){
-              Kakao.Auth.setAccessToken(new_access_token);  
-              //localStorage.setItem('accessToken', new_access_token);
-          }
+            const url ='/auth/kakao/userinfo';
+            const response = await fetch(url,
+                                        {
+                                            method:'POST',
+                                            headers:{'Content-Type':'application/json'},
+                                            body:JSON.stringify({access_token:access_token}),
+                                            credentials: 'include'
+                                        });
             
-            setTimeout(() => {
-                 window.location.href = "/login";
-          }, 500);
+            const token_data = await response.json();     
+            const new_access_token = token_data.kakao_access_token;
+            //const userinfo = token_data.kakao_payload;    
+
+            if(new_access_token){
+                Kakao.Auth.setAccessToken(new_access_token);  
+                //localStorage.setItem('accessToken', new_access_token);
+            }
+            
+            // 테스트를 위해 잠시 제거
+            // setTimeout(() => {
+            //         window.location.href = "/login";
+            // }, 500);
     }
-  }
+}
 
   async function RegisterAddress(){
 

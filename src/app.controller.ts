@@ -36,29 +36,13 @@ export class AppController {
       title: '상점 등록하기', 
       error: req.query.error || null
     };
-    
-    // try {
-    //     // const storeTypes = await this.storeTypeMajorService.findAll();
-
-    //     // console.log(storeTypes);
-    //     // storeTypes, /* 조회한 데이터를 템플릿에 전달 */
-
-    //     return {
-    //         title: '상점 등록하기', 
-    //         error: req.query.error || null
-    //     };
-
-    // } catch(err) {
-    //     console.error('Error fetching store types:', err);
-    //     return { title: '상점 등록하기', storeTypes: [], error: '데이터를 불러올 수 없습니다.:' };
-    // }
   }
-
-
+  
   @Get('login')
   @Render('login') 
   loginPage(@Req() req: Request) {
-      return {
+      
+    return {
           title: '로그인 - YummyMap',
           css: '<link rel="stylesheet" href="/css/login.css">',
           error: req.query.error || null // page에 error가 있으면 error를 넘겨줌
