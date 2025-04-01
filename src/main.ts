@@ -10,6 +10,7 @@ import * as passport from 'passport';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { expressMiddleware } from '@apollo/server/express4';
 import express from 'express';
+import { createProxyMiddleware } from 'http-proxy-middleware';
 
 async function bootstrap() {
 	const app = await NestFactory.create<NestExpressApplication>(AppModule);
@@ -29,6 +30,16 @@ async function bootstrap() {
 	app.set('layout extractScripts', true); // <%- script %> 태그 사용 가능
 	app.set('layout extractStyles', true); // <%- style %> 태그 사용 가능
 	
+	/* 프록시 설정 추가 */
+	app.use(
+		'/api',
+		createProxyMiddleware({
+		  target: process.env.FRONT_API_BASE_URL, // Spring Boot 백엔드 주소
+		  changeOrigin: true,
+		  pathRewrite: { '^/api': '' },
+		}),
+	  );
+
 	app.use(
 		session(
 			{

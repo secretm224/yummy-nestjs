@@ -72,7 +72,15 @@ function GetLoginCode(){
 async function KaKaoLogin(code){
 
     /* JAVA API 호출 */
-    const response = await fetch(`${window.env.api_base_url}/login/kakao/callback`,
+    // const response = await fetch(`/auth/kakao/callback`,
+    //     {
+    //         method:'POST',
+    //         headers:{'Content-Type':'application/json'},
+    //         body:JSON.stringify({code:code}),
+    //         credentials: 'include' /* 쿠키 설정을 하기 위함 */ 
+    //     });
+
+    const response = await fetch(`/api/login/kakao/callback`,
                         {
                             method:'POST',
                             headers:{'Content-Type':'application/json'},
@@ -95,36 +103,35 @@ async function KaKaoLogin(code){
     }
 }
 
-  //error 확인
-  //서비스 함수 호출해서 쿠키 날려줘야 한다.
-  async function KaKaoLogout(){
-      Kakao.Auth.logout().then(function(response){
-          
-          if(!Kakao.Auth.getAccessToken()){
-              alert('로그아웃 되었습니다.');
-              document.getElementById("success-container").style.display = 'none';
-              document.getElementById("nickname").innerText ="";
-              document.getElementById("profile-image").src = "";
-              document.getElementById("login-container").style.display = 'block';
 
-              const url ='/auth/logout';
-              const response =  fetch(url,
-                                            {
-                                                method:'POST',
-                                                headers:{'Content-Type':'application/json'},
-                                                credentials: 'include'
-                                            });
-                                            
+//서비스 함수 호출해서 쿠키 날려줘야 한다.
+async function KaKaoLogout(){
+    Kakao.Auth.logout().then(function(response){
+        
+        if(!Kakao.Auth.getAccessToken()){
+            alert('로그아웃 되었습니다.');
+            document.getElementById("success-container").style.display = 'none';
+            document.getElementById("nickname").innerText ="";
+            document.getElementById("profile-image").src = "";
+            document.getElementById("login-container").style.display = 'block';
+            
+            const response =  fetch(`${window.env.api_base_url}/auth/logout`,
+                                        {
+                                            method:'POST',
+                                            headers:{'Content-Type':'application/json'},
+                                            credentials: 'include'
+                                        }
+                                    );                        
             setTimeout(() => {
                 window.location.href = "/login";
             }, 500);
-          }
-      })
-      .catch(function(err){
-          console.log('exception'+err);
-          alert('로그아웃 실패하였습니다.');
-      });
-   }
+        }
+    })
+    .catch(function(err){
+        console.log('exception'+err);
+        alert('로그아웃 실패하였습니다.');
+    });
+}
 
   function IsKakaoToken(){
       const access_token = Kakao.Auth.getAccessToken();
@@ -152,7 +159,7 @@ async function GetKakoUserInfoByAccessToken() {
     if (user && user.error_code === '999'){
         /* === 로그인 상태가 아니라면 === */
         let access_token = Kakao.Auth.getAccessToken();
-
+        
         //if(!!access_token){
             const url ='/auth/kakao/userinfo';
             const response = await fetch(url,

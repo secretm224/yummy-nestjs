@@ -45,6 +45,7 @@
     "express-session": "^1.18.1",
     "graphql": "^16.10.0",
     "graphql-type-json": "^0.3.2",
+    "http-proxy-middleware": "^3.0.3",
     "ioredis": "^5.5.0",
     "jsonwebtoken": "^9.0.2",
     "kafkajs": "^2.2.4",
