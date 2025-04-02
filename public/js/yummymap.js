@@ -251,9 +251,9 @@ var zeroPayStores = [{ name: "알바천국", lat: 37.5032355765545, lng: 127.046
          }
 
         zeroPayStores = [{ name: "알바천국", lat: laty, lng: lngx, type: "company" }];
-
+        
         try {
-
+            
             /* Java API Call */
             const response = await fetch(`${window.env.api_base_url}/search/allData`, {
                 method: 'GET',

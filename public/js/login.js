@@ -72,15 +72,7 @@ function GetLoginCode(){
 async function KaKaoLogin(code){
 
     /* JAVA API 호출 */
-    // const response = await fetch(`/auth/kakao/callback`,
-    //     {
-    //         method:'POST',
-    //         headers:{'Content-Type':'application/json'},
-    //         body:JSON.stringify({code:code}),
-    //         credentials: 'include' /* 쿠키 설정을 하기 위함 */ 
-    //     });
-
-    const response = await fetch(`/api/login/kakao/callback`,
+    const response = await fetch(`${window.env.api_base_url}/login/kakao/callback`,
                         {
                             method:'POST',
                             headers:{'Content-Type':'application/json'},
