@@ -8,10 +8,8 @@ function loginWithKakao() {
     
 }
 
-/* 바로 시작되는 함수 */ 
+/* 로그인 관련 -> 바로 시작되는 함수 */ 
 window.onload = function(){
-
-    // Kakao.init('4a2a51c4104deceb54f805eb34bc4f3d'); // 사용하려는 앱의 JavaScript 키 입력
     /* 화면 사이즈 조정 */
     updateBodyPadding();
     
@@ -65,6 +63,9 @@ function GetLoginCode(){
     */
     const param = new URLSearchParams(window.location.search);
     const code = param.get('code');
+
+    alert(`code: ${code}`);
+
     return code;
 }
 
@@ -79,20 +80,23 @@ async function KaKaoLogin(code){
                             body:JSON.stringify({code:code}),
                             credentials: 'include' /* 쿠키 설정을 하기 위함 */ 
                         });
-                        
-    const tokens = await response.json();
+    
+    console.log(response);
 
-    if(!!tokens){
-        const access_token = tokens.kakao_access_token;
+    /* 토큰 호출 */
+    // const tokens = await response.json();
+
+    // if(!!tokens) {
+    //     const access_token = tokens.kakao_access_token;
         
-        if(!!access_token){
-            Kakao.Auth.setAccessToken(access_token);            
-            /* /login 으로 리다이렉션 */
-            window.location.href = "/login";
-        }
-    }else{
-        alert('로그인 실패 다시 시도해주세요');
-    }
+    //     if(!!access_token){
+    //         Kakao.Auth.setAccessToken(access_token);            
+    //         /* /login 으로 리다이렉션 */
+    //         window.location.href = "/login";
+    //     }
+    // }else{
+    //     alert('로그인 실패 다시 시도해주세요');
+    // }
 }
 
 
@@ -145,37 +149,61 @@ async function KaKaoLogout(){
 
 async function GetKakoUserInfoByAccessToken() {
     
-    const session_res = await fetch('/auth/session'); /* 📌 현재 로그인한 사용자 정보 가져오기 */ 
-    const user = await session_res.json();
+    const resp = await fetch(`${window.env.api_base_url}/login/kakao/test`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include'
+                });
+    
+    /* access_token이 존재하는지 체크 */
+    //let access_token = Kakao.Auth.getAccessToken();
+    
+    //alert(`!!!access_token: ${access_token}`);
 
-    if (user && user.error_code === '999'){
-        /* === 로그인 상태가 아니라면 === */
-        let access_token = Kakao.Auth.getAccessToken();
+    // if (!access_token) {
+    //     /* access_token 이 없으면 access_token(http-only cookie) 를 백엔드에 넘겨서 직접 확인시킨다. */
+    //     const resp = await fetch(`${window.env.api_base_url}/login/kakao/test`, {
+    //         method: 'POST',
+    //         headers: { 'Content-Type': 'application/json' },
+    //         body:JSON.stringify({access_token:access_token}),
+    //         credentials: 'include'
+    //     });
         
-        //if(!!access_token){
-            const url ='/auth/kakao/userinfo';
-            const response = await fetch(url,
-                                        {
-                                            method:'POST',
-                                            headers:{'Content-Type':'application/json'},
-                                            body:JSON.stringify({access_token:access_token}),
-                                            credentials: 'include'
-                                        });
-            
-            const token_data = await response.json();     
-            const new_access_token = token_data.kakao_access_token;
-            //const userinfo = token_data.kakao_payload;    
+    // }
 
-            if(new_access_token){
-                Kakao.Auth.setAccessToken(new_access_token);  
-                //localStorage.setItem('accessToken', new_access_token);
-            }
+    //alert(`access_token: ${access_token}`);
+    
+
+    /* 테스트를 위해 잠시 제거 */
+    //const session_res = await fetch('/auth/session'); /* 📌 현재 로그인한 사용자 정보 가져오기 */ 
+    //const user = await session_res.json();
+    // if (user && user.error_code === '999') {
+    //     /* === 로그인 상태가 아니라면 === */
+    //     let access_token = Kakao.Auth.getAccessToken();
+        
+    //     //if(!!access_token){
+    //         const url ='/auth/kakao/userinfo';
+    //         const response = await fetch(url,
+    //                                     {
+    //                                         method:'POST',
+    //                                         headers:{'Content-Type':'application/json'},
+    //                                         body:JSON.stringify({access_token:access_token}),
+    //                                         credentials: 'include'
+    //                                     });
             
-            // 테스트를 위해 잠시 제거
-            // setTimeout(() => {
-            //         window.location.href = "/login";
-            // }, 500);
-    }
+    //         const token_data = await response.json();     
+    //         const new_access_token = token_data.kakao_access_token;
+    //         //const userinfo = token_data.kakao_payload;    
+
+    //         if(new_access_token){
+    //             Kakao.Auth.setAccessToken(new_access_token);  
+    //             //localStorage.setItem('accessToken', new_access_token);
+    //         }
+            
+    //         setTimeout(() => {
+    //                 window.location.href = "/login";
+    //         }, 500);
+    // }
 }
 
   async function RegisterAddress(){
