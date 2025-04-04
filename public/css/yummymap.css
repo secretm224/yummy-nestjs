@@ -341,3 +341,21 @@ footer {
         font-size: 12px;
     }
 }
+/* ✅ 벚꽃 봄? 버튼 스타일 */
+.cherry-button {
+    padding: 12px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    color: white;
+    background-color: #FFB6C1; /* 벚꽃 핑크 */
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.3);
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.cherry-button:hover {
+    background-color: #FF69B4; /* 호버 시 더 진한 핑크 */
+}
