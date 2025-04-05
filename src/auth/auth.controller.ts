@@ -171,7 +171,7 @@ export class AuthController {
                         token_id:userinfo?.token_id,
                         detail:[]
                     };
-
+                    
                     const token_id = userinfo?.token_id??"";
                     const user_detail = await this.auth_service.GetUserDetailInfo('kakao',token_id);
 
