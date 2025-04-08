@@ -421,7 +421,8 @@ var zeroPayStores = [{ name: "알바천국", lat: 37.5032355765545, lng: 127.046
 
         // const kakaoRouteUrl = `kakaomap://route?ep=${laty},${lngx}&by=traffic`;
         //const fallbackWebUrl = `https://map.kakao.com/link/to/${encodeURIComponent(placeName)},${laty},${lngx}`;
-        const fallbackWebUrl = `https://map.kakao.com/?eName=${encodeURIComponent(placeName)}&eX=${lngx}&eY=${laty}&by=PUBLICTRANSIT`;
+        //const fallbackWebUrl = `https://map.kakao.com/?eName=${encodeURIComponent(placeName)}&eX=${lngx}&eY=${laty}&publicRoute=traffic`;
+        const fallbackWebUrl = `https://m.map.kakao.com/actions/routeView?ex=${laty}&ey=${lngx}&endLoc=${encodeURIComponent(placeName)}&publicRoute=traffic`
 
         // const iframe = document.createElement('iframe');
         // iframe.style.display = 'none';
