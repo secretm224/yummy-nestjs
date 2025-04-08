@@ -414,10 +414,8 @@ var zeroPayStores = [{ name: "알바천국", lat: 37.5032355765545, lng: 127.046
     }
 
     function MAPTEST() {
-
-        	
-        var lngx = 127.0521827;
-        var laty = 37.5042365;
+        var lngx = 127.0307078;
+        var laty = 37.5770942;
         var placeName = "알바천국";
 
         // const kakaoRouteUrl = `kakaomap://route?ep=${laty},${lngx}&by=traffic`;
