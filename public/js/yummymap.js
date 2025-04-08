@@ -421,10 +421,10 @@ var zeroPayStores = [{ name: "알바천국", lat: 37.5032355765545, lng: 127.046
 
         const kakaoRouteUrl = `kakaomap://route?ep=${laty},${lngx}&by=CAR`;
         const naverRouteUrl = `nmap://route/car?dlat=${laty}&dlng=${lngx}&dname=${encodeURIComponent(placeName)}`;
-        const fallbackWebUrl = `https://map.kakao.com/link/to/${encodeURIComponent(placeName)},${laty},${lngx}`;
+        const fallbackWebUrl = `https://map.naver.com/p/directions/-/-/${lat},${lng},${encodeURIComponent(placeName)}`;
       
-        const now = new Date().getTime();
-        location.href = kakaoRouteUrl;
+        // const now = new Date().getTime();
+        // location.href = kakaoRouteUrl;
       
         setTimeout(() => {
           if (new Date().getTime() - now < 2000) {
