@@ -74,7 +74,7 @@
             </div>
           </div>
         <% } %>
-
+        
         <div id="layer" style="display:none;position:fixed;overflow:hidden;z-index:1;-webkit-overflow-scrolling:touch;">
           <img src="//t1.daumcdn.net/postcode/resource/images/close.png" id="btnCloseLayer" style="cursor:pointer;position:absolute;right:-3px;top:-3px;z-index:1" onclick="SearchLayerToggle()" alt="닫기 버튼">
       </div>
@@ -84,10 +84,23 @@
     <div class="login-container" id="login-container" >
         <h1>로그인하기</h1>
         <p>로그인하여 다양한 기능을 사용하세요.</p>
-        <a class="kakao-login" onclick="loginWithKakao();">
+        <a class="oauth-login" id="oauth-kakao" onclick="loginWithKakao();">
             <img src="https://upload.wikimedia.org/wikipedia/commons/e/e3/KakaoTalk_logo.svg" alt="KakaoTalk Logo">
             카카오톡으로 로그인
         </a>
+        <a class="oauth-login" id="oauth-naver" onclick="loginWithNaver();">
+          <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y+mAAAASFBMVEVHcEwD0mcE62cE6GcE7mcE7GcF7GcE4mdd4pE82H4C2mX////g9+rR9OCd57sC0mYCymVd0Y8Cw2UixnACvWYCuWYCt2YCuGa1Zq98AAAAGHRSTlMAS7X//73A//////////////////+1/78LKXJJAAAA0UlEQVR4AXWJhRHAQBACibtb/52GP+KyLzAsiOcH4YPA92BETyNikDj4IgyCCPDU9O9FePCDncTuBR/JlUCxI/nkKdM0zSzJIfPETlqQjKVkptuIXJgsWSqT4iJJ/ZBNbkeyyBpJrWj4k02Wkg3hDIakqCUFFK2TVV2Ibpdt407TOdmWkqnGFq2QzCQ7bQ/Z1/+yb/vyJnvhZMkcTPZil0PXddnIkrEMD9mPREF2ySr6oxwV0/jLBG9Wm3n0H9UDltkYFZe+ALIP5AxveqvJo1gBuZAlPbYzv2wAAAAASUVORK5CYII=" alt="KakaoTalk Logo">
+          네이버로 로그인
+        </a>
+        <a class="oauth-login" id="oauth-telegram" onclick="loginWithTelgram();">
+          <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y+mAAAAY1BMVEX////8/f+41Pd7sfFFmO0gius9le1zrfCuzvby9/2QvPMTh+srjewzkOwykOwMhuvV5frB2figxvW20vfq8v1np/A4kuzv9f3i7fxtqvDO4fmWwPRQne7L3/kAguqGt/Ld6/s4puGjAAAA/0lEQVR4AayRhQ5DMQhFeVKFls5d/v8rt9I1YRLfjcLBgT9oGKfZGOt8+EYRDaWcExmePnAhk1MX4ajZgpNW5qXKY0lT4lVnA1X7I3cNTdEkJYNY+25eiahn2S53u0p5L3DsiZn4cAQAgXQSOFFjxpx2AAGgmBp5FjhnqWd9beGOvRQKrOvjptaDCxcAOJHA8IJmbA2uMoVT0D4b5Ntlt8i0g+YQCD0wk0GDd7EHFmjF8H0V2kilO4oRBQZOndbefdgCatGqjIcBbtWkMzQFfT9qs3L59c4sDNVDlx8PxQmURlY/Ja55SusNU24Iz3f41P4041M2FvitEB4jPp0DAHyFFi4xND68AAAAAElFTkSuQmCC" alt="KakaoTalk Logo">
+          텔레그램으로 로그인
+        </a>
+        <a class="oauth-login" id="oauth-google" onclick="loginWithGoogle();">
+          <img src="https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png" alt="KakaoTalk Logo" style="width: 70px;">
+          구글로 로그인
+        </a>
+
     </div>
 <% } %>
 

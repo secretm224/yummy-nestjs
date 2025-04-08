@@ -22,12 +22,11 @@ body {
     margin-top: 100px; /* ✅ 헤더 높이만큼 내려오기 */
 }
 
-/* ✅ 카카오 로그인 버튼 스타일 */
-.kakao-login {
+/* ✅ oauth 로그인 버튼 스타일 */
+.oauth-login {
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: #FEE500;
     padding: 12px;
     border-radius: 8px;
     border: none;
@@ -38,18 +37,38 @@ body {
     font-size: 16px;
     font-weight: bold;
     color: #3C1E1E;
+    margin-top: 4px;
 }
 
-.kakao-login img {
+.oauth-login img {
     width: 24px;
     height: 24px;
     margin-right: 10px;
 }
 
-.kakao-login:hover {
-    background-color: #E6D400;
+
+#oauth-kakao:hover {
+    background-color: #FFE812;
     transform: scale(1.05);
 }
+
+#oauth-naver:hover {
+    background-color: #04EB67;
+    transform: scale(1.05);
+}
+#oauth-telegram:hover {
+    background-color: #3390EC;
+    transform: scale(1.05);
+}
+
+#oauth-google:hover {
+    background-color: #F6AEA3;
+    transform: scale(1.05);
+}
+
+
+
+
 .success-container {
     background-color: #FFFAF0;
     padding: 20px;

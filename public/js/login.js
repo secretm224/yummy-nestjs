@@ -1,3 +1,6 @@
+
+
+/* 카카오 로그인 */
 function loginWithKakao() {
     
     /* 로그인 페이지로 리다이렉팅 해준다. */
@@ -5,11 +8,29 @@ function loginWithKakao() {
        prompt: 'select_account',
        redirectUri: window.env.kakao_redirect_uri,
     });
-    
 }
+
+/* 네이버 로그인 */
+function loginWithNaver() {
+    alert("현재 서비스 준비중입니다.")
+}
+
+/* Telegram 로그인 */
+function loginWithTelgram() {
+    alert("현재 서비스 준비중입니다.")
+}
+
+/* Google 로그인 */
+function loginWithGoogle() {
+    alert("현재 서비스 준비중입니다.")
+}
+
 
 /* 로그인 관련 -> 바로 시작되는 함수 */ 
 window.onload = function(){
+    /* 로그인을 확인해준다 */
+    
+
     /* 화면 사이즈 조정 */
     updateBodyPadding();
     
@@ -23,6 +44,11 @@ window.onload = function(){
         /* param_code 의 값이 존재하지 않는 경우 */
         GetKakoUserInfoByAccessToken();
     }
+}
+
+
+function loginCheck() {
+    
 }
 
 function updateBodyPadding() {
@@ -64,7 +90,7 @@ function GetLoginCode(){
     const param = new URLSearchParams(window.location.search);
     const code = param.get('code');
 
-    alert(`code: ${code}`);
+    // alert(`code: ${code}`);
 
     return code;
 }
@@ -149,11 +175,14 @@ async function KaKaoLogout(){
 
 async function GetKakoUserInfoByAccessToken() {
     
-    const resp = await fetch(`${window.env.api_base_url}/login/kakao/test`, {
+    const resp = await fetch(`${window.env.api_base_url}/login/auth/callback`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     credentials: 'include'
                 });
+    
+    const res = await resp.json();
+    console.log(res);
     
     /* access_token이 존재하는지 체크 */
     //let access_token = Kakao.Auth.getAccessToken();
