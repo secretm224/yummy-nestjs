@@ -413,26 +413,26 @@ var zeroPayStores = [{ name: "알바천국", lat: 37.5032355765545, lng: 127.046
         window.open('https://map.naver.com/p/search/%EB%B2%9A%EA%BD%83%EB%AA%85%EC%86%8C%20%EA%B0%80%EB%B3%BC%20%EB%A7%8C%ED%95%9C%20%EA%B3%B3?c=6.00,0,0,0,dh');
     }
 
-    function MAPTEST() {
-        var lngx = 127.0307078;
-        var laty = 37.5770942;
-        var placeName = "알바천국";
+//     function MAPTEST() {
+//         var lngx = 127.0307078;
+//         var laty = 37.5770942;
+//         var placeName = "알바천국";
 
-        // const kakaoRouteUrl = `kakaomap://route?ep=${laty},${lngx}&by=traffic`;
-        //const fallbackWebUrl = `https://map.kakao.com/link/to/${encodeURIComponent(placeName)},${laty},${lngx}`;
-        //const fallbackWebUrl = `https://map.kakao.com/?eName=${encodeURIComponent(placeName)}&eX=${lngx}&eY=${laty}&publicRoute=traffic`;
-//       const fallbackWebUrl = `https://m.map.kakao.com/actions/routeView?ex=${lngx}&ey=${laty}&endLoc=${encodeURIComponent(placeName)}`;
-//       const fallbackWebUrl = `https://m.map.kakao.com/actions/routeView?ex=489977.9335627913&ey=1106931.5295333276&endLoc=${encodeURIComponent(placeName)}&publicRoute=traffic`;
-        const fallbackWebUrl = `https://map.kakao.com/?eName=${encodeURIComponent(placeName)}&eX=${lngx}&eY=${laty}&by=PUBLICTRANSIT`;
+//         // const kakaoRouteUrl = `kakaomap://route?ep=${laty},${lngx}&by=traffic`;
+//         //const fallbackWebUrl = `https://map.kakao.com/link/to/${encodeURIComponent(placeName)},${laty},${lngx}`;
+//         //const fallbackWebUrl = `https://map.kakao.com/?eName=${encodeURIComponent(placeName)}&eX=${lngx}&eY=${laty}&publicRoute=traffic`;
+// //       const fallbackWebUrl = `https://m.map.kakao.com/actions/routeView?ex=${lngx}&ey=${laty}&endLoc=${encodeURIComponent(placeName)}`;
+// //       const fallbackWebUrl = `https://m.map.kakao.com/actions/routeView?ex=489977.9335627913&ey=1106931.5295333276&endLoc=${encodeURIComponent(placeName)}&publicRoute=traffic`;
+//         const fallbackWebUrl = `https://map.kakao.com/?eName=${encodeURIComponent(placeName)}&eX=${lngx}&eY=${laty}&by=PUBLICTRANSIT`;
 
-        // const iframe = document.createElement('iframe');
-        // iframe.style.display = 'none';
-        // iframe.src = kakaoRouteUrl;
-        // document.body.appendChild(iframe);
+//         // const iframe = document.createElement('iframe');
+//         // iframe.style.display = 'none';
+//         // iframe.src = kakaoRouteUrl;
+//         // document.body.appendChild(iframe);
   
-        // setTimeout(() => {
-          window.open(fallbackWebUrl, '_blank');
-        // }, 1500);
-      }
+//         // setTimeout(() => {
+//           window.open(fallbackWebUrl);
+//         // }, 1500);
+//       }
 
     
