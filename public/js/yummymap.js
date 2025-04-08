@@ -413,4 +413,31 @@ var zeroPayStores = [{ name: "알바천국", lat: 37.5032355765545, lng: 127.046
         window.open('https://map.naver.com/p/search/%EB%B2%9A%EA%BD%83%EB%AA%85%EC%86%8C%20%EA%B0%80%EB%B3%BC%20%EB%A7%8C%ED%95%9C%20%EA%B3%B3?c=6.00,0,0,0,dh');
     }
 
+    function MAPTEST() {
+
+        var lngx = 127.048942471228;
+        var laty = 37.5045028775835;
+        var placeName = "알바천국";
+
+        const kakaoRouteUrl = `kakaomap://route?ep=${laty},${lngx}&by=CAR`;
+        const naverRouteUrl = `nmap://route/car?dlat=${laty}&dlng=${lngx}&dname=${encodeURIComponent(placeName)}`;
+        const fallbackWebUrl = `https://map.kakao.com/link/to/${encodeURIComponent(placeName)},${laty},${lngx}`;
+      
+        const now = new Date().getTime();
+        location.href = kakaoRouteUrl;
+      
+        setTimeout(() => {
+          if (new Date().getTime() - now < 2000) {
+            location.href = naverRouteUrl;
+      
+            setTimeout(() => {
+              if (new Date().getTime() - now < 4000) {
+                // fallback 시에는 새 창으로 강제 오픈!
+                window.open(fallbackWebUrl, '_blank');
+              }
+            }, 1500);
+          }
+        }, 1500);
+      }
+
     
