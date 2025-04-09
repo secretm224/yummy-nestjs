@@ -32,7 +32,6 @@ window.onload = function(){
     updateBodyPadding();
 
     
-
     /* ========== 원래코드 ========== */
     // /* 카카오 로그인을 한 후 uri 값 */
     // const param_code = GetLoginCode();
@@ -374,8 +373,6 @@ function initLayerPosition(){
 
 /* 통합 로그인 */
 async function handleLogin() {
-
-
     const usename = document.getElementById("username").value;
     const password = document.getElementById("password").value;
     
@@ -394,9 +391,11 @@ async function handleLogin() {
                 credentials: 'include'
             });
         
-        const res = await response.json();
-        console.log(res);
-
+        if (response.status === 200) {
+            location.href = "/";
+        } else {
+            alert("로그인에 실패하였습니다. 아이디/비밀번호를 확인해주세요.");
+        }
 
     } catch(err) {
         console.error("로그인 중 에러 발생:", err);

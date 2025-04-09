@@ -25,11 +25,13 @@ async function mainLoginCheck() {
                 headers:{'Content-Type':'application/json'},
                 credentials: 'include'
             });
-        
-        const res = await response.json();
-        console.log(res);
-        
 
+        if (response.status === 401) {
+            location.href = "/login";
+        } else if (response.status === 200) {
+            location.href = "/";
+        }
+        
     } catch(err) {
         console.error("로그인 중 에러 발생:", err);
     }
