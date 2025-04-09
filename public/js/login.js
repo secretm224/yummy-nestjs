@@ -28,28 +28,28 @@ function loginWithGoogle() {
 
 /* 로그인 관련 -> 바로 시작되는 함수 */ 
 window.onload = function(){
-    /* 로그인을 확인해준다 */
-    
-
     /* 화면 사이즈 조정 */
     updateBodyPadding();
+
     
-    /* 카카오 로그인을 한 후 uri 값 */
-    const param_code = GetLoginCode();
+
+    /* ========== 원래코드 ========== */
+    // /* 카카오 로그인을 한 후 uri 값 */
+    // const param_code = GetLoginCode();
     
-    if (!!param_code) {
-        /* param_code 의 값이 존재하는 경우 */
-        KaKaoLogin(param_code);
-    } else {
-        /* param_code 의 값이 존재하지 않는 경우 */
-        GetKakoUserInfoByAccessToken();
-    }
+    // if (!!param_code) {
+    //     /* param_code 의 값이 존재하는 경우 */
+    //     KaKaoLogin(param_code);
+    // } else {
+    //     /* param_code 의 값이 존재하지 않는 경우 */
+    //     GetKakoUserInfoByAccessToken();
+    // }
+    /* ========== 원래코드 ========== */
 }
 
 
-function loginCheck() {
-    
-}
+
+
 
 function updateBodyPadding() {
     const body = document.body;
@@ -368,4 +368,38 @@ function initLayerPosition(){
     // 실행되는 순간의 화면 너비와 높이 값을 가져와서 중앙에 뜰 수 있도록 위치를 계산한다.
     document.getElementById('layer').style.left = (((window.innerWidth || document.documentElement.clientWidth) - width)/2 - borderWidth) + 'px';
     document.getElementById('layer').style.top = (((window.innerHeight || document.documentElement.clientHeight) - height)/2 - borderWidth) + 'px';
+}
+
+
+
+/* 통합 로그인 */
+async function handleLogin() {
+
+
+    const usename = document.getElementById("username").value;
+    const password = document.getElementById("password").value;
+    
+    const payload = {
+        userId: usename,
+        userPw: password
+    };
+        
+    try {
+
+        const response = await fetch(`${window.env.api_base_url}/login/standardLogin`,
+            {
+                method:'POST',
+                headers:{'Content-Type':'application/json'},
+                body:JSON.stringify(payload),
+                credentials: 'include'
+            });
+        
+        const res = await response.json();
+        console.log(res);
+
+
+    } catch(err) {
+        console.error("로그인 중 에러 발생:", err);
+    }
+    
 }

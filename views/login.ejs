@@ -84,6 +84,11 @@
     <div class="login-container" id="login-container" >
         <h1>로그인하기</h1>
         <p>로그인하여 다양한 기능을 사용하세요.</p>
+
+        <input type="text" placeholder="아이디" id="username" autocomplete="off">
+        <input type="password" placeholder="비밀번호" id="password" autocomplete="off">
+        <button id="login-button" onclick="handleLogin()">로그인</button>
+
         <a class="oauth-login" id="oauth-kakao" onclick="loginWithKakao();">
             <img src="https://upload.wikimedia.org/wikipedia/commons/e/e3/KakaoTalk_logo.svg" alt="KakaoTalk Logo">
             카카오톡으로 로그인
@@ -100,7 +105,6 @@
           <img src="https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png" alt="KakaoTalk Logo" style="width: 70px;">
           구글로 로그인
         </a>
-
     </div>
 <% } %>
 

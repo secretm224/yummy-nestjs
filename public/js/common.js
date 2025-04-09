@@ -14,6 +14,29 @@ function toggleSidebar() {
     sidebar.classList.toggle("active");
 }
 
+/* 백엔드 검증을 통해 로그인 중인지 판단한다. */
+async function mainLoginCheck() {
+
+    try {
+
+        const response = await fetch(`${window.env.api_base_url}/login/auth/loginCheck`,
+            {
+                method:'POST',
+                headers:{'Content-Type':'application/json'},
+                credentials: 'include'
+            });
+        
+        const res = await response.json();
+        console.log(res);
+        
+
+    } catch(err) {
+        console.error("로그인 중 에러 발생:", err);
+    }
+
+}
+
+
 async function logout() {
     try {
         const response = await fetch('/auth/session'); // 📌 현재 로그인한 사용자 정보 가져오기
