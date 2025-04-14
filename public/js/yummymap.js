@@ -255,14 +255,57 @@ var zeroPayStores = [{ name: "알바천국", lat: 37.5032355765545, lng: 127.046
         try {
             
             /* Java API Call */
-            const response = await fetch(`${window.env.api_base_url}/search/allData`, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            });
+            // const response = await fetch(`${window.env.api_base_url}/search/allData`, {
+            //     method: 'GET',
+            //     headers: {
+            //         'Content-Type': 'application/json'
+            //     }
+            // });
 
-            const stores = await response.json();
+            // const stores = await response.json();
+
+             // query {
+                    //   SearchStoreAllData {
+                    //     address
+                    //     lat
+                    //     lng
+                    //     locationCity
+                    //     locationCounty
+                    //     locationDistrict
+                    //     majorType
+                    //     name
+                    //     recommendNames
+                    //     seq
+                    //     subType
+                    //     type
+                    //     zeroPossible
+                    //   }
+              // }
+
+            const response = await fetch(`${window.env.api_base_url}/graphql`, {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                  'Authorization': 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiLtirjrn7ztlIQiLCJpYXQiOjE3NDQ2MTEzNTcsImF1dGgiOiJVU0VSIn0.b8NvXWTAYTCswEefXzucvOI_3k-tAVbRyA_Pnye__dQ'
+                  //토큰 인증 데이터 설정 확인
+                },
+                body: JSON.stringify({
+                  query: `
+                      query {
+                      SearchStoreAllData {
+                        lat
+                        lng
+                        name
+                        type
+                        zeroPossible
+                      }
+                    }
+                  `
+                })
+              });
+            
+            const graphql_data = await response.json();
+            const stores = graphql_data.data.SearchStoreAllData;
 
             stores.forEach(store => {
                 /* 비플페이 가맹점과 아닌 가맹점을 나누기 위함. */ 
@@ -271,7 +314,7 @@ var zeroPayStores = [{ name: "알바천국", lat: 37.5032355765545, lng: 127.046
                     lat: store.lat,
                     lng: store.lng,
                     type: store.type,
-                    isBeefulPay: store.zero_possible
+                    isBeefulPay: store.zeroPossible
                 });
             });
             
